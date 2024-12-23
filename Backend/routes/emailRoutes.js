@@ -1,9 +1,9 @@
-const express = require("express");
-const sendEmail = require("../utils/email");
-
+import { safeHandler } from "../middleware/safeHandler";
+import express from "express";
+import sendEmail from "../utils/email";
 const router = express.Router();
 
-router.post("/send-email", async (req, res) => {
+router.post("/send-email", safeHandler(async (req, res) => {
   const { recipient, subject, message } = req.body;
 
   if (!recipient || !subject || !message) {
@@ -16,6 +16,6 @@ router.post("/send-email", async (req, res) => {
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }
-});
+}));
 
 module.exports = router;

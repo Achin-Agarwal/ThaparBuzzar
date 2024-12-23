@@ -12,6 +12,11 @@ multi table linking in mongo db
 
 
 
+# Things to do
+1) add auth0
+2) add routes for asking user data 
+3) add routes for asking vendor data
+4) add routes for asking product data
 
 
 
