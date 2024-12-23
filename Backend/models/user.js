@@ -83,6 +83,15 @@ const userSchema = new mongoose.Schema({
         }
 
     },
+    isVendor: {
+        type: Boolean,
+        default: false // Flag to indicate if the user is also a vendor
+    },
+    vendorDetails: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Vendor', // Reference to the Vendor model
+        required: function () { return this.isVendor; } // Only required if isVendor is true
+    },
   
     wishlist: [
         {

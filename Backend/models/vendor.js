@@ -1,36 +1,46 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const vendorSchema = new mongoose.Schema({
-    name: {
+    businessName: {
         type: String,
         required: true,
-        unique: true
+        trim: true // Name of the vendor's business
     },
-    email: {
-        address: {
-            type: String,
-            required: true,
-            unique: true
-        },
-        isVerified: {
-            type: Boolean,
-            default: false
-        }
+    businessAddress: {
+        street: { type: String, trim: true },
+        city: { type: String, trim: true },
+        state: { type: String, trim: true },
+        zipCode: { type: String, trim: true }
     },
-    password: {
-        type: String
+    contactDetails: {
+        phoneNumber: { type: String, required: true, trim: true }, 
+        email: { type: String, required: true, trim: true } 
     },
-    birthday: {
-        type: Date
+    walletBalance: {
+        type: Number,
+        default: 0.0 // Tracks the vendor's earnings
+    },
+    paymentPreferences: {
+        bankName: { type: String, trim: true },
+        accountNumber: { type: String, trim: true },
+        IFSCCode: { type: String, trim: true },
+        UPIId: { type: String, trim: true }
     },
     products: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'Product'
+            ref: 'Product' // Products sold by the vendor
         }
-    ]
+    ],
+    ratings: {
+        averageRating: { type: Number, default: 0.0 }, // Average rating of the vendor
+        numberOfReviews: { type: Number, default: 0 } // Number of reviews received
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now 
+    }
 });
 
 const Vendor = mongoose.model('Vendor', vendorSchema);
-
 export default Vendor;
