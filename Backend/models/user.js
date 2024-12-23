@@ -2,14 +2,8 @@ import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
     name: {
-        firstName: {
             type: String,
             required: true
-        },  
-        lastName: {
-            type: String
-        }
-
     },
     email: {
         address: {
@@ -22,20 +16,28 @@ const userSchema = new mongoose.Schema({
             default: false
         }
     },
-    password: {
-        type: String
-    },
-    mobileNumber: {
-        isVerified: {
-            type: Boolean,
-            default: false
-        },
-        number: {
+    auth0Ids: [
+        {
             type: String,
             required: true,
             unique: true
-        }// no mobile for now
+        }
+    ],
+    picture: {
+        type: String
     },
+
+    // mobileNumber: {
+    //     isVerified: {
+    //         type: Boolean,
+    //         default: false
+    //     },
+    //     number: {
+    //         type: String,
+    //         required: true,
+    //         unique: true
+    //     }// no mobile for now
+    // },
     birthday: {
         type: Date
     },
@@ -104,3 +106,12 @@ const userSchema = new mongoose.Schema({
 const User = mongoose.model('User', userSchema);
 
 export default User;
+
+
+// {
+//     "email": "devanshvashishat@gmail.com",
+//     "auth0Ids": ["auth0|6769b3cec7df053fed424e3d", "google-oauth2|110028290344043295343"],
+//     "name": "Devansh Vashishat",
+//     "picture": "https://lh3.googleusercontent.com/a/...",
+//     "isVendor": false
+//   }
