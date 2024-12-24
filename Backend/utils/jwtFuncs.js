@@ -7,7 +7,7 @@ export function generateToken(payload) {
         return jwt.sign(payload, config.auth.tokenSecret, { expiresIn: config.auth.tokenExpiration });
     } catch (error) {
         console.log("Token signing failed: ", error);
-        throw new ApiError(500, "Try logging in after some time", "TOKEN_SIGNING_FAILED" );//or should it be "INTERNAL_SERVER_ERROR"?
+        throw new ApiError(500, "Try logging in after some time", "TOKEN_SIGNING_FAILED");//or should it be "INTERNAL_SERVER_ERROR"?
     }
 }
 

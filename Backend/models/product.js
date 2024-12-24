@@ -16,11 +16,20 @@ const productSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Vendor'
     },
-    image: {
-        type: String
-    },
+    image: [
+        {
+            type: String
+        }
+    ],
     category: {
-        type: String
+        type: String,
+        enum: [
+            'Electronics',
+            'Clothing',
+            'Books',
+            'Furniture',
+            'Other'
+        ]
     },
     stock: {
         type: Number,

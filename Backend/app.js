@@ -1,5 +1,5 @@
 import express from 'express';
-// import connectMongo from './config/db.js';
+import connectMongo from './config/db.js';
 import config from './config/config.js';
 // import responseHandler from './middlewares/responseHandler.js';
 import cors from 'cors';
@@ -65,5 +65,5 @@ app.get('/profile', requiresAuth(), (req, res) => {
 });
  
 app.listen(config.server.port, () => {
-    console.log(`https://localhost:${config.server.port}`);
+    console.log(`http://localhost:${config.server.port}`);
 });

@@ -1,4 +1,5 @@
-{
+const dev = [
+  {
     sid: 'pOVcbwMIk-z4bTpU7GU3FayClJRtXkIz',
     nickname: 'devasnhvashishat',
     name: 'devasnhvashishat@gmail.com',
@@ -7,7 +8,7 @@
     email: 'devasnhvashishat@gmail.com',
     email_verified: false,
     sub: 'auth0|6769b3cec7df053fed424e3d'
-  }
+  },
   {
     sid: '7o7Mkp8VzVhKKNVnlRY-Qb1Gb89445hL',
     given_name: 'bugslayer01',
@@ -19,4 +20,4 @@
     email_verified: true,
     sub: 'google-oauth2|110028290344043295343'
   }
-  
+]

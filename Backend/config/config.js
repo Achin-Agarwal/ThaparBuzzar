@@ -14,6 +14,11 @@ const config = {
         clientID: process.env.AUTH0_CLIENTID,
         issuerBaseURL: process.env.AUTH0_ISSUER_BASEURL,
 
+    },
+    paths: {
+        images: {
+            product: "images/products",
+        },
     }
 
 };
