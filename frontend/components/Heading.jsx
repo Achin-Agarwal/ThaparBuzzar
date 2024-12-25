@@ -1,16 +1,15 @@
-import React from 'react'
-import '../styles/Heading.css'
+import React from "react";
 
 const Heading = () => {
   return (
     <div>
-      <div>
-        <div></div>
-        <div></div>
-        <div></div>
+      <div className="flex bg-blue">
+        <div>a</div>
+        <div>b</div>
+        <div>c</div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Heading
+export default Heading;
