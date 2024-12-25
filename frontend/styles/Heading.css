@@ -1,0 +1,7 @@
+.head{
+    height: 100%;
+    width: 100%;
+    background-color: blue;
+    display: flex;
+    justify-content: space-between;
+}
