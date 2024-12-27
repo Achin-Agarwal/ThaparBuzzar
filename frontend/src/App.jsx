@@ -1,13 +1,17 @@
-import Home from '../pages/Home'
-import './App.css'
-import './index.css'
+import React from "react";
+import LoginButton from "../components/LoginButton";
+import Heading from "../components/Heading";
+import Home from "../pages/Home";
 
-function App() {
+const App = () => {
   return (
-    <>
-    <Home />
-    </>
-  )
-}
+    <div>
+      {/* <h1>Welcome to My App</h1>
+      <LoginButton /> */}
+      <Heading />
+      <Home />
+    </div>
+  );
+};
 
-export default App
+export default App;
