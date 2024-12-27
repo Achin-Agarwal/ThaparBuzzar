@@ -1,10 +1,15 @@
 import React from 'react'
-import Heading from '../components/Heading'
+import '../styles/Home.css'
 
 const Home = () => {
   return (
-    <div>
-      <Heading />
+    <div className="nav">
+      <p>All</p>
+      <p>Beauty</p>
+      <p>Electronics</p>
+      <p>Fashion</p>
+      <p>Collectibles and Art</p>
+      <p>Services</p>
     </div>
   )
 }

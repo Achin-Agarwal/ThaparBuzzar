@@ -1,7 +1,25 @@
-.head{
-    height: 100%;
-    width: 100%;
-    background-color: blue;
-    display: flex;
-    justify-content: space-between;
+.head {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.image1 {
+  width: 27vh;
+  height: 10vh;
+}
+.image2 {
+  width: 18vh;
+  height: 12vh;
+}
+.image3 {
+  height: 6vh;
+}
+
+.heads {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
 }

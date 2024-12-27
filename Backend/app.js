@@ -54,9 +54,7 @@ console.log("***********************************************req.oidc************
     console.log(req.oidc.accessToken);
     console.log(req.oidc.refreshToken);
     console.log(req.oidc.isAuthenticated());
-    res.send('Hello World');
-    
-
+    res.send("Hello World");
   });
   import pkg from 'express-openid-connect';
 const { requiresAuth } = pkg; 
