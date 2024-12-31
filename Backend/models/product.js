@@ -48,7 +48,8 @@ const productSchema = new mongoose.Schema({
         },
         numberOfUses: {
             type: Number
-        },
+    },
+    },
     rating: {
         type: Number,
         default: 0
@@ -85,5 +86,5 @@ const productSchema = new mongoose.Schema({
         }
     ],
 });
-const Product = mongoose.model('Product', productSchemaSchema);
+const Product = mongoose.model('Product', productSchema);
 export default Product;
