@@ -3,14 +3,15 @@ import Product from '../models/product.js';
 import Vendor from '../models/vendor.js';
 import { productSchema } from '../utils/zodSchemas.js';
 import { productImageUpload } from '../utils/multer.js';
+import responseHandler from '../middleware/responseHandler.js';
 
 const router = express.Router();
 
 // Add a new product
-router.post('/add', productImageUpload, async (req, res) => {
-    try {
+router.post('/addproduct', productImageUpload, responseHandler( async (req, res) => {
+    
         const parsedData = productSchema.parse(req.body);
-        const { name, description, price, vendorId, category, stock, tags } = parsedData;
+        const { name, description, price, vendorId , category, stock, promoCode } = parsedData;
 
         const vendor = await Vendor.findById(vendorId);
         if (!vendor) {
@@ -28,42 +29,15 @@ router.post('/add', productImageUpload, async (req, res) => {
             image: images,
             category,
             stock,
-            tags
+            promoCode
         });
-
-        const savedProduct = await newProduct.save();
+        const savedProduct = await Vendor.create(newProduct);
         vendor.products.push(savedProduct._id);
         await vendor.save();
 
         res.status(201).json(savedProduct);
-    } catch (error) {
-        if (error instanceof z.ZodError) {
-            return res.status(400).json({ message: error.errors });
-        }
-        res.status(500).json({ message: error.message });
-    }
-});
-
-
-// Modify an existing product
-router.put('/modify/:id', async (req, res) => {
-    try {
-        const parsedData = productSchema.partial().parse(req.body);
-        const { id } = req.params;
-
-        const updatedProduct = await Product.findByIdAndUpdate(id, parsedData, { new: true });
-        if (!updatedProduct) {
-            return res.status(404).json({ message: 'Product not found' });
-        }
-
-        res.status(200).json(updatedProduct);
-    } catch (error) {
-        if (error instanceof z.ZodError) {
-            return res.status(400).json({ message: error.errors });
-        }
-        res.status(500).json({ message: error.message });
-    }
-});
+ 
+}));
 
 // Delete a product
 router.delete('/delete/:id', async (req, res) => {

@@ -1,7 +1,7 @@
 import express from 'express';
 import connectMongo from './config/db.js';
 import config from './config/config.js';
-// import responseHandler from './middlewares/responseHandler.js';
+import responseHandler from './middlewares/responseHandler.js';
 import cors from 'cors';
 import path from 'path';
 //Auth0 imports
@@ -10,7 +10,7 @@ import { auth } from 'express-openid-connect';
 
 const app = express();
 
-// connectMongo();
+connectMongo();
 //checkout populate or whatevr
 
 // app.use((req, res, next) => {
@@ -19,6 +19,7 @@ const app = express();
 //     next();
 // })
 
+app.use(responseHandler);
 app.use(cors({
   origin: (origin, callback) => {
     callback(null, origin || '*'); // Allow all origins
@@ -87,9 +88,27 @@ app.use((err, req, res, next) => {
   res.status(500).send('Something went wrong!');
 });
 
-// Routes
-// import Vendor from './routes/vendor.js';
-// app.use('/vendor', Vendor);
+
+
+//TEST OUT THIS ERROR JARGON FIRST
+app.use((error, req, res, next) => {
+  console.log(error); // temp log
+  if (error.errors && error.errors[0].message) {
+      return res.error(400, error.errors[0].message, 'VALIDATION_ERROR');
+  }
+
+  if (error.isOperational) {
+      const statusCode = error.statusCode || 500;
+      const message = error.message || 'Internal Server Error';
+      return res.error(statusCode, message, error.errorCode, error.data);
+  } else {
+      //send email
+      //log in a special way maybe
+      console.error("ALERT ALERT ALERT");
+      console.error('Unhandled error:', error);
+      return res.error(500, 'Internal Server Error', 'UNHANDLED_ERROR');
+  }
+});
 
 
 // Start the server
