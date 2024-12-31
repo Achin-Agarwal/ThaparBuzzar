@@ -1,7 +1,7 @@
 import express from 'express';
 import Product from '../models/product.js';
 import Vendor from '../models/vendor.js';
-import { productSchema } from '../zodSchemas.js';
+import { productSchema } from '../utils/zodSchemas.js';
 import { productImageUpload } from '../utils/multer.js';
 
 const router = express.Router();
