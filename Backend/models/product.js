@@ -40,42 +40,50 @@ const productSchema = new mongoose.Schema({
         sold: {
             type: Number,
             default: 0
+        }
+    },
+    promoCode: {
+        code: {
+            type: String
         },
-        rating: {
-            type: Number,
-            default: 0
+        numberOfUses: {
+            type: Number
         },
-        reviews: [
-            {
-                user: {
-                    type: mongoose.Schema.Types.ObjectId,
-                    ref: 'User'
-                },
-                review: {
-                    type: String
-                },
-                rating: {
-                    type: Number
-                }
-            }
-        ],
-        orders: [
-            {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'Order'
-            }
-        ],
-        boughtBy: [
-            {
+    rating: {
+        type: Number,
+        default: 0
+    },
+    reviews: [
+        {
+            user: {
                 type: mongoose.Schema.Types.ObjectId,
                 ref: 'User'
-            }
-        ],
-        tags: [
-            {
+            },
+            review: {
                 type: String
+            },
+            rating: {
+                type: Number
             }
-        ],
-    });
+        }
+    ],
+    orders: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Order'
+        }
+    ],
+    boughtBy: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User'
+        }
+    ],
+    tags: [
+        {
+            type: String
+        }
+    ],
+});
 const Product = mongoose.model('Product', productSchemaSchema);
 export default Product;
