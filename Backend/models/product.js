@@ -25,15 +25,30 @@ const productSchema = new mongoose.Schema({
         type: String,
         enum: [
             'Electronics',
-            'Clothing',
-            'Books',
-            'Furniture',
+            'Fashion',
+            'Collectibles and Art',
+            'Beauty',
+            'Services',
             'Other'
         ]
     },
     stock: {
-        type: Number,
-        default: 0
+        available: {
+            type: Number,
+            required: true
+        },
+        sold: {
+            type: Number,
+            default: 0
+        }
+    },
+    promoCode: {
+        code: {
+            type: String
+        },
+        numberOfUses: {
+            type: Number
+    },
     },
     rating: {
         type: Number,
@@ -71,5 +86,5 @@ const productSchema = new mongoose.Schema({
         }
     ],
 });
-const Product = mongoose.model('Product', productSchemaSchema);
+const Product = mongoose.model('Product', productSchema);
 export default Product;
