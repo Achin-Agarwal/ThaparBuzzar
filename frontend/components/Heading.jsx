@@ -78,8 +78,17 @@ const Heading = () => {
           </div>
         </div>
       </div>
+      <div className="nav">
+              <p>All</p>
+              <p>Beauty</p>
+              <p>Electronics</p>
+              <p>Fashion</p>
+              <p>Collectibles and Art</p>
+              <p>Services</p>
+            </div>
       {isLoading && <p>Loading...</p>}
     </div>
+    
   );
 };
 
