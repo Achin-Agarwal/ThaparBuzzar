@@ -7,6 +7,7 @@ import path from 'path';
 //Auth0 imports
 import { auth } from 'express-openid-connect';
 
+
 const app = express();
 
 // connectMongo();
@@ -85,6 +86,11 @@ app.use((err, req, res, next) => {
   console.error("Error encountered:", err);
   res.status(500).send('Something went wrong!');
 });
+
+// Routes
+import Vendor from './routes/vendor.js';
+app.use('/vendor', Vendor);
+
 
 // Start the server
 app.listen(config.server.port, () => {
