@@ -25,51 +25,57 @@ const productSchema = new mongoose.Schema({
         type: String,
         enum: [
             'Electronics',
-            'Clothing',
-            'Books',
-            'Furniture',
+            'Fashion',
+            'Collectibles and Art',
+            'Beauty',
+            'Services',
             'Other'
         ]
     },
     stock: {
-        type: Number,
-        default: 0
-    },
-    rating: {
-        type: Number,
-        default: 0
-    },
-    reviews: [
-        {
-            user: {
+        available: {
+            type: Number,
+            required: true
+        },
+        sold: {
+            type: Number,
+            default: 0
+        },
+        rating: {
+            type: Number,
+            default: 0
+        },
+        reviews: [
+            {
+                user: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: 'User'
+                },
+                review: {
+                    type: String
+                },
+                rating: {
+                    type: Number
+                }
+            }
+        ],
+        orders: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Order'
+            }
+        ],
+        boughtBy: [
+            {
                 type: mongoose.Schema.Types.ObjectId,
                 ref: 'User'
-            },
-            review: {
-                type: String
-            },
-            rating: {
-                type: Number
             }
-        }
-    ],
-    orders: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Order'
-        }
-    ],
-    boughtBy: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'User'
-        }
-    ],
-    tags: [
-        {
-            type: String
-        }
-    ],
-});
+        ],
+        tags: [
+            {
+                type: String
+            }
+        ],
+    });
 const Product = mongoose.model('Product', productSchemaSchema);
 export default Product;
