@@ -51,7 +51,7 @@ app.get('/login', (req, res) => {
 
 app.get('/callback', (req, res) => {
   // Redirect to React home page after login
-  res.redirect(http://localhost:5173);
+  res.redirect("http://localhost:5173");
 });
   app.get('/', (req, res) => {
     console.log(req.oidc.isAuthenticated());
