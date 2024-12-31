@@ -54,11 +54,9 @@ const Heading = () => {
           <img src={buzzarlogo} alt="Buzzar Logo" className="image2" />
         </div>
         <div className="heads">
-          {/* {isAuthenticated ? (
+          {isAuthenticated ? (
             <button
-              onClick={() => {
-                window.location.href = "http://localhost:3000/logout";
-              }}
+              onClick={() => logout({ returnTo: window.location.origin })}
             >
               Logout
             </button>
@@ -73,17 +71,7 @@ const Heading = () => {
                 }}
               />
             </div>
-          )} */}
-          <div>
-            <img
-              src={sign}
-              alt="Sign In"
-              className="image3"
-              onClick={() => {
-                window.location.href = "http://localhost:3000/login";
-              }}
-            />
-          </div>
+          )}
           <div>
             <img src={search} alt="Search" className="image3" />
           </div>
@@ -93,15 +81,16 @@ const Heading = () => {
         </div>
       </div>
       <div className="nav">
-        <p>All</p>
-        <p>Beauty</p>
-        <p>Electronics</p>
-        <p>Fashion</p>
-        <p>Collectibles and Art</p>
-        <p>Services</p>
-      </div>
+              <p>All</p>
+              <p>Beauty</p>
+              <p>Electronics</p>
+              <p>Fashion</p>
+              <p>Collectibles and Art</p>
+              <p>Services</p>
+            </div>
       {isLoading && <p>Loading...</p>}
     </div>
+    
   );
 };
 
