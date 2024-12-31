@@ -1,0 +1,17 @@
+.product-buttons{
+    margin-bottom: 20px;
+}
+
+.form{
+    display: flex;
+    justify-content: center;
+}
+.action-buttons{
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+.product-colors{
+    width: 60vw;
+    border: 2px solid black;
+}

@@ -1,16 +1,20 @@
 import React from "react";
-import LoginButton from "../components/LoginButton";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Heading from "../components/Heading";
 import Home from "../pages/Home";
+import Dashboard from "../pages/ProductDashboard";
 
 const App = () => {
   return (
-    <div>
-      {/* <h1>Welcome to My App</h1>
-      <LoginButton /> */}
-      <Heading />
-      <Home />
-    </div>
+    <Router>
+      <div>
+        <Heading />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+        </Routes>
+      </div>
+    </Router>
   );
 };
 
