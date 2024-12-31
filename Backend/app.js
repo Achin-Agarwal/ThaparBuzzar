@@ -45,7 +45,14 @@ const Auth0Config = {
 //Auth0 middleware
 app.use(auth(Auth0Config));
 
-  
+app.get('/login', (req, res) => {
+  res.redirect('/login');
+});
+
+app.get('/callback', (req, res) => {
+  // Redirect to React home page after login
+  res.redirect(http://localhost:5173);
+});
   app.get('/', (req, res) => {
     console.log(req.oidc.isAuthenticated());
 console.log("***********************************************req.oidc****************************************************");
