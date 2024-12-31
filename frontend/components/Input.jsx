@@ -12,18 +12,18 @@ const InputField = ({
 }) => {
   return (
     <div className="input-field">
-      <label>
-        {label}
-        <input
-          type={type}
-          name={name}
-          value={value}
-          placeholder={placeholder}
-          onChange={onChange}
-          accept={accept}
-          required
-        />
-      </label>
+      {label && <label htmlFor={name}>{label}</label>}
+      <input
+        id={name}
+        type={type}
+        name={name}
+        {...(type !== "file" && { value })}
+        placeholder={placeholder}
+        onChange={onChange}
+        accept={accept}
+        required
+        multiple
+      />
     </div>
   );
 };

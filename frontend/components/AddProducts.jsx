@@ -12,7 +12,7 @@ const AddProducts = () => {
       category: "",
       price: "",
       description: "",
-      image: null,
+      images: [],
       stock: "",
       code: "",
       uses: "",
@@ -39,51 +39,59 @@ const AddProducts = () => {
       ...products,
       {
         id: null,
-      name: "",
-      category: "",
-      price: "",
-      description: "",
-      image: null,
-      stock: "",
-      code: "",
-      uses: "",
+        name: "",
+        category: "",
+        price: "",
+        description: "",
+        images: [],
+        stock: "",
+        code: "",
+        uses: "",
       },
     ]);
     setActiveIndex(products.length);
   };
 
-  const handleChange = (e) => {
-    const { name, value, files } = e.target;
+  const handleInputChange = (index, event) => {
+    const { name, value, files } = event.target;
     const updatedProducts = [...products];
-    updatedProducts[activeIndex] = {
-      ...updatedProducts[activeIndex],
-      [name]: name === "image" ? files[0] : value,
-    };
+    if (name === "images") {
+      updatedProducts[index] = {
+        ...updatedProducts[index],
+        images: files ? Array.from(files) : [], // Convert FileList to an array
+      };
+    } else {
+      updatedProducts[index] = {
+        ...updatedProducts[index],
+        [name]: value,
+      };
+    }
     setProducts(updatedProducts);
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const currentProduct = products[activeIndex];
+  
     if (
       !currentProduct.name ||
-      !currentProduct.image ||
+      !currentProduct.images.length ||
       !currentProduct.price ||
       !currentProduct.description ||
       !currentProduct.category ||
-      !currentProduct.code ||
-      !currentProduct.uses ||
       !currentProduct.stock
     ) {
-      setStatusMessage(
-        `Please fill out all fields for Product ${activeIndex + 1}`
-      );
-      alert(statusMessage);
+      const message = `Please fill out all fields for Product ${activeIndex + 1}`;
+      setStatusMessage(message);
+      alert(message);
       return;
     }
-
+  console.log(currentProduct);
     const formData = new FormData();
-    formData.append("image", currentProduct.image);
+  
+    currentProduct.images.forEach((image) => {
+      formData.append("images", image);
+    });
     formData.append("price", currentProduct.price);
     formData.append("name", currentProduct.name);
     formData.append("description", currentProduct.description);
@@ -91,23 +99,24 @@ const AddProducts = () => {
     formData.append("code", currentProduct.code);
     formData.append("uses", currentProduct.uses);
     formData.append("stock", currentProduct.stock);
-    console.log(currentProduct);
-
+  
     try {
-      //   const response = await axios.post('/api/vendor/product', formData, {
-      //     headers: { 'Content-Type': 'multipart/form-data' },
-      //   });
+      // Uncomment and adjust the endpoint as needed
+      // const response = await axios.post('/api/vendor/product', formData, {
+      //   headers: { 'Content-Type': 'multipart/form-data' },
+      // });
       const updatedProducts = [...products];
-      //   updatedProducts[activeIndex].id = response.data.id;
+      // updatedProducts[activeIndex].id = response.data.id;
       setProducts(updatedProducts);
       setStatusMessage(`Product ${activeIndex + 1} added successfully`);
-      alert(statusMessage);
+      alert(`Product ${activeIndex + 1} added successfully`);
     } catch (error) {
       console.error(error);
       setStatusMessage(`Failed to add Product ${activeIndex + 1}`);
-      alert(statusMessage);
+      alert(`Failed to add Product ${activeIndex + 1}`);
     }
   };
+  
 
   const handleDelete = async (event) => {
     event.preventDefault();
@@ -143,7 +152,7 @@ const AddProducts = () => {
       <div className="product-buttons">
         {products.map((_, index) => (
           <Button
-            key={index}
+            key={`product-${index}`}
             label={`Product ${index + 1}`}
             onClick={() => setActiveIndex(index)}
             isActive={activeIndex === index}
@@ -168,14 +177,14 @@ const AddProducts = () => {
             type="text"
             name="name"
             value={products[activeIndex].name}
-            onChange={handleChange}
+            onChange={(event) => handleInputChange(activeIndex, event)}
           />
 
           <div className="input-field">
             <select
               name="category"
               value={products[activeIndex].category}
-              onChange={handleChange}
+              onChange={(event) => handleInputChange(activeIndex, event)}
             >
               <option value="">Select Category</option>
               <option value="electronics">Electronics</option>
@@ -191,28 +200,28 @@ const AddProducts = () => {
             type="number"
             name="price"
             value={products[activeIndex].price}
-            onChange={handleChange}
+            onChange={(event) => handleInputChange(activeIndex, event)}
           />
           <InputField
             placeholder="Description"
             type="text"
             name="description"
             value={products[activeIndex].description}
-            onChange={handleChange}
+            onChange={(event) => handleInputChange(activeIndex, event)}
           />
           <InputField
             placeholder="Stock"
             type="number"
             name="stock"
-            value={products[activeIndex].quantity}
-            onChange={handleChange}
+            value={products[activeIndex].stock}
+            onChange={(event) => handleInputChange(activeIndex, event)}
           />
           {/* <InputField
             placeholder="Estimated delivery"
             type="text"
             name="delivery"
             value={products[activeIndex].delivery}
-            onChange={handleChange}
+            onChange={(event) => handleInputChange(activeIndex, event)}
           /> */}
           {/* <h1>Product Colours</h1> */}
           {/* <InputField
@@ -220,28 +229,28 @@ const AddProducts = () => {
             type="text"
             name="colorName"
             value={products[activeIndex].colorName}
-            onChange={handleChange}
+            onChange={(event) => handleInputChange(activeIndex, event)}
           /> */}
           <InputField
             placeholder="Images"
             type="file"
             name="images"
             accept="image/*"
-            onChange={handleChange}
+            onChange={(event) => handleInputChange(activeIndex, event)}
           />
           <InputField
             placeholder="Promo code"
             type="text"
             name="code"
             value={products[activeIndex].code}
-            onChange={handleChange}
+            onChange={(event) => handleInputChange(activeIndex, event)}
           />
           <InputField
             placeholder="Number of uses for Promo Code"
             type="number"
             name="uses"
             value={products[activeIndex].uses}
-            onChange={handleChange}
+            onChange={(event) => handleInputChange(activeIndex, event)}
           />
           <div className="action-buttons">
             {products.length > 1 && (

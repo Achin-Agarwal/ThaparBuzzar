@@ -1,20 +1,18 @@
-import React, { useState } from 'react';
-import AddProducts from '../components/AddProducts';
-import '../styles/ProductDashboard.css';
-import Button from '../components/Button';
-import Overview from '../components/Overview';
+import React, { useState } from "react";
+import AddProducts from "../components/AddProducts";
+import "../styles/ProductDashboard.css";
+import Button from "../components/Button";
+import Overview from "../components/Overview";
 
 const Dashboard = () => {
-  const [activeTab, setActiveTab] = useState('productDetails');
+  const [activeTab, setActiveTab] = useState("productDetails");
 
   const renderContent = () => {
     switch (activeTab) {
-      case 'productDetails':
+      case "productDetails":
         return <AddProducts />;
-      case 'overview':
+      case "overview":
         return <Overview />;
-      case 'signOut':
-        return <h2>Sign Out</h2>;
       default:
         return <h2>Select an option</h2>;
     }
@@ -23,9 +21,23 @@ const Dashboard = () => {
   return (
     <div className="dashboard">
       <div className="sidebar">
-        <Button onClick={() => setActiveTab('productDetails')} label="Product Details" fontSize="18px"></Button>
-        <Button onClick={() => setActiveTab('overview')} label="Overview" fontSize="18px"></Button>
-        <Button onClick={() => setActiveTab('signOut')} label="Sign Out" fontSize="18px"></Button>
+        <Button
+          onClick={() => setActiveTab("productDetails")}
+          label="Product Details"
+          fontSize="18px"
+        ></Button>
+        <Button
+          onClick={() => setActiveTab("overview")}
+          label="Overview"
+          fontSize="18px"
+        ></Button>
+        <Button
+          onClick={() => {
+            window.location.href = "http://localhost:3000/logout";
+          }}
+          label="Sign Out"
+          fontSize="18px"
+        ></Button>
       </div>
       <div className="content">{renderContent()}</div>
     </div>
