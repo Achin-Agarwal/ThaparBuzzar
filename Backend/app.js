@@ -88,8 +88,8 @@ app.use((err, req, res, next) => {
 });
 
 // Routes
-import Vendor from './routes/vendor.js';
-app.use('/vendor', Vendor);
+// import Vendor from './routes/vendor.js';
+// app.use('/vendor', Vendor);
 
 
 // Start the server
