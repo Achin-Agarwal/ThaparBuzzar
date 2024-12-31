@@ -8,15 +8,14 @@ const AddProducts = () => {
   const [products, setProducts] = useState([
     {
       id: null,
-      domain: "",
-      type: "",
       name: "",
+      category: "",
       price: "",
       description: "",
-      delivery: "",
       image: null,
-      quantity: "",
-      code:"",
+      stock: "",
+      code: "",
+      uses: "",
     },
   ]);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -40,15 +39,14 @@ const AddProducts = () => {
       ...products,
       {
         id: null,
-        domain: "",
-        type: "",
-        name: "",
-        price: "",
-        description: "",
-        delivery: "",
-        image: null,
-        quantity: "",
-        code:"",
+      name: "",
+      category: "",
+      price: "",
+      description: "",
+      image: null,
+      stock: "",
+      code: "",
+      uses: "",
       },
     ]);
     setActiveIndex(products.length);
@@ -72,9 +70,10 @@ const AddProducts = () => {
       !currentProduct.image ||
       !currentProduct.price ||
       !currentProduct.description ||
-      !currentProduct.delivery ||
-      !currentProduct.colorName ||
-      !currentProduct.quantity
+      !currentProduct.category ||
+      !currentProduct.code ||
+      !currentProduct.uses ||
+      !currentProduct.stock
     ) {
       setStatusMessage(
         `Please fill out all fields for Product ${activeIndex + 1}`
@@ -87,12 +86,11 @@ const AddProducts = () => {
     formData.append("image", currentProduct.image);
     formData.append("price", currentProduct.price);
     formData.append("name", currentProduct.name);
-    formData.append("domain", currentProduct.domain);
-    formData.append("type", currentProduct.type);
     formData.append("description", currentProduct.description);
-    formData.append("delivery", currentProduct.delivery);
-    formData.append("quantity", currentProduct.quantity);
+    formData.append("category", currentProduct.category);
     formData.append("code", currentProduct.code);
+    formData.append("uses", currentProduct.uses);
+    formData.append("stock", currentProduct.stock);
     console.log(currentProduct);
 
     try {
@@ -166,47 +164,56 @@ const AddProducts = () => {
       <div className="form">
         <form>
           <InputField
-            type="text"
-            name="domain"
-            placeholder="Product domain"
-            value={products[activeIndex].domain}
-            onChange={handleChange}
-          />
-          <InputField
-            type="text"
-            name="type"
-            placeholder="Product type"
-            value={products[activeIndex].type}
-            onChange={handleChange}
-          />
-          <InputField
-            placeholder="Product name"
+            placeholder="Name"
             type="text"
             name="name"
             value={products[activeIndex].name}
             onChange={handleChange}
           />
+
+          <div className="input-field">
+            <select
+              name="category"
+              value={products[activeIndex].category}
+              onChange={handleChange}
+            >
+              <option value="">Select Category</option>
+              <option value="electronics">Electronics</option>
+              <option value="fashion">Fashion</option>
+              <option value="home">Home</option>
+              <option value="beauty">Beauty</option>
+              <option value="sports">Sports</option>
+            </select>
+          </div>
+
           <InputField
-            placeholder="Product price"
+            placeholder="Price"
             type="number"
             name="price"
             value={products[activeIndex].price}
             onChange={handleChange}
           />
           <InputField
-            placeholder="Product description"
+            placeholder="Description"
             type="text"
             name="description"
             value={products[activeIndex].description}
             onChange={handleChange}
           />
           <InputField
+            placeholder="Stock"
+            type="number"
+            name="stock"
+            value={products[activeIndex].quantity}
+            onChange={handleChange}
+          />
+          {/* <InputField
             placeholder="Estimated delivery"
             type="text"
             name="delivery"
             value={products[activeIndex].delivery}
             onChange={handleChange}
-          />
+          /> */}
           {/* <h1>Product Colours</h1> */}
           {/* <InputField
             placeholder="Color name"
@@ -216,24 +223,24 @@ const AddProducts = () => {
             onChange={handleChange}
           /> */}
           <InputField
-            placeholder="Product picture"
+            placeholder="Images"
             type="file"
-            name="image"
+            name="images"
             accept="image/*"
             onChange={handleChange}
           />
           <InputField
-            placeholder="Product quantity"
-            type="number"
-            name="quantity"
-            value={products[activeIndex].quantity}
+            placeholder="Promo code"
+            type="text"
+            name="code"
+            value={products[activeIndex].code}
             onChange={handleChange}
           />
           <InputField
-            placeholder="Promo code"
+            placeholder="Number of uses for Promo Code"
             type="number"
-            name="code"
-            value={products[activeIndex].code}
+            name="uses"
+            value={products[activeIndex].uses}
             onChange={handleChange}
           />
           <div className="action-buttons">
