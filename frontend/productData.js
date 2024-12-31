@@ -4,7 +4,6 @@ const productData = [
     { name: "Google Pixel 8", price: 899, quantitySold: 15, quantityLeft: 3, timeSold: "2024-12-20T11:15:00Z" },
     { name: "Nintendo Switch OLED", price: 349, quantitySold: 18, quantityLeft: 3, timeSold: "2024-06-25T09:00:00Z" },
     { name: "Sony PlayStation 5", price: 499, quantitySold: 10, quantityLeft: 70, timeSold: "2024-12-10T20:00:00Z" },
-    { name: "Sony PlayStation 5", price: 499, quantitySold: 8, quantityLeft: 2, timeSold: "2024-12-02T18:00:00Z" },
     { name: "Samsung Galaxy Z Fold 5", price: 1799, quantitySold: 3, quantityLeft: 7, timeSold: "2024-11-29T13:30:00Z" },
     { name: "MacBook Pro 16", price: 2399, quantitySold: 4, quantityLeft: 1, timeSold: "2024-11-15T09:00:00Z" },
     { name: "Dell XPS 13", price: 1499, quantitySold: 5, quantityLeft: 13, timeSold: "2024-10-30T08:15:00Z" },
