@@ -40,7 +40,10 @@ const productSchema = new mongoose.Schema({
         sold: {
             type: Number,
             default: 0
-        }
+        },
+        soldAt: [{
+            type: Date
+        }]
     },
     promoCode: {
         code: {
