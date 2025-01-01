@@ -19,11 +19,11 @@ router.post('/addproduct', productImageUpload, safeHandler( async (req, res) => 
         };
 
         const validatedData = productSchema.parse(parsedData);
-        console.log("Add product data: ");
-        console.log(validatedData);
+        // console.log("Add product data: ");
+        // console.log(validatedData);
 
         const { name, description, price, vendorId, category, stock, promoCode } = validatedData;
-
+console.log("Vendor ID: "); console.log(vendorId);
         const vendor = await Vendor.findById(vendorId);
         if (!vendor) {
             return res.status(404).json({ message: 'Vendor not found' });
