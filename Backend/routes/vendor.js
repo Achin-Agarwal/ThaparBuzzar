@@ -3,12 +3,12 @@ import Product from '../models/product.js';
 import Vendor from '../models/vendor.js';
 import { productSchema } from '../utils/zodSchemas.js';
 import { productImageUpload } from '../utils/multer.js';
-import responseHandler from '../middleware/responseHandler.js';
+import { safeHandler } from '../middleware/safeHandler.js';
 
 const router = express.Router();
 
 // Add a new product
-router.post('/addproduct', productImageUpload, responseHandler( async (req, res) => {
+router.post('/addproduct', productImageUpload, safeHandler( async (req, res) => {
     
         const parsedData = productSchema.parse(req.body);
         const { name, description, price, vendorId , category, stock, promoCode } = parsedData;

@@ -1,9 +1,10 @@
 import express from 'express';
 import connectMongo from './config/db.js';
 import config from './config/config.js';
-import responseHandler from './middlewares/responseHandler.js';
+import responseHandler from './middleware/responseHandler.js';
 import cors from 'cors';
 import path from 'path';
+import Vendor from './routes/vendor.js';
 //Auth0 imports
 import { auth } from 'express-openid-connect';
 
@@ -74,6 +75,7 @@ app.get('/', (req, res) => {
   res.redirect("http://localhost:5173");
   // res.send("Hello World");
 });
+app.use("/vendor", Vendor);
 
 // /profile route to check the logged-in user's profile
 import pkg from 'express-openid-connect';
@@ -82,6 +84,7 @@ app.get('/profile', requiresAuth(), (req, res) => {
   res.send(JSON.stringify(req.oidc.user, null, 2));
 });
 
+app.use(Vendor,);
 // Global error handler to catch any potential issues
 app.use((err, req, res, next) => {
   console.error("Error encountered:", err);
