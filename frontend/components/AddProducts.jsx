@@ -3,6 +3,7 @@ import axios from "axios";
 import Button from "./Button";
 import InputField from "./Input";
 import "../styles/AddProducts.css";
+import url from "../url";
 
 const AddProducts = () => {
   const [products, setProducts] = useState([
@@ -10,12 +11,11 @@ const AddProducts = () => {
       id: null,
       name: "",
       category: "",
-      price: "",
+      price: 0,
       description: "",
       images: [],
-      stock: "",
-      code: "",
-      uses: "",
+      stock: { available: 0 },
+      promoCode: { code: "", uses: 0 },
     },
   ]);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -24,11 +24,26 @@ const AddProducts = () => {
   //   useEffect(() => {
   //     const fetchProducts = async () => {
   //       try {
-  //         const response = await axios.get('/api/vendor/products');
-  //         setProducts(response.data.products.length > 0 ? response.data.products : [{ id: null,domain:'',type:'', name: '', price: '' ,description:'',delivery:'',colorName:'', image: null, quantity:''}]);
+  //         const response = await axios.get(url + "/products");
+  //         setProducts(response.data.products.length > 0 ? response.data.products : [{ id: null,
+  // name: "",
+  // category: "",
+  // price: "",
+  // description: "",
+  // images: [],
+  // stock: { available: 0 },
+  // promoCode: { code: "", uses: 0 },}
+  // ]);
   //       } catch (error) {
   //         console.error('Error fetching products:', error);
-  //         setProducts([{ id: null,domain:'',type:'', name: '', price: '' ,description:'',delivery:'',colorName:'', image: null, quantity:''}]); // Initialize with a blank product if fetching fails
+  //         setProducts([{ id: null,
+  // name: "",
+  // category: "",
+  // price: "",
+  // description: "",
+  // images: [],
+  // stock: { available: 0 },
+  // promoCode: { code: "", uses: 0 },}]); // Initialize with a blank product if fetching fails
   //       }
   //     };
   //     fetchProducts();
@@ -44,9 +59,8 @@ const AddProducts = () => {
         price: "",
         description: "",
         images: [],
-        stock: "",
-        code: "",
-        uses: "",
+        stock: { available: 0 },
+        promoCode: { code: "", uses: 0 },
       },
     ]);
     setActiveIndex(products.length);
@@ -54,20 +68,23 @@ const AddProducts = () => {
 
   const handleInputChange = (index, event) => {
     const { name, value, files } = event.target;
-    const updatedProducts = [...products];
-    if (name === "images") {
-      updatedProducts[index] = {
-        ...updatedProducts[index],
-        images: files ? Array.from(files) : [], // Convert FileList to an array
-      };
-    } else {
-      updatedProducts[index] = {
-        ...updatedProducts[index],
-        [name]: value,
-      };
-    }
-    setProducts(updatedProducts);
+    setProducts((prevProducts) => {
+      const updatedProducts = [...prevProducts];
+      if (name === "images") {
+        updatedProducts[index].images = files ? Array.from(files) : [];
+      } else if (name.includes(".")) {
+        const [section, field] = name.split(".");
+        updatedProducts[index][section][field] = field === "available" || field === "uses" ? Number(value) : value;
+      } else {
+        updatedProducts[index][name] = name === "price" ? Number(value) : value;
+      }
+      return updatedProducts;
+    });
   };
+  const formatCategory = (category) => {
+    return category.charAt(0).toUpperCase() + category.slice(1).toLowerCase();
+  };
+  
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -75,39 +92,45 @@ const AddProducts = () => {
   
     if (
       !currentProduct.name ||
-      !currentProduct.images.length ||
+      !currentProduct.category ||
       !currentProduct.price ||
       !currentProduct.description ||
-      !currentProduct.category ||
-      !currentProduct.stock
+      !currentProduct.images.length ||
+      currentProduct.stock.available <= 0
     ) {
-      const message = `Please fill out all fields for Product ${activeIndex + 1}`;
+      const message = `Please fill out all fields for Product ${
+        activeIndex + 1
+      }`;
       setStatusMessage(message);
       alert(message);
       return;
     }
-  console.log(currentProduct);
-    const formData = new FormData();
   
+    const formData = new FormData();
     currentProduct.images.forEach((image) => {
       formData.append("images", image);
     });
-    formData.append("price", currentProduct.price);
+    formData.append("price", Number(currentProduct.price));
     formData.append("name", currentProduct.name);
     formData.append("description", currentProduct.description);
-    formData.append("category", currentProduct.category);
-    formData.append("code", currentProduct.code);
-    formData.append("uses", currentProduct.uses);
-    formData.append("stock", currentProduct.stock);
+    formData.append("category", formatCategory(currentProduct.category)); // Ensure proper format
+    formData.append("stock", JSON.stringify(currentProduct.stock)); // Serialize object
+    formData.append("promoCode", JSON.stringify(currentProduct.promoCode)); // Serialize object
+    formData.append("vendorId", "your_vendor_id_here"); // Include vendorId
   
     try {
-      // Uncomment and adjust the endpoint as needed
-      // const response = await axios.post('/api/vendor/product', formData, {
-      //   headers: { 'Content-Type': 'multipart/form-data' },
-      // });
-      const updatedProducts = [...products];
-      // updatedProducts[activeIndex].id = response.data.id;
-      setProducts(updatedProducts);
+      const response = await axios.post(
+        url + "/vendor/addproduct",
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
+      setProducts((prevProducts) => {
+        const updatedProducts = [...prevProducts];
+        updatedProducts[activeIndex].id = response.data.id;
+        return updatedProducts;
+      });
       setStatusMessage(`Product ${activeIndex + 1} added successfully`);
       alert(`Product ${activeIndex + 1} added successfully`);
     } catch (error) {
@@ -123,29 +146,27 @@ const AddProducts = () => {
     const currentProduct = products[activeIndex];
 
     if (!currentProduct.id) {
-      const updatedProducts = products.filter(
-        (_, index) => index !== activeIndex
+      setProducts((prevProducts) =>
+        prevProducts.filter((_, index) => index !== activeIndex)
       );
-      setProducts(updatedProducts);
       setActiveIndex(0);
       setStatusMessage(`Product ${activeIndex + 1} deleted`);
-      alert(statusMessage);
       return;
     }
 
     try {
-      //   await axios.delete(`/api/vendor/product/${currentProduct.id}`);
-      //   const updatedProducts = products.filter((_, index) => index !== activeIndex);
-      //   setProducts(updatedProducts);
+      await axios.delete(`${url}/products/${currentProduct.id}`);
+      setProducts((prevProducts) =>
+        prevProducts.filter((_, index) => index !== activeIndex)
+      );
       setActiveIndex(0);
       setStatusMessage(`Product ${activeIndex + 1} deleted successfully`);
-      alert(statusMessage);
     } catch (error) {
       console.error(error);
       setStatusMessage(`Failed to delete Product ${activeIndex + 1}`);
-      alert(statusMessage);
     }
   };
+
   console.log(products.length);
   return (
     <div className="add-products">
@@ -187,12 +208,12 @@ const AddProducts = () => {
               onChange={(event) => handleInputChange(activeIndex, event)}
             >
               <option value="">Select Category</option>
-              <option value="electronics">Electronics</option>
-              <option value="fashion">Fashion</option>
-              <option value="home">Home</option>
-              <option value="beauty">Beauty</option>
-              <option value="sports">Sports</option>
-              <option value="other">other</option>
+              <option value="Electronics">Electronics</option>
+              <option value="Fashion">Fashion</option>
+              <option value="Collectibles and Art">Collectibles and Art</option>
+              <option value="Beauty">Beauty</option>
+              <option value="Services">Services</option>
+              <option value="Other">Other</option>
             </select>
           </div>
 
@@ -213,8 +234,8 @@ const AddProducts = () => {
           <InputField
             placeholder="Stock"
             type="number"
-            name="stock"
-            value={products[activeIndex].stock}
+            name="stock.available"
+            value={products[activeIndex].stock?.available || 0}
             onChange={(event) => handleInputChange(activeIndex, event)}
           />
           {/* <InputField
@@ -242,15 +263,15 @@ const AddProducts = () => {
           <InputField
             placeholder="Promo code"
             type="text"
-            name="code"
-            value={products[activeIndex].code}
+            name="promoCode.code"
+            value={products[activeIndex].promoCode?.code || ""}
             onChange={(event) => handleInputChange(activeIndex, event)}
           />
           <InputField
             placeholder="Number of uses for Promo Code"
             type="number"
-            name="uses"
-            value={products[activeIndex].uses}
+            name="promoCode.numberOfUses"
+            value={products[activeIndex].promoCode?.uses || 0}
             onChange={(event) => handleInputChange(activeIndex, event)}
           />
           <div className="action-buttons">

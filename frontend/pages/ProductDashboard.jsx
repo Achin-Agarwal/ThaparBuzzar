@@ -3,6 +3,7 @@ import AddProducts from "../components/AddProducts";
 import "../styles/ProductDashboard.css";
 import Button from "../components/Button";
 import Overview from "../components/Overview";
+import url from "../url";
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("productDetails");
@@ -33,7 +34,7 @@ const Dashboard = () => {
         ></Button>
         <Button
           onClick={() => {
-            window.location.href = "http://localhost:3000/logout";
+            window.location.href = url+"/logout";	
           }}
           label="Sign Out"
           fontSize="18px"
