@@ -1,9 +1,9 @@
 import React from 'react';
 import './Card.css';
 
-const Card = ({ name, image, description, price, rating }) => {
+const Card = ({ name, image, description, price, rating, onClick  }) => {
   return (
-    <div className="product-card">
+    <div className="product-card" onClick={onClick}>
       <img src={image} alt={name} className="product-image" />
       <h3>{name}</h3>
       <p>{description}</p>
