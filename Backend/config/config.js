@@ -6,7 +6,7 @@ const config = {
         port: process.env.PORT || 3000,
     },
     database: {
-        url: process.env.MONGO_URL,
+        uri: process.env.MONGO_URI,
     },
     Auth0: {
         secret: process.env.AUTH0_SECRET,
