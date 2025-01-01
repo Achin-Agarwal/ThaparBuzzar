@@ -11,6 +11,8 @@ const router = express.Router();
 router.post('/addproduct', productImageUpload, safeHandler( async (req, res) => {
     
         const parsedData = productSchema.parse(req.body);
+        console.log("Add product data: ");
+        console.log(parsedData);
         const { name, description, price, vendorId , category, stock, promoCode } = parsedData;
 
         const vendor = await Vendor.findById(vendorId);
