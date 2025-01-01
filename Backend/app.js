@@ -5,6 +5,7 @@ import responseHandler from './middleware/responseHandler.js';
 import cors from 'cors';
 import path from 'path';
 import Vendor from './routes/vendor.js';
+import Home from './routes/home.js';
 //Auth0 imports
 import { auth } from 'express-openid-connect';
 
@@ -85,7 +86,7 @@ app.get('/profile', requiresAuth(), (req, res) => {
 });
 
 app.use(Vendor,);
-
+app.use(Home);
 
 
 
