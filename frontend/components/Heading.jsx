@@ -8,11 +8,18 @@ import cart from "../src/assets/cart.png";
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
 import url from "../url";
+import { useNavigate } from "react-router-dom";
 
 const Heading = () => {
   const { loginWithRedirect, isAuthenticated, logout, user, getIdTokenClaims } =
     useAuth0();
   const [isLoading, setIsLoading] = useState(false);
+  const navigate=useNavigate();
+
+  const handleCardClick = (category) => {
+    console.log(category);
+    navigate(`/category/${category}`);
+  };
 
   // useEffect(() => {
   //   const sendData = async () => {
@@ -82,16 +89,15 @@ const Heading = () => {
         </div>
       </div>
       <div className="nav">
-              <p>All</p>
-              <p>Beauty</p>
-              <p>Electronics</p>
-              <p>Fashion</p>
-              <p>Collectibles and Art</p>
-              <p>Services</p>
-            </div>
+        <p onClick={()=> navigate("/")}>All</p>
+        <p onClick={() => handleCardClick('Beauty')}>Beauty</p>
+        <p onClick={() => handleCardClick('Electronics')}>Electronics</p>
+        <p onClick={() => handleCardClick('Fashion')}>Fashion</p>
+        <p onClick={() => handleCardClick('Collectibles and art')}>Collectibles and Art</p>
+        <p onClick={() => handleCardClick('Services')}>Services</p>
+      </div>
       {isLoading && <p>Loading...</p>}
     </div>
-    
   );
 };
 

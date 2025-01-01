@@ -9,9 +9,9 @@ import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const [products, setProducts] = useState([]);
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   console.log(products);
-  
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -20,7 +20,10 @@ const Home = () => {
 
         // Find the product with the max price in each category
         const maxPriceProducts = products.reduce((acc, product) => {
-          if (!acc[product.category] || acc[product.category].price < product.price) {
+          if (
+            !acc[product.category] ||
+            acc[product.category].price < product.price
+          ) {
             acc[product.category] = product;
           }
           return acc;
@@ -40,7 +43,7 @@ const Home = () => {
     console.log(category);
     navigate(`/category/${category}`);
   };
-  
+
   return (
     <div>
       <div>
@@ -49,15 +52,18 @@ const Home = () => {
       <h1>Bestsellers</h1>
       <div className="bestsellers">
         {products.map((product) => (
-          <Card
-            key={product._id}
-            name={product.name}
-            image={img}
-            // description={product.description}
-            price={product.price}
-            rating={product.rating}
-            onClick={() => handleCardClick(product.category)}
-          />
+          <div>
+            <h4>{product.category}</h4>
+            <Card
+              key={product._id}
+              name={product.name}
+              image={img}
+              // description={product.description}
+              price={product.price}
+              rating={product.rating}
+              onClick={() => handleCardClick(product.category)}
+            />
+          </div>
         ))}
       </div>
     </div>
