@@ -117,7 +117,7 @@ const AddProducts = () => {
     formData.append("stock", JSON.stringify(currentProduct.stock)); // Serialize object
     formData.append("promoCode", JSON.stringify(currentProduct.promoCode)); // Serialize object
     formData.append("vendorId", "6774271dc39f56d27957a024"); // Include vendorId
-    console.log("Type of price before appending:", typeof Number(currentProduct.price));
+    console.log("Type of price before appending:", typeof JSON.stringify(currentProduct.promoCode));
     console.log("FormData contents:");
   for (let [key, value] of formData.entries()) {
     console.log(key, value);

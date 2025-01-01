@@ -10,10 +10,19 @@ const router = express.Router();
 // Add a new product
 router.post('/addproduct', productImageUpload, safeHandler( async (req, res) => {
     
-        const parsedData = productSchema.parse(req.body);
+        // Parse the incoming data
+        const parsedData = {
+            ...req.body,
+            price: parseFloat(req.body.price),
+            stock: JSON.parse(req.body.stock),
+            promoCode: req.body.promoCode ? JSON.parse(req.body.promoCode) : undefined
+        };
+
+        const validatedData = productSchema.parse(parsedData);
         console.log("Add product data: ");
-        console.log(parsedData);
-        const { name, description, price, vendorId , category, stock, promoCode } = parsedData;
+        console.log(validatedData);
+
+        const { name, description, price, vendorId, category, stock, promoCode } = validatedData;
 
         const vendor = await Vendor.findById(vendorId);
         if (!vendor) {
@@ -33,13 +42,15 @@ router.post('/addproduct', productImageUpload, safeHandler( async (req, res) => 
             stock,
             promoCode
         });
-        const savedProduct = await Vendor.create(newProduct);
+        const savedProduct = await newProduct.save();
         vendor.products.push(savedProduct._id);
         await vendor.save();
 
         res.status(201).json(savedProduct);
  
 }));
+
+
 
 // Delete a product
 router.delete('/delete/:id', async (req, res) => {
