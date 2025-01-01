@@ -15,7 +15,7 @@ const AddProducts = () => {
       description: "",
       images: [],
       stock: { available: 0 },
-      promoCode: { code: "", uses: 0 },
+      promoCode: { code: "", numberOfUses: 0 },
     },
   ]);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -32,7 +32,7 @@ const AddProducts = () => {
   // description: "",
   // images: [],
   // stock: { available: 0 },
-  // promoCode: { code: "", uses: 0 },}
+  // promoCode: { code: "", numberOfUses: 0 },}
   // ]);
   //       } catch (error) {
   //         console.error('Error fetching products:', error);
@@ -43,7 +43,7 @@ const AddProducts = () => {
   // description: "",
   // images: [],
   // stock: { available: 0 },
-  // promoCode: { code: "", uses: 0 },}]); // Initialize with a blank product if fetching fails
+  // promoCode: { code: "", numberOfUses: 0 },}]); // Initialize with a blank product if fetching fails
   //       }
   //     };
   //     fetchProducts();
@@ -60,7 +60,7 @@ const AddProducts = () => {
         description: "",
         images: [],
         stock: { available: 0 },
-        promoCode: { code: "", uses: 0 },
+        promoCode: { code: "", numberOfUses: 0 },
       },
     ]);
     setActiveIndex(products.length);
@@ -74,7 +74,7 @@ const AddProducts = () => {
         updatedProducts[index].images = files ? Array.from(files) : [];
       } else if (name.includes(".")) {
         const [section, field] = name.split(".");
-        updatedProducts[index][section][field] = field === "available" || field === "uses" ? Number(value) : value;
+        updatedProducts[index][section][field] = field === "available" || field === "numberOfUses" ? Number(value) : value;
       } else {
         updatedProducts[index][name] = name === "price" ? Number(value) : value;
       }
@@ -116,7 +116,12 @@ const AddProducts = () => {
     formData.append("category", formatCategory(currentProduct.category)); // Ensure proper format
     formData.append("stock", JSON.stringify(currentProduct.stock)); // Serialize object
     formData.append("promoCode", JSON.stringify(currentProduct.promoCode)); // Serialize object
-    formData.append("vendorId", "your_vendor_id_here"); // Include vendorId
+    formData.append("vendorId", "6774271dc39f56d27957a024"); // Include vendorId
+    console.log("Type of price before appending:", typeof Number(currentProduct.price));
+    console.log("FormData contents:");
+  for (let [key, value] of formData.entries()) {
+    console.log(key, value);
+  }
   
     try {
       const response = await axios.post(
@@ -271,7 +276,7 @@ const AddProducts = () => {
             placeholder="Number of uses for Promo Code"
             type="number"
             name="promoCode.numberOfUses"
-            value={products[activeIndex].promoCode?.uses || 0}
+            value={products[activeIndex].promoCode?.numberOfUses || 0}
             onChange={(event) => handleInputChange(activeIndex, event)}
           />
           <div className="action-buttons">
