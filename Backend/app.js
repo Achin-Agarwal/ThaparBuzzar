@@ -85,11 +85,7 @@ app.get('/profile', requiresAuth(), (req, res) => {
 });
 
 app.use(Vendor,);
-// Global error handler to catch any potential issues
-app.use((err, req, res, next) => {
-  console.error("Error encountered:", err);
-  res.status(500).send('Something went wrong!');
-});
+
 
 
 
@@ -113,6 +109,11 @@ app.use((error, req, res, next) => {
   }
 });
 
+// Global error handler to catch any potential issues
+app.use((err, req, res, next) => {
+  console.error("Error encountered:", err);
+  res.status(500).send('Something went wrong!');
+});
 
 // Start the server
 app.listen(config.server.port, () => {
