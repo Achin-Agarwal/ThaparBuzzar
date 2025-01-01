@@ -7,6 +7,7 @@ import search from "../src/assets/search.png";
 import cart from "../src/assets/cart.png";
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
+import url from "../url";
 
 const Heading = () => {
   const { loginWithRedirect, isAuthenticated, logout, user, getIdTokenClaims } =
@@ -67,7 +68,7 @@ const Heading = () => {
                 alt="Sign In"
                 className="image3"
                 onClick={() => {
-                  window.location.href = "http://localhost:3000/login";
+                  window.location.href = url + "/login";
                 }}
               />
             </div>

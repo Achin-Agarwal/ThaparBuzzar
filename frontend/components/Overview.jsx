@@ -3,6 +3,7 @@ import productData from "../productData";
 import "../styles/Overview.css";
 import { Line } from "react-chartjs-2";
 import axios from "axios";
+import url from "../url";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -30,7 +31,7 @@ const Overview = () => {
 
   // useEffect(() => async () => {
   //   try {
-  //     const response = await axios.get("http://localhost:3001/products");
+  //     const response = await axios.get(url + "/products");
   //     setProductData(response.data);
   //   } catch (error) {
   //     console.error(error);
