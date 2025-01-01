@@ -26,7 +26,7 @@ const productSchema = new mongoose.Schema({
         enum: [
             'Electronics',
             'Fashion',
-            'Collectibles and Art',
+            'Collectibles and art',
             'Beauty',
             'Services',
             'Other'

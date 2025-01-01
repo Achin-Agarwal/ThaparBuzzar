@@ -4,7 +4,7 @@ import Vendor from '../models/vendor.js';
 import { productSchema } from '../utils/zodSchemas.js';
 import { productImageUpload } from '../utils/multer.js';
 import { safeHandler } from '../middleware/safeHandler.js';
-
+import responseHandler from '../middleware/responseHandler.js';
 const router = express.Router();
 
 // Add a new product
@@ -17,17 +17,21 @@ router.post('/addproduct', productImageUpload, safeHandler( async (req, res) => 
             stock: JSON.parse(req.body.stock),
             promoCode: req.body.promoCode ? JSON.parse(req.body.promoCode) : undefined
         };
-
+        console.log("body: ");
+        console.log(req.body);
+        console.log("parsed data: ");
+        console.log(parsedData);
         const validatedData = productSchema.parse(parsedData);
-        // console.log("Add product data: ");
-        // console.log(validatedData);
+        console.log("validated data: ");
+        console.log(validatedData);
 
-        const { name, description, price, vendorId, category, stock, promoCode } = validatedData;
-console.log("Vendor ID: "); console.log(vendorId);
-        const vendor = await Vendor.findById(vendorId);
-        if (!vendor) {
-            return res.status(404).json({ message: 'Vendor not found' });
+        const { name, description, price, category, stock, promoCode } = validatedData;
+        const vendorId = req.body.vendorId;
+        console.log("Vendor ID: "); console.log(vendorId);
+        if (!vendorId) { console.log(vendorId);
+            return res.error(400, 'Vendor ID is required', 'MISSING_VENDOR_ID');
         }
+        const vendor = await Vendor.findById(vendorId);
 
         // Collect filenames from uploaded files
         const images = req.files.map((file) => file.filename);

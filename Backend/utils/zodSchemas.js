@@ -8,7 +8,7 @@ export const productSchema = z.object({
     category: z.enum([
         'Electronics',
         'Fashion',
-        'Collectibles and Art',
+        'Collectibles and art',
         'Beauty',
         'Services',
         'Other'
