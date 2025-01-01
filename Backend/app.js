@@ -77,7 +77,7 @@ app.get('/', (req, res) => {
   // res.send("Hello World");
 });
 app.use("/vendor", Vendor);
-
+app.use("/home", Home);
 // /profile route to check the logged-in user's profile
 import pkg from 'express-openid-connect';
 const { requiresAuth } = pkg;
@@ -85,8 +85,6 @@ app.get('/profile', requiresAuth(), (req, res) => {
   res.send(JSON.stringify(req.oidc.user, null, 2));
 });
 
-app.use(Vendor,);
-app.use(Home);
 
 
 
