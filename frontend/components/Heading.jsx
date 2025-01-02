@@ -8,17 +8,24 @@ import cart from "../src/assets/cart.png";
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
 import url from "../url";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Heading = () => {
   const { loginWithRedirect, isAuthenticated, logout, user, getIdTokenClaims } =
     useAuth0();
   const [isLoading, setIsLoading] = useState(false);
-  const navigate=useNavigate();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const excludedPaths = ["/dashboard"];
 
   const handleCardClick = (category) => {
     console.log(category);
     navigate(`/category/${category}`);
+  };
+
+  const handleCart = () => {
+    console.log("Cart clicked");
+    navigate("/cart");
   };
 
   // useEffect(() => {
@@ -71,31 +78,48 @@ const Heading = () => {
           ) : (
             <div>
               <img
+                style={{ cursor: "pointer" }}
                 src={sign}
                 alt="Sign In"
                 className="image3"
                 onClick={() => {
-                  window.location.href = url + "/login";
+                  navigate("/login");
                 }}
               />
             </div>
           )}
           <div>
-            <img src={search} alt="Search" className="image3" />
+            <img
+              src={search}
+              alt="Search"
+              className="image3"
+              style={{ cursor: "pointer" }}
+            />
           </div>
           <div>
-            <img src={cart} alt="Shopping Cart" className="image3" />
+            <img
+              src={cart}
+              alt="Shopping Cart"
+              className="image3"
+              onClick={() => handleCart()}
+              style={{ cursor: "pointer" }}
+            />
           </div>
         </div>
       </div>
-      <div className="nav">
-        <p onClick={()=> navigate("/")}>All</p>
-        <p onClick={() => handleCardClick('Beauty')}>Beauty</p>
-        <p onClick={() => handleCardClick('Electronics')}>Electronics</p>
-        <p onClick={() => handleCardClick('Fashion')}>Fashion</p>
-        <p onClick={() => handleCardClick('Collectibles and art')}>Collectibles and Art</p>
-        <p onClick={() => handleCardClick('Services')}>Services</p>
-      </div>
+      {!excludedPaths.includes(location.pathname) && (
+        <div className="nav">
+          <p onClick={() => navigate("/")}>All</p>
+          <p onClick={() => handleCardClick("Beauty")}>Beauty</p>
+          <p onClick={() => handleCardClick("Electronics")}>Electronics</p>
+          <p onClick={() => handleCardClick("Fashion")}>Fashion</p>
+          <p onClick={() => handleCardClick("Collectibles and art")}>
+            Collectibles and Art
+          </p>
+          <p onClick={() => handleCardClick("Services")}>Services</p>
+        </div>
+      )}
+
       {isLoading && <p>Loading...</p>}
     </div>
   );

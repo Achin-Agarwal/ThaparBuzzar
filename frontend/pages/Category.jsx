@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import url from "../url";
 import Card from "../temporary/Card";
 import img from "../src/assets/clg logo.png";
@@ -8,6 +8,8 @@ import img from "../src/assets/clg logo.png";
 const Category = () => {
   const { category } = useParams();
   const [products, setProducts] = useState([]);
+  const navigate = useNavigate();
+
   useEffect(() => {
     const fetchCategory = async () => {
       try {
@@ -24,6 +26,10 @@ const Category = () => {
     fetchCategory();
   }, [category]);
 
+  const handleCardClick = (id) => {
+    navigate(`/product/${id}`);
+  };
+
   return (
     <div>
       <h1>Category: {category}</h1>
@@ -36,6 +42,7 @@ const Category = () => {
             // description={product.description}
             price={product.price}
             rating={product.rating}
+            onClick={() => handleCardClick(product._id)}
           />
         ))}
       </div>

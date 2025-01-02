@@ -29,14 +29,16 @@ const Overview = () => {
   const [timeFrame, setTimeFrame] = useState("day");
   // const [productData, setProductData] = useState([]);
 
-  // useEffect(() => async () => {
-  //   try {
-  //     const response = await axios.get(url + "/products");
-  //     setProductData(response.data);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // });
+  useEffect(() => async () => {
+    console.log("useEffect");
+    try {
+      const response = await axios.get(url + "/home/products");
+      console.log(response.data);
+      // setProductData(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  });
 
   const revenue = productData.reduce(
     (acc, product) => acc + product.price * product.quantitySold,
@@ -169,7 +171,7 @@ const Overview = () => {
         <div className="low-stock-list">
           {lowStockItems.length > 0 ? (
             lowStockItems.map((product) => (
-              <div className="low-stock-item" key={product.id}>
+              <div className="low-stock-item" key={product._id}>
                 <span className="product-column">{product.name}</span>
                 <div className="vertical-line"></div>
                 <span className="quantity-column">{product.quantityLeft}</span>
@@ -191,7 +193,7 @@ const Overview = () => {
         </div>
         <div className="top-products-list">
           {topProducts.map((product) => (
-            <div className="top-products-item" key={product.id}>
+            <div className="top-products-item" key={product._id}>
               <span className="product-column">{product.name}</span>
               <div className="vertical-line"></div>
               <span className="quantity-column">
@@ -212,7 +214,7 @@ const Overview = () => {
         </div>
         <div className="recent-sales-list">
           {recentSales.map((product) => (
-            <div className="recent-sales-item" key={product.id}>
+            <div className="recent-sales-item" key={product._id}>
               <span className="product-column">{product.name}</span>
               <div className="vertical-line"></div>
               <span className="time-column">
