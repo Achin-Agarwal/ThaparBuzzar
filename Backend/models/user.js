@@ -9,13 +9,20 @@ const userSchema = new mongoose.Schema({
         address: {
             type: String,
             required: true,
-            unique: true
+            unique: true,
+            trim: true
         },
         isVerified: {
             type: Boolean,
             default: false
         }
     },
+    password: {
+        type: String,
+        required: true,
+        trim: true
+    },
+
     auth0Ids: [
         {
             type: String,

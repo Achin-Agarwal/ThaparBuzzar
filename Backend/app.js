@@ -6,11 +6,13 @@ import cors from 'cors';
 import path from 'path';
 import Vendor from './routes/vendor.js';
 import Home from './routes/home.js';
+import restpass from './routes/resetPassword.js';
 //Auth0 imports
 import { auth } from 'express-openid-connect';
 
 
 const app = express();
+app.use(express.json());
 
 connectMongo();
 //checkout populate or whatevr
@@ -78,6 +80,8 @@ app.get('/', (req, res) => {
 });
 app.use("/vendor", Vendor);
 app.use("/home", Home);
+app.use("/resetpassword", restpass);
+
 // /profile route to check the logged-in user's profile
 import pkg from 'express-openid-connect';
 const { requiresAuth } = pkg;
