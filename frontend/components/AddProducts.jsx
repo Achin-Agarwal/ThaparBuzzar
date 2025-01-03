@@ -11,11 +11,11 @@ const AddProducts = () => {
       id: null,
       name: "",
       category: "",
-      price: 0,
+      price: "",
       description: "",
       images: [],
-      stock: { available: 0 },
-      promoCode: { code: "", numberOfUses: 0 },
+      stock: { available: "" },
+      promoCode: { code: "", numberOfUses: "" },
     },
   ]);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -59,8 +59,8 @@ const AddProducts = () => {
         price: "",
         description: "",
         images: [],
-        stock: { available: 0 },
-        promoCode: { code: "", numberOfUses: 0 },
+        stock: { available: "" },
+        promoCode: { code: "", numberOfUses: "" },
       },
     ]);
     setActiveIndex(products.length);
@@ -240,7 +240,7 @@ const AddProducts = () => {
             placeholder="Stock"
             type="number"
             name="stock.available"
-            value={products[activeIndex].stock?.available || 0}
+            value={products[activeIndex].stock?.available || ""}
             onChange={(event) => handleInputChange(activeIndex, event)}
           />
           {/* <InputField
@@ -276,7 +276,7 @@ const AddProducts = () => {
             placeholder="Number of uses for Promo Code"
             type="number"
             name="promoCode.numberOfUses"
-            value={products[activeIndex].promoCode?.numberOfUses || 0}
+            value={products[activeIndex].promoCode?.numberOfUses || ""}
             onChange={(event) => handleInputChange(activeIndex, event)}
           />
           <div className="action-buttons">

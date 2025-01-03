@@ -6,11 +6,25 @@ import Card from "../temporary/Card";
 import url from "../url";
 import img from "../src/assets/clg logo.png";
 import { useNavigate } from "react-router-dom";
+import ImageSlider from "../components/Image";
+import Scroll from "../components/Scroll";
 
 const Home = () => {
   const [products, setProducts] = useState([]);
   const navigate = useNavigate();
   console.log(products);
+  const images=[
+      "../src/assets/1.jpg",
+      "../src/assets/2.jpg",
+      "../src/assets/3.jpg",
+      "../src/assets/4.jpg",
+      "../src/assets/5.jpg",
+      "../src/assets/6.jpg",
+      "../src/assets/7.jpg",
+      "../src/assets/8.jpg",
+      "../src/assets/9.jpg",
+      "../src/assets/10.jpg",
+    ];
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -46,26 +60,27 @@ const Home = () => {
 
   return (
     <div>
-      <div>
-        <img src={thapar} alt="Thapar Logo" className="thapar" />
-      </div>
+      <ImageSlider images={images}/>
       <h1>Bestsellers</h1>
       <div className="bestsellers">
         {products.map((product) => (
-          <div>
-            <h4>{product.category}</h4>
-            <Card
-              key={product._id}
-              name={product.name}
-              image={img}
-              // description={product.description}
-              price={product.price}
-              rating={product.rating}
-              onClick={() => handleCardClick(product.category)}
-            />
+          <div className="card-container" key={product.category}>
+            <div className="bestseller-card">
+              <h4>{product.category}</h4>
+              <Card
+                name={product.name}
+                image={
+                  img
+                }
+                price={product.price}
+                rating={product.rating}
+                onClick={() => handleCardClick(product.category)}
+              />
+            </div>
           </div>
         ))}
       </div>
+      <Scroll />
     </div>
   );
 };
