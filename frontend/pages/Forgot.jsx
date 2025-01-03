@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "../styles/Forgot.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
+import url from "../url";
 
 const Forgot = () => {
   const location = useLocation();
@@ -16,14 +17,14 @@ const Forgot = () => {
   const handleForgotPassword = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:3000/resetpassword", {
+      const response = await axios.post(url + "/resetpassword", {
         email,
         role,
       });
       setMessage(response.data.message);
       setError(""); // Clear any previous errors
       alert("Password reset link sent to your email!");
-      navigate("/reset", { state: { email } });
+      navigate("/reset", { state: { email, role } });
     } catch (err) {
       setError(
         err.response?.data?.message || "Something went wrong. Please try again."

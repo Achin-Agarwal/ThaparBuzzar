@@ -11,6 +11,7 @@ const Reset = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const email = location.state?.email;
+  const role = location.state?.role;
 
   // useEffect(() => {
   //   const generateAndSendOtp = async () => {
@@ -40,10 +41,10 @@ const Reset = () => {
   const handleVerifyOtp = (e) => {
     e.preventDefault();
     const enteredOtp = otpArray.join("");
-    //   await axios.post("/api/send-otp", { email, otp: enteredOtp });
+    //   await axios.post("/api/send-otp", { email, otp: enteredOtp,role });
     setMessage(response.data.message);
     if (enteredOtp === generatedOtp) {
-      navigate("/newpassword");
+      navigate("/newpassword",{state: { email,role }});
     } else {
       setError("Incorrect OTP. Please try again.");
     }

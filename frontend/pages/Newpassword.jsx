@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "../styles/NewPassword.css";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const NewPassword = () => {
   const [password, setPassword] = useState("");
@@ -9,6 +9,9 @@ const NewPassword = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
+  const email = location.state?.email;
+  const role = location.state?.role;
 
   // Password validation function
   const validatePassword = (password) => {
@@ -33,7 +36,7 @@ const NewPassword = () => {
     }
 
     try {
-      // await axios.post("/api/save-password", { password });
+      // await axios.post("/api/save-password", { password,email,role });
       setSuccess("Password updated successfully!");
       setTimeout(() => navigate("/login"), 2000); // Navigate after 2 seconds
     } catch (err) {
