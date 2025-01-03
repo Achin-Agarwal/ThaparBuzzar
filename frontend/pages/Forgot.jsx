@@ -11,19 +11,23 @@ const Forgot = () => {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
-  const navigate=useNavigate();
+  const navigate = useNavigate();
 
   const handleForgotPassword = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:3000/resetpassword", { email, role });
+      const response = await axios.post("http://localhost:3000/resetpassword", {
+        email,
+        role,
+      });
       setMessage(response.data.message);
       setError(""); // Clear any previous errors
       alert("Password reset link sent to your email!");
       navigate("/reset", { state: { email } });
-
     } catch (err) {
-      setError(err.response?.data?.message || "Something went wrong. Please try again.");
+      setError(
+        err.response?.data?.message || "Something went wrong. Please try again."
+      );
       setMessage(""); // Clear any previous success messages
     }
   };
@@ -31,7 +35,9 @@ const Forgot = () => {
   return (
     <div className="forgot-container">
       <h1 className="forgot-title">Forgot Password</h1>
-      <p className="forgot-description">Enter your email to reset your password</p>
+      <p className="forgot-description">
+        Enter your email to reset your password
+      </p>
       <form className="forgot-form" onSubmit={handleForgotPassword}>
         <input
           type="email"
