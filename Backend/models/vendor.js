@@ -1,6 +1,23 @@
 import mongoose from 'mongoose';
 
 const vendorSchema = new mongoose.Schema({
+    email: {
+        address: {
+            type: String,
+            required: true,
+            unique: true,
+            trim: true
+        },
+        isVerified: {
+            type: Boolean,
+            default: false
+        }
+    },
+    password: {
+        type: String,
+        required: true,
+        trim: true
+    },
     businessName: {
         type: String,
         required: true,
