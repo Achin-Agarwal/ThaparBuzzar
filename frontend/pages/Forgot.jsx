@@ -16,8 +16,8 @@ const Forgot = () => {
   const handleForgotPassword = async (e) => {
     e.preventDefault();
     try {
-    //   const response = await axios.post("https://your-backend-url/api/forgot-password", { email, role });
-    //   setMessage(response.data.message);
+      const response = await axios.post("http://localhost:3000/resetpassword", { email, role });
+      setMessage(response.data.message);
       setError(""); // Clear any previous errors
       alert("Password reset link sent to your email!");
       navigate("/reset", { state: { email } });
