@@ -60,7 +60,7 @@ const Home = () => {
 
   return (
     <div>
-      <ImageSlider images={images}/>
+      <div className="home-image"><ImageSlider images={images}/></div>
       <h1>Bestsellers</h1>
       <div className="bestsellers">
         {products.map((product) => (
