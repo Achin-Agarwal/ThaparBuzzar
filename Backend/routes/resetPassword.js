@@ -10,7 +10,7 @@ const router = express.Router();
 
 router.post("/", async (req, res) => {
     const { email, role } = req.body;
-
+console.log(role);
     // let user;
     // if (role === "user") {
     //     user = await User.findOne({ email });
@@ -54,7 +54,8 @@ router.post("/", async (req, res) => {
         const newOtp = new otpModel({
             user: email,
             otp: otp,
-            validTill: validTill
+            validTill: validTill,
+            role: role,
         });
 
         await newOtp.save();
