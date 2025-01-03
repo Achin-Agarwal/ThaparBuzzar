@@ -6,22 +6,21 @@ import "../styles/Reset.css";
 const Reset = () => {
   const [otpArray, setOtpArray] = useState(new Array(6).fill("")); // Array for 6 OTP blocks
   const [generatedOtp, setGeneratedOtp] = useState(null);
-  const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
   const email = location.state?.email;
 
-  // useEffect(() => {
-  //   const generateAndSendOtp = async () => {
-  //     const newOtp = Math.floor(100000 + Math.random() * 900000).toString();
-  //     console.log(newOtp);
-  //     //   await axios.post("/api/send-otp", { email, otp: newOtp });
-  //     setGeneratedOtp(newOtp);
-  //   };
+  useEffect(() => {
+    const generateAndSendOtp = async () => {
+      const newOtp = Math.floor(100000 + Math.random() * 900000).toString();
+      console.log(newOtp);
+      //   await axios.post("/api/send-otp", { email, otp: newOtp });
+      setGeneratedOtp(newOtp);
+    };
 
-  //   generateAndSendOtp();
-  // }, [email]);
+    generateAndSendOtp();
+  }, [email]);
 
   const handleChange = (e, index) => {
     const { value } = e.target;
@@ -40,8 +39,6 @@ const Reset = () => {
   const handleVerifyOtp = (e) => {
     e.preventDefault();
     const enteredOtp = otpArray.join("");
-    //   await axios.post("/api/send-otp", { email, otp: enteredOtp });
-    setMessage(response.data.message);
     if (enteredOtp === generatedOtp) {
       navigate("/newpassword");
     } else {
