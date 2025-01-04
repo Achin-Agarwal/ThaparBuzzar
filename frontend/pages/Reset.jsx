@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import "../styles/Reset.css";
+import url from "../url";
 
 const Reset = () => {
   const [otpArray, setOtpArray] = useState(new Array(6).fill("")); // Array for 6 OTP blocks
@@ -26,22 +27,29 @@ const Reset = () => {
 
   const handleChange = (e, index) => {
     const { value } = e.target;
+    const newOtpArray = [...otpArray];
+  
     if (value.length <= 1 && /^[0-9]*$/.test(value)) {
-      const newOtpArray = [...otpArray];
       newOtpArray[index] = value;
       setOtpArray(newOtpArray);
-
+  
       // Automatically move to the next input field
       if (value !== "" && index < 5) {
         document.getElementById(`otp-${index + 1}`).focus();
       }
     }
+  
+    // Handle backspace to move to the previous input field
+    if (value === "" && e.nativeEvent.inputType === "deleteContentBackward" && index > 0) {
+      document.getElementById(`otp-${index - 1}`).focus();
+    }
   };
+  
 
-  const handleVerifyOtp = (e) => {
+  const handleVerifyOtp = async(e) => {
     e.preventDefault();
     const enteredOtp = otpArray.join("");
-    //   await axios.post("/api/send-otp", { email, otp: enteredOtp,role });
+    const response=await axios.put(url + "/resetpassword/verifyotp", { email, otp: enteredOtp,role });
     setMessage(response.data.message);
     if (enteredOtp === generatedOtp) {
       navigate("/newpassword",{state: { email,role }});
