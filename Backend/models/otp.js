@@ -14,7 +14,7 @@ const otpSchema = new mongoose.Schema({
     },
     role: {
         type: String,
-        enum: ['user', 'vendor'],
+        enum: ['buyer', 'seller'],
         required: true
     }
 });

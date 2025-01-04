@@ -1,3 +1,7 @@
+.home-image{
+  background: linear-gradient(120deg, #1e1e2f, #2a2a3d);
+}
+
 .home-container {
   width: 100%;
   padding: 20px;

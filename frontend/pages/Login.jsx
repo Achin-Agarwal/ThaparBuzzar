@@ -3,6 +3,7 @@ import axios from "axios";
 import "../styles/Login.css";
 import Button from "../components/Button";
 import { useNavigate } from "react-router-dom";
+import ImageSlider from "../components/Image";
 
 const LoginSwitcher = () => {
   const [activeTab, setActiveTab] = useState("buyer"); // 'buyer' or 'seller'
@@ -11,6 +12,18 @@ const LoginSwitcher = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const images = [
+    "../src/assets/1.jpg",
+    "../src/assets/2.jpg",
+    "../src/assets/3.jpg",
+    "../src/assets/4.jpg",
+    "../src/assets/5.jpg",
+    "../src/assets/6.jpg",
+    "../src/assets/7.jpg",
+    "../src/assets/8.jpg",
+    "../src/assets/9.jpg",
+    "../src/assets/10.jpg",
+  ];
 
   const handleLogin = async () => {
     setLoading(true);
@@ -26,10 +39,9 @@ const LoginSwitcher = () => {
       //   localStorage.setItem('authToken', token);
       //   alert(`${activeTab.charAt(0).toUpperCase() + activeTab.slice(1)} logged in successfully!`);
       console.log(email, password, activeTab);
-      if(activeTab === "buyer"){
+      if (activeTab === "buyer") {
         navigate("/");
-      }
-      else if(activeTab === "seller"){
+      } else if (activeTab === "seller") {
         navigate("/dashboard");
       }
     } catch (err) {
@@ -86,9 +98,7 @@ const LoginSwitcher = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
           <div>
-            <button onClick={handleLogin} disabled={loading} className="but">
-              {loading ? "Logging in..." : "Login"}
-            </button>
+            <Button label="Login" disabled={loading} fontSize="18px" padding="12px 22px"></Button>
           </div>
           <div className="dont-have-account">
             <h4>
@@ -102,6 +112,9 @@ const LoginSwitcher = () => {
             <Button label="Continue with Google"></Button>
           </div>
         </div>
+      </div>
+      <div className="login-image">
+        <ImageSlider images={images} />
       </div>
     </div>
   );
