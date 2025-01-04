@@ -10,7 +10,7 @@ const router = express.Router();
 
 router.post("/", async (req, res) => {
     const { email, role } = req.body;
-console.log(role);
+    console.log(role);
     // let user;
     // if (role === "user") {
     //     user = await User.findOne({ email });
@@ -18,7 +18,7 @@ console.log(role);
     //     user = await Vendor.findOne({ email });
     // } else {
     //     return res.status(400).json({ message: "user does not exist" });
-          
+
     // }
 
     // if (!user) {
@@ -29,7 +29,7 @@ console.log(role);
         return res.status(400).json({ message: "Email is required" });
     }
 
-    const otp = Math.floor(1000 + Math.random() * 9000);
+    const otp = Math.floor(100000 + Math.random() * 900000);
 
     // Nodemailer transporter setup
     const transporter = nodemailer.createTransport({
@@ -48,31 +48,30 @@ console.log(role);
         text: `Your OTP for password reset is: ${otp}`,
     };
 
-    
-        const validTill = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes from now
 
-        const newOtp = new otpModel({
-            user: email,
-            otp: otp,
-            validTill: validTill,
-            role: role,
-        });
+    const validTill = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes from now
 
-        await newOtp.save();
-        await transporter.sendMail(mailOptions);
+    const newOtp = new otpModel({
+        user: email,
+        otp: otp,
+        validTill: validTill,
+        role: role,
+    });
 
-        res.status(200).json({ message: "OTP sent successfully" });
-   
+    await newOtp.save();
+    await transporter.sendMail(mailOptions);
+
+    res.status(200).json({ message: "OTP sent successfully" });
+
 });
-router.put("/", async (req, res) => {
-    const { email, otp, newPassword,role } = req.body;
+router.put("/verifyotp", async (req, res) => {
+    const { email, otp, role } = req.body;
 
-    if (!email || !otp || !newPassword) {
-        return res.status(400).json({ message: "Email, OTP, and new password are required" });
+    if (!email || !otp || !role) {
+        return res.status(400).json({ message: "Email, OTP, and role are required" });
     }
 
-    const otpRecord = await otpModel.findOne({ user: email, otp: otp });
-
+    const otpRecord = await otpModel.findOne({ user: email, role: role, otp: otp });
     if (!otpRecord) {
         return res.status(400).json({ message: "Invalid OTP" });
     }
@@ -81,18 +80,35 @@ router.put("/", async (req, res) => {
         return res.status(400).json({ message: "OTP has expired" });
     }
 
+    res.status(200).json({ message: "OTP verified successfully" });
+});
+
+router.put("/updatepassword", async (req, res) => {
+    const { email, newPassword, role, otp } = req.body;
+
+    const otpRecord = await otpModel.findOne({ user: email, role: role, otp: otp });
+    if (!otpRecord) {
+        return res.status(400).json({ message: "Invalid OTP" });
+    }
+
+    if (!email || !newPassword || !role) {
+        return res.status(400).json({ message: "Email, new password, and role are required" });
+    }
+
     const hashedPassword = await bcrypt.hash(newPassword, 10);
 
     let user;
-    if (await User.findOne({ email })) {
+    if (role === "user") {
         user = await User.findOneAndUpdate({ email }, { password: hashedPassword });
-    } else if (await Vendor.findOne({ email })) {
+    } else if (role === "vendor") {
         user = await Vendor.findOneAndUpdate({ email }, { password: hashedPassword });
     } else {
-        return res.status(400).json({ message: "User does not exist" });
+        return res.status(400).json({ message: "Invalid role" });
     }
 
-    await otpModel.deleteOne({ user: email, otp: otp });
+    if (!user) {
+        return res.status(404).json({ message: "User not found" });
+    }
 
     res.status(200).json({ message: "Password updated successfully" });
 });
