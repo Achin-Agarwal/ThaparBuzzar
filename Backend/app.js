@@ -32,21 +32,21 @@ app.use(cors({
 }));
 
 // Auth0 configuration
-const Auth0Config = {
-  authRequired: false,
-  auth0Logout: true,
-  secret: config.Auth0.secret,
-  baseURL: config.Auth0.baseURL,
-  clientID: config.Auth0.clientID,
-  issuerBaseURL: config.Auth0.issuerBaseURL,
-  // routes: {
-  //   callback: '/callback',
-  //   postLoginRedirect: 'http://http://localhost:5173'
-  // }
-};
+// const Auth0Config = {
+//   authRequired: false,
+//   auth0Logout: true,
+//   secret: config.Auth0.secret,
+//   baseURL: config.Auth0.baseURL,
+//   clientID: config.Auth0.clientID,
+//   issuerBaseURL: config.Auth0.issuerBaseURL,
+//   routes: {
+//     callback: '/callback',
+//     postLoginRedirect: 'http://http://localhost:5173'
+//   }
+// };
 
 // Auth0 middleware
-app.use(auth(Auth0Config));
+// app.use(auth(Auth0Config));
 
 // Logging middleware
 // app.use((req, res, next) => {
@@ -68,15 +68,15 @@ app.use(auth(Auth0Config));
 
 // / route to test authentication and log user info
 app.get('/', (req, res) => {
-  console.log(req.oidc.isAuthenticated());
+  // console.log(req.oidc.isAuthenticated());
   console.log("***********************************************req.oidc****************************************************");
-  console.log(req.oidc.user);
-  console.log(req.oidc.idToken);
-  console.log(req.oidc.accessToken);
-  console.log(req.oidc.refreshToken);
-  console.log(req.oidc.isAuthenticated());
-  res.redirect("http://localhost:5173");
-  // res.send("Hello World");
+  // console.log(req.oidc.user);
+  // console.log(req.oidc.idToken);
+  // console.log(req.oidc.accessToken);
+  // console.log(req.oidc.refreshToken);
+  // console.log(req.oidc.isAuthenticated());
+  // res.redirect("http://localhost:5173");
+  res.send("Hello World");
 });
 app.use("/vendor", Vendor);
 app.use("/home", Home);
