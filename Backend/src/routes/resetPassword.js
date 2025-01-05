@@ -1,8 +1,8 @@
 import express from "express";
 import nodemailer from "nodemailer";
 import otpModel from "../../models/otp.js";
-import User from "../../models/user.js";
-import Vendor from "../../models/vendor.js";
+import Buyer from "../../models/buyer.js";
+import Seller from "../../models/seller.js";
 import bcrypt from "bcrypt";
 
 const router = express.Router();
@@ -11,17 +11,17 @@ const router = express.Router();
 router.post("/", async (req, res) => {
     const { email, role } = req.body;
     console.log(role);
-    // let user;
-    // if (role === "user") {
-    //     user = await User.findOne({ email });
-    // } else if (role === "vendor") {
-    //     user = await Vendor.findOne({ email });
+    // let buyer;
+    // if (role === "buyer") {
+    //     buyer = await Buyer.findOne({ email });
+    // } else if (role === "seller") {
+    //     buyer = await Seller.findOne({ email });
     // } else {
-    //     return res.status(400).json({ message: "user does not exist" });
+    //     return res.status(400).json({ message: "buyer does not exist" });
 
     // }
 
-    // if (!user) {
+    // if (!buyer) {
     //     return res.status(404).json({ message: "Email not registered as the given role" });
     // }
 
@@ -35,7 +35,7 @@ router.post("/", async (req, res) => {
     const transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
-            user: "devanshvashishat@gmail.com",
+            buyer: "devanshvashishat@gmail.com",
             pass: "eesmkobbawbhpcuz",
         },
     });
@@ -52,7 +52,7 @@ router.post("/", async (req, res) => {
     const validTill = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes from now
 
     const newOtp = new otpModel({
-        user: email,
+        buyer: email,
         otp: otp,
         validTill: validTill,
         role: role,
@@ -71,7 +71,7 @@ router.put("/verifyotp", async (req, res) => {
         return res.status(400).json({ message: "Email, OTP, and role are required" });
     }
 
-    const otpRecord = await otpModel.findOne({ user: email, role: role, otp: otp });
+    const otpRecord = await otpModel.findOne({ buyer: email, role: role, otp: otp });
     if (!otpRecord) {
         return res.status(400).json({ message: "Invalid OTP" });
     }
@@ -86,7 +86,7 @@ router.put("/verifyotp", async (req, res) => {
 router.put("/updatepassword", async (req, res) => {
     const { email, newPassword, role, otp } = req.body;
 
-    const otpRecord = await otpModel.findOne({ user: email, role: role, otp: otp });
+    const otpRecord = await otpModel.findOne({ buyer: email, role: role, otp: otp });
     if (!otpRecord) {
         return res.status(400).json({ message: "Invalid OTP" });
     }
@@ -97,17 +97,17 @@ router.put("/updatepassword", async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(newPassword, 10);
 
-    let user;
-    if (role === "user") {
-        user = await User.findOneAndUpdate({ email }, { password: hashedPassword });
-    } else if (role === "vendor") {
-        user = await Vendor.findOneAndUpdate({ email }, { password: hashedPassword });
+    let buyer;
+    if (role === "buyer") {
+        buyer = await Buyer.findOneAndUpdate({ email }, { password: hashedPassword });
+    } else if (role === "seller") {
+        buyer = await Seller.findOneAndUpdate({ email }, { password: hashedPassword });
     } else {
         return res.status(400).json({ message: "Invalid role" });
     }
 
-    if (!user) {
-        return res.status(404).json({ message: "User not found" });
+    if (!buyer) {
+        return res.status(404).json({ message: "Buyer not found" });
     }
 
     res.status(200).json({ message: "Password updated successfully" });

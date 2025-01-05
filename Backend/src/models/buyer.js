@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const userSchema = new mongoose.Schema({
+const buyerSchema = new mongoose.Schema({
     name: {
             type: String,
             required: true
@@ -17,12 +17,14 @@ const userSchema = new mongoose.Schema({
             default: false
         }
     },
+    picture: {
+        type: String
+    },
     password: {
         type: String,
         required: true,
         trim: true
     },
-
     auth0Ids: [
         {
             type: String,
@@ -30,21 +32,6 @@ const userSchema = new mongoose.Schema({
             unique: true
         }
     ],
-    picture: {
-        type: String
-    },
-
-    // mobileNumber: {
-    //     isVerified: {
-    //         type: Boolean,
-    //         default: false
-    //     },
-    //     number: {
-    //         type: String,
-    //         required: true,
-    //         unique: true
-    //     }// no mobile for now
-    // },
     birthday: {
         type: Date
     },
@@ -91,17 +78,7 @@ const userSchema = new mongoose.Schema({
             required: true
         }
 
-    },
-    isVendor: {
-        type: Boolean,
-        default: false // Flag to indicate if the user is also a vendor
-    },
-    vendorDetails: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Vendor', // Reference to the Vendor model
-        required: function () { return this.isVendor; } // Only required if isVendor is true
-    },
-  
+    },  
     wishlist: [
         {
             type: mongoose.Schema.Types.ObjectId,
@@ -110,15 +87,15 @@ const userSchema = new mongoose.Schema({
     ],
 });
 
-const User = mongoose.model('User', userSchema);
+const Buyer = mongoose.model('buyer', buyerSchema);
 
-export default User;
+export default Buyer;
 
 
 // {
 //     "email": "devanshvashishat@gmail.com",
 //     "auth0Ids": ["auth0|6769b3cec7df053fed424e3d", "google-oauth2|110028290344043295343"],
 //     "name": "Devansh Vashishat",
-//     "picture": "https://lh3.googleusercontent.com/a/...",
-//     "isVendor": false
+//     "picture": "https://lh3.googlebuyercontent.com/a/...",
+//     "isSeller": false
 //   }

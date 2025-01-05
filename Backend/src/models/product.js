@@ -12,9 +12,9 @@ const productSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    vendor: {
+    seller: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Vendor'
+        ref: 'Seller'
     },
     image: [
         {
@@ -59,9 +59,9 @@ const productSchema = new mongoose.Schema({
     },
     reviews: [
         {
-            user: {
+            buyer: {
                 type: mongoose.Schema.Types.ObjectId,
-                ref: 'User'
+                ref: 'Buyer'
             },
             review: {
                 type: String
@@ -80,7 +80,7 @@ const productSchema = new mongoose.Schema({
     boughtBy: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'User'
+            ref: 'Buyer'
         }
     ]
 },

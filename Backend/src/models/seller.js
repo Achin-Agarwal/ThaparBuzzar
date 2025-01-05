@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const vendorSchema = new mongoose.Schema({
+const sellerSchema = new mongoose.Schema({
     email: {
         address: {
             type: String,
@@ -21,7 +21,7 @@ const vendorSchema = new mongoose.Schema({
     businessName: {
         type: String,
         required: true,
-        trim: true // Name of the vendor's business
+        trim: true // Name of the seller's business
     },
     businessAddress: {
         street: { type: String, trim: true },
@@ -35,7 +35,7 @@ const vendorSchema = new mongoose.Schema({
     },
     walletBalance: {
         type: Number,
-        default: 0.0 // Tracks the vendor's earnings
+        default: 0.0 // Tracks the seller's earnings
     },
     paymentPreferences: {
         bankName: { type: String, trim: true },
@@ -46,11 +46,11 @@ const vendorSchema = new mongoose.Schema({
     products: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'Product' // Products sold by the vendor
+            ref: 'Product' // Products sold by the seller
         }
     ],
     ratings: {
-        averageRating: { type: Number, default: 0.0 }, // Average rating of the vendor
+        averageRating: { type: Number, default: 0.0 }, // Average rating of the seller
         numberOfReviews: { type: Number, default: 0 } // Number of reviews received
     },
     createdAt: {
@@ -59,5 +59,5 @@ const vendorSchema = new mongoose.Schema({
     }
 });
 
-const Vendor = mongoose.model('Vendor', vendorSchema);
-export default Vendor;
+const Seller = mongoose.model('Seller', sellerSchema);
+export default Seller;

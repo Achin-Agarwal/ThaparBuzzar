@@ -4,7 +4,7 @@ import config from './src/config/config.js';
 import responseHandler from './src/middleware/responseHandler.js';
 import cors from 'cors';
 import path from 'path';
-import Vendor from './src/routes/vendor.js';
+import Seller from './src/routes/seller.js';
 import Home from './src/routes/home.js';
 import restpass from './src/routes/resetPassword.js';
 
@@ -64,11 +64,11 @@ app.use(cors({
 //   res.oidc.login({ returnTo: 'http://localhost:5173' });
 // });
 
-// / route to test authentication and log user info
+// / route to test authentication and log buyer info
 app.get('/', (req, res) => {
   // console.log(req.oidc.isAuthenticated());
   console.log("***********************************************req.oidc****************************************************");
-  // console.log(req.oidc.user);
+  // console.log(req.oidc.buyer);
   // console.log(req.oidc.idToken);
   // console.log(req.oidc.accessToken);
   // console.log(req.oidc.refreshToken);
@@ -76,15 +76,15 @@ app.get('/', (req, res) => {
   // res.redirect("http://localhost:5173");
   res.send("Hello World");
 });
-app.use("/vendor", Vendor);
+app.use("/seller", Seller);
 app.use("/home", Home);
 app.use("/resetpassword", restpass);
 
-// /profile route to check the logged-in user's profile
+// /profile route to check the logged-in buyer's profile
 // import pkg from 'express-openid-connect';
 // const { requiresAuth } = pkg;
 // app.get('/profile', requiresAuth(), (req, res) => {
-//   res.send(JSON.stringify(req.oidc.user, null, 2));
+//   res.send(JSON.stringify(req.oidc.buyer, null, 2));
 // });
 
 

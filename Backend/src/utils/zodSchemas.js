@@ -3,7 +3,7 @@ export const productSchema = z.object({
     name: z.string().min(1, "Product name is required"),
     description: z.string().optional(),
     price: z.number().min(0, "Price must be a positive number"),
-    vendor: z.string().optional(),
+    seller: z.string().optional(),
     image: z.array(z.string()).optional(),
     category: z.enum([
         'Electronics',
@@ -24,7 +24,7 @@ export const productSchema = z.object({
     }).optional(),
     rating: z.number().min(0, "Rating must be a non-negative number").max(5, "Rating cannot be greater than 5").default(0),
     reviews: z.array(z.object({
-        user: z.string().optional(),
+        buyer: z.string().optional(),
         review: z.string().optional(),
         rating: z.number().min(0).max(5).optional()
     })).optional(),
