@@ -1,8 +1,8 @@
 import express from "express";
 import nodemailer from "nodemailer";
-import otpModel from "../models/otp.js";
-import User from "../models/user.js";
-import Vendor from "../models/vendor.js";
+import otpModel from "../../models/otp.js";
+import User from "../../models/user.js";
+import Vendor from "../../models/vendor.js";
 import bcrypt from "bcrypt";
 
 const router = express.Router();

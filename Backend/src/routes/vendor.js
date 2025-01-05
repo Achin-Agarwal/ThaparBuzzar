@@ -1,10 +1,10 @@
 import express from 'express';
-import Product from '../models/product.js';
-import Vendor from '../models/vendor.js';
-import { productSchema } from '../utils/zodSchemas.js';
-import { productImageUpload } from '../utils/multer.js';
-import { safeHandler } from '../middleware/safeHandler.js';
-import responseHandler from '../middleware/responseHandler.js';
+import Product from '../../models/product.js';
+import Vendor from '../../models/vendor.js';
+import { productSchema } from '../../utils/zodSchemas.js';
+import { productImageUpload } from '../../utils/multer.js';
+import { safeHandler } from '../../middleware/safeHandler.js';
+import responseHandler from '../../middleware/responseHandler.js';
 const router = express.Router();
 
 // Add a new product

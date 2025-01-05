@@ -1,7 +1,7 @@
 import express from "express";
 import { safeHandler } from "../middleware/safeHandler.js";
-import Product from "../models/product.js";
-import Vendor from "../models/vendor.js";
+import Product from "../../models/product.js";
+import Vendor from "../../models/vendor.js";
 
 
 const router = express.Router();

@@ -1,14 +1,13 @@
 import express from 'express';
-import connectMongo from './config/db.js';
-import config from './config/config.js';
-import responseHandler from './middleware/responseHandler.js';
+import connectMongo from './src/config/db.js';
+import config from './src/config/config.js';
+import responseHandler from './src/middleware/responseHandler.js';
 import cors from 'cors';
 import path from 'path';
-import Vendor from './routes/vendor.js';
-import Home from './routes/home.js';
-import restpass from './routes/resetPassword.js';
-//Auth0 imports
-import { auth } from 'express-openid-connect';
+import Vendor from './src/routes/vendor.js';
+import Home from './src/routes/home.js';
+import restpass from './src/routes/resetPassword.js';
+
 
 
 const app = express();
@@ -28,8 +27,7 @@ app.use(cors({
   origin: (origin, callback) => {
     callback(null, origin || '*'); // Allow all origins
   },
-  credentials: true, // Allow cookies to be sent
-}));
+  credentials: true, 
 
 // Auth0 configuration
 // const Auth0Config = {
@@ -83,11 +81,11 @@ app.use("/home", Home);
 app.use("/resetpassword", restpass);
 
 // /profile route to check the logged-in user's profile
-import pkg from 'express-openid-connect';
-const { requiresAuth } = pkg;
-app.get('/profile', requiresAuth(), (req, res) => {
-  res.send(JSON.stringify(req.oidc.user, null, 2));
-});
+// import pkg from 'express-openid-connect';
+// const { requiresAuth } = pkg;
+// app.get('/profile', requiresAuth(), (req, res) => {
+//   res.send(JSON.stringify(req.oidc.user, null, 2));
+// });
 
 
 
