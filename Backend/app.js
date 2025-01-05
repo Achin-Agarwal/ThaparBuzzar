@@ -4,8 +4,8 @@ import config from './src/config/config.js';
 import responseHandler from './src/middleware/responseHandler.js';
 import cors from 'cors';
 import path from 'path';
-import Seller from './src/routes/seller.js';
-import Home from './src/routes/home.js';
+import seller from './src/routes/seller.js';
+import home from './src/routes/home.js';
 import restpass from './src/routes/resetPassword.js';
 
 
@@ -27,7 +27,8 @@ app.use(cors({
   origin: (origin, callback) => {
     callback(null, origin || '*'); // Allow all origins
   },
-  credentials: true, 
+    credentials: true
+  }));
 
 // Auth0 configuration
 // const Auth0Config = {
@@ -76,8 +77,8 @@ app.get('/', (req, res) => {
   // res.redirect("http://localhost:5173");
   res.send("Hello World");
 });
-app.use("/seller", Seller);
-app.use("/home", Home);
+app.use("/seller", seller);
+app.use("/home", home);
 app.use("/resetpassword", restpass);
 
 // /profile route to check the logged-in buyer's profile
