@@ -11,6 +11,7 @@ import Seller from "../models/seller.js";
 
 
 router.post("/google", async (req, res, next) => {
+    console.log("google auth");
     const code = req.query.code;
     const role = req.query.role;
     console.log("code: ");  
