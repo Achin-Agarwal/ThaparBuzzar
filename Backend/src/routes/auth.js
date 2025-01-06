@@ -62,12 +62,12 @@ router.post("/google", async (req, res, next) => {
         }
     }
     const { _id } = buyer;
-    const token = jwt.sign({ _id, email },
+    const token = jwt.sign({ _id, email,role },
         config.jwt.secret, {
         expiresIn: config.jwt.timeout,
     });
     res.status(200).json({
-        message: 'success',
+        message: 'user created successfully',
         token,
         buyer,
     });
