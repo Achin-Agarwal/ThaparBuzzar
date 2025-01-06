@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "../styles/NewPassword.css";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
+import url from "../url";
 
 const NewPassword = () => {
   const [password, setPassword] = useState("");
@@ -12,7 +13,7 @@ const NewPassword = () => {
   const location = useLocation();
   const email = location.state?.email;
   const role = location.state?.role;
-  const otp = location.state?.otp;
+  const otp = location.state?.enteredOtp;
 
   // Password validation function
   const validatePassword = (password) => {
@@ -38,8 +39,8 @@ const NewPassword = () => {
     }
 
     try {
-      const response = await axios.put("/resetpassword/updatepassword", {
-        password,
+      const response = await axios.put(url+"/resetpassword/updatepassword", {
+        newPassword:password,
         email,
         role,
         otp,
