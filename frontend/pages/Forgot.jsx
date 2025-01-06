@@ -37,7 +37,10 @@ const Forgot = () => {
       setError(
         err.response?.data?.message || "Something went wrong. Please try again."
       );
-      alert(err.response?.data?.message || "Failed to send password reset link. Please try again.");
+      alert(
+        err.response?.data?.message ||
+          "Failed to send password reset link. Please try again."
+      );
       setMessage(""); // Clear any previous success messages
     } finally {
       setLoading(false);

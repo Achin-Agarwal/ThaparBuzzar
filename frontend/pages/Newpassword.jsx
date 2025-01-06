@@ -47,7 +47,7 @@ const NewPassword = () => {
       });
       console.log(response.data);
       setSuccess(response.data.message);
-      if (success === "Password updated successfully")
+      if (response.status === 200)
         setTimeout(() => navigate("/login"), 2000);
     } catch (err) {
       setError(err.response?.data?.message || "Password update failed");
