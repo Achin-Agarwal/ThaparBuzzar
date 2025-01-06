@@ -12,10 +12,12 @@ const NewPassword = () => {
   const location = useLocation();
   const email = location.state?.email;
   const role = location.state?.role;
+  const otp = location.state?.otp;
 
   // Password validation function
   const validatePassword = (password) => {
-    const regex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    const regex =
+      /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     return regex.test(password);
   };
 
@@ -36,11 +38,18 @@ const NewPassword = () => {
     }
 
     try {
-      // await axios.post("/api/save-password", { password,email,role });
-      setSuccess("Password updated successfully!");
-      setTimeout(() => navigate("/login"), 2000); // Navigate after 2 seconds
+      const response = await axios.put("/resetpassword/updatepassword", {
+        password,
+        email,
+        role,
+        otp,
+      });
+      console.log(response.data);
+      setSuccess(response.data.message);
+      if (success === "Password updated successfully")
+        setTimeout(() => navigate("/login"), 2000);
     } catch (err) {
-      setError("An error occurred. Please try again.");
+      setError(err.response?.data?.message || "Password update failed");
     }
   };
 
