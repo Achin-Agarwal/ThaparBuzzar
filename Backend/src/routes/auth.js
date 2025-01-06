@@ -52,7 +52,7 @@ router.post("/google", async (req, res, next) => {
         const user = await Seller.findOne({ "email.adress": email });
 
         if (!user) {
-            buyer = await Buyer.create({
+            buyer = await Seller.create({
                 name,
                 email:{address: email,isVerified: true},
                 image: picture,
