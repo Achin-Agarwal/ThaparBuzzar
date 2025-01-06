@@ -1,7 +1,7 @@
 import express from "express";
 import axios from "axios";
-import pkg from 'jsonwebtoken';
-const { jwt } = pkg;
+import jwt from "jsonwebtoken"; // For ES modules
+// OR
 import { oauth2Client } from "../utils/googleClient.js";
 const router = express.Router();
 import config from "..//config/config.js";
