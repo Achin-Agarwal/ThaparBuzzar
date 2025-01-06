@@ -11,7 +11,6 @@ const router = express.Router();
 router.post("/", async (req, res) => {
     const { email, role } = req.body;
     console.log(role);
-    console.log(email);
     // let buyer;
     // if (role === "buyer") {
     //     buyer = await Buyer.findOne({ email });
@@ -36,7 +35,7 @@ router.post("/", async (req, res) => {
     const transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
-            user: "devanshvashishat@gmail.com",
+            buyer: "devanshvashishat@gmail.com",
             pass: "eesmkobbawbhpcuz",
         },
     });
@@ -53,7 +52,7 @@ router.post("/", async (req, res) => {
     const validTill = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes from now
 
     const newOtp = new otpModel({
-        user: email,
+        buyer: email,
         otp: otp,
         validTill: validTill,
         role: role,

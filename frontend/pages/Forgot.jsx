@@ -21,6 +21,7 @@ const Forgot = () => {
     setError("");
     setMessage("");
     try {
+      console.log(email, role);
       const response = await axios.post(url + "/resetpassword", {
         email,
         role,
