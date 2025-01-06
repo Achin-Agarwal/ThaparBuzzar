@@ -5,6 +5,7 @@ import Button from "../components/Button";
 import { useNavigate } from "react-router-dom";
 import ImageSlider from "../components/Image";
 import { useGoogleLogin } from "@react-oauth/google";
+import url from "../url";
 
 const LoginSwitcher = () => {
   const [activeTab, setActiveTab] = useState("buyer"); // 'buyer' or 'seller'
@@ -64,9 +65,30 @@ const LoginSwitcher = () => {
 
   const responseGoogle = async (authResult) => {
     try {
-      console.log(authResult);
+      const { code } = authResult;
+      console.log(code);
+
+      // Send the code to your backend to exchange it for tokens and user info
+      const response = await axios.post(
+        url+`/auth/google?code=${code}&role=${activeTab}`,
+      );
+      console.log(response.data);
+      const { token } = response.data;
+      localStorage.setItem("authToken", token);
+      alert(
+        `${
+          activeTab.charAt(0).toUpperCase() + activeTab.slice(1)
+        } logged in successfully!`
+      );
+
+      if (activeTab === "buyer") {
+        navigate("/");
+      } else if (activeTab === "seller") {
+        navigate("/dashboard");
+      }
     } catch (err) {
       console.log(err);
+      setError("Google login failed. Please try again.");
     }
   };
 
