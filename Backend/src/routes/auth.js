@@ -35,13 +35,13 @@ router.post("/google", async (req, res, next) => {
     console.log(userRes);
     console.log("*********************************************************************************************************************************");
 
-
+let newuser;
     if (role === "buyer") {
 
         const user = await Buyer.findOne({ "email.adress": email });
 
         if (!user) {
-            buyer = await Buyer.create({
+            newuser = await Buyer.create({
                 name,
                 email:{address: email,isVerified: true},
                 image: picture,
@@ -54,14 +54,14 @@ router.post("/google", async (req, res, next) => {
         const user = await Seller.findOne({ "email.adress": email });
 
         if (!user) {
-            buyer = await Seller.create({
+            newuser = await Seller.create({
                 name,
                 email:{address: email,isVerified: true},
                 image: picture,
             });
         }
     }
-    const { _id } = buyer;
+    const { _id } = newuser;
     const token = jwt.sign({ _id, email,role },
         config.jwt.secret, {
         expiresIn: config.jwt.timeout,
@@ -69,7 +69,7 @@ router.post("/google", async (req, res, next) => {
     res.status(200).json({
         message: 'user created successfully',
         token,
-        buyer,
+        newuser,
     });
 
 });

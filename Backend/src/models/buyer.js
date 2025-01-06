@@ -25,13 +25,6 @@ const buyerSchema = new mongoose.Schema({
         required: false,
         trim: true
     },
-    auth0Ids: [
-        {
-            type: String,
-            required: false,
-            unique: true
-        }
-    ],
     birthday: {
         type: Date
     },
