@@ -52,7 +52,7 @@ router.post("/", async (req, res) => {
     const validTill = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes from now
 
     const newOtp = new otpModel({
-        buyer: email,
+       user: email,
         otp: otp,
         validTill: validTill,
         role: role,
