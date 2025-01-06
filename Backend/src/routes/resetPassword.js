@@ -18,7 +18,7 @@ router.post("/", async (req, res) => {
     // } else if (role === "seller") {
     //     buyer = await Seller.findOne({ email });
     // } else {
-    //     return res.status(400).json({ message: "buyer does not exist" });
+    //     return res.status(200).json({ message: "buyer does not exist" });
 
     // }
 
@@ -27,7 +27,7 @@ router.post("/", async (req, res) => {
     // }
 
     if (!email) {
-        return res.status(400).json({ message: "Email is required" });
+        return res.status(200).json({ message: "Email is required" });
     }
 
     const otp = Math.floor(100000 + Math.random() * 900000);
@@ -69,16 +69,18 @@ router.put("/verifyotp", async (req, res) => {
     const { email, otp, role } = req.body;
 
     if (!email || !otp || !role) {
-        return res.status(400).json({ message: "Email, OTP, and role are required" });
+        return res.status(200).json({ message: "Email, OTP, and role are required" });
     }
+
 
     const otpRecord = await otpModel.findOne({ user: email, role: role, otp: otp });
     if (!otpRecord) {
-        return res.status(400).json({ message: "Invalid OTP" });
+        return res.status(200).json({ message: "Invalid OTP" });
     }
+  
 
     if (otpRecord.validTill < new Date()) {
-        return res.status(400).json({ message: "OTP has expired" });
+        return res.status(200).json({ message: "OTP has expired" });
     }
 
     res.status(200).json({ message: "OTP verified successfully" });
@@ -87,29 +89,34 @@ router.put("/verifyotp", async (req, res) => {
 router.put("/updatepassword", async (req, res) => {
     const { email, newPassword, role, otp } = req.body;
 
-    const otpRecord = await otpModel.findOne({ buyer: email, role: role, otp: otp });
+    const otpRecord = await otpModel.findOne({ user: email, role: role, otp: otp });
     if (!otpRecord) {
-        return res.status(400).json({ message: "Invalid OTP" });
+        return res.status(200).json({ message: "Invalid OTP" });
     }
 
     if (!email || !newPassword || !role) {
-        return res.status(400).json({ message: "Email, new password, and role are required" });
+        return res.status(200).json({ message: "Email, new password, and role are required" });
     }
 
     const hashedPassword = await bcrypt.hash(newPassword, 10);
-
-    let buyer;
+    if (otpRecord.validTill < new Date()) {
+        return res.status(200).json({ message: "reset time-out" });
+    }
+    
+    let user;
     if (role === "buyer") {
-        buyer = await Buyer.findOneAndUpdate({ email }, { password: hashedPassword });
+        user = await Buyer.findOneAndUpdate({ email }, { password: hashedPassword });
     } else if (role === "seller") {
-        buyer = await Seller.findOneAndUpdate({ email }, { password: hashedPassword });
+        user = await Seller.findOneAndUpdate({ email }, { password: hashedPassword });
     } else {
-        return res.status(400).json({ message: "Invalid role" });
+        return res.status(200).json({ message: "Invalid role" });
     }
 
-    if (!buyer) {
-        return res.status(404).json({ message: "Buyer not found" });
+    if (!user) {
+        return res.status(404).json({ message: "User not found" });
     }
+
+
 
     res.status(200).json({ message: "Password updated successfully" });
 });
