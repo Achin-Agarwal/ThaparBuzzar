@@ -52,7 +52,7 @@ router.post("/", async (req, res) => {
     const validTill = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes from now
 
     const newOtp = new otpModel({
-        user: email,
+        buyer: email,
         otp: otp,
         validTill: validTill,
         role: role,
@@ -104,9 +104,9 @@ router.put("/updatepassword", async (req, res) => {
     
     let user;
     if (role === "buyer") {
-        user = await Buyer.findOneAndUpdate({ email }, { password: hashedPassword });
+        user = await Buyer.findOneAndUpdate({ "email.address": email }, { password: hashedPassword });
     } else if (role === "seller") {
-        user = await Seller.findOneAndUpdate({ email }, { password: hashedPassword });
+        user = await Seller.findOneAndUpdate({ "email.address": email }, { password: hashedPassword });
     } else {
         return res.status(200).json({ message: "Invalid role" });
     }
