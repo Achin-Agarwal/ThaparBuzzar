@@ -4,6 +4,7 @@ import "../styles/Login.css";
 import Button from "../components/Button";
 import { useNavigate } from "react-router-dom";
 import ImageSlider from "../components/Image";
+import { useGoogleLogin } from "@react-oauth/google";
 
 const LoginSwitcher = () => {
   const [activeTab, setActiveTab] = useState("buyer"); // 'buyer' or 'seller'
@@ -61,6 +62,20 @@ const LoginSwitcher = () => {
     navigate("/forgot", { state: { role: activeTab } });
   };
 
+  const responseGoogle = async (authResult) => {
+    try {
+      console.log(authResult);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const googleLogin = useGoogleLogin({
+    onSuccess: responseGoogle,
+    onError: responseGoogle,
+    flow: "auth-code",
+  });
+
   return (
     <div className="login-c">
       {/* Options */}
@@ -98,7 +113,12 @@ const LoginSwitcher = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
           <div>
-            <Button label="Login" disabled={loading} fontSize="18px" padding="12px 22px"></Button>
+            <Button
+              label="Login"
+              disabled={loading}
+              fontSize="18px"
+              padding="12px 22px"
+            ></Button>
           </div>
           <div className="dont-have-account">
             <h4>
@@ -109,7 +129,7 @@ const LoginSwitcher = () => {
               <h4 onClick={forgot}>Forgot your password?</h4>
             </div>
             <h3>OR</h3>
-            <Button label="Continue with Google"></Button>
+            <Button label="Continue with Google" onClick={googleLogin}></Button>
           </div>
         </div>
       </div>
