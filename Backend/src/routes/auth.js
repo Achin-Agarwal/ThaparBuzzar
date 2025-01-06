@@ -1,11 +1,12 @@
 import express from "express";
 import axios from "axios";
-import { jwt } from "jsonwebtoken";
-import { oauth2Client } from "../../utils/googleClient";
+import pkg from 'jsonwebtoken';
+const { jwt } = pkg;
+import { oauth2Client } from "../utils/googleClient.js";
 const router = express.Router();
-import config from "../config/config";
-import Buyer from "../models/buyer";
-import Seller from "../models/seller";
+import config from "..//config/config.js";
+import Buyer from "../models/buyer.js";
+import Seller from "../models/seller.js";
 
 
 
