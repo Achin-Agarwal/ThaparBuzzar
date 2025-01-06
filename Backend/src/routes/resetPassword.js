@@ -72,7 +72,7 @@ router.put("/verifyotp", async (req, res) => {
         return res.status(400).json({ message: "Email, OTP, and role are required" });
     }
 
-    const otpRecord = await otpModel.findOne({ buyer: email, role: role, otp: otp });
+    const otpRecord = await otpModel.findOne({ user: email, role: role, otp: otp });
     if (!otpRecord) {
         return res.status(400).json({ message: "Invalid OTP" });
     }
