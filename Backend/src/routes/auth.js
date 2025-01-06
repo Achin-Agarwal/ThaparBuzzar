@@ -9,9 +9,14 @@ import Seller from "../models/seller";
 
 
 
-router.get("/google", async (req, res, next) => {
+router.post("/google", async (req, res, next) => {
     const code = req.query.code;
     const role = req.query.role;
+    console.log("code: ");  
+    console.log(code);
+    console.log("role: ");
+    console.log(role);
+
     if (!role)
         res.status(400).json({ message: "Role is required" });
 
@@ -30,17 +35,29 @@ router.get("/google", async (req, res, next) => {
 
     if (role === "buyer") {
 
-        const user = await Buyer.findOne({ email });
+        const user = await Buyer.findOne({ "email.adress": email });
 
         if (!user) {
             buyer = await Buyer.create({
                 name,
-                email.address: email,
+                email:{address: email,isVerified: true},
                 image: picture,
             });
         }
     }
 
+    if (role === "seller") {
+
+        const user = await Seller.findOne({ "email.adress": email });
+
+        if (!user) {
+            buyer = await Buyer.create({
+                name,
+                email:{address: email,isVerified: true},
+                image: picture,
+            });
+        }
+    }
     const { _id } = buyer;
     const token = jwt.sign({ _id, email },
         process.env.JWT_SECRET, {

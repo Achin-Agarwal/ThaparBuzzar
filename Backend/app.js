@@ -7,7 +7,7 @@ import path from 'path';
 import seller from './src/routes/seller.js';
 import home from './src/routes/home.js';
 import restpass from './src/routes/resetPassword.js';
-
+import auth from './src/routes/auth.js';
 
 
 const app = express();
@@ -80,7 +80,7 @@ app.get('/', (req, res) => {
 app.use("/seller", seller);
 app.use("/home", home);
 app.use("/resetpassword", restpass);
-
+app.use("/auth", auth);
 // /profile route to check the logged-in buyer's profile
 // import pkg from 'express-openid-connect';
 // const { requiresAuth } = pkg;

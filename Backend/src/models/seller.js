@@ -15,12 +15,12 @@ const sellerSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: true,
+        required: false,
         trim: true
     },
     businessName: {
         type: String,
-        required: true,
+        required: false,
         trim: true // Name of the seller's business
     },
     businessAddress: {
@@ -30,8 +30,8 @@ const sellerSchema = new mongoose.Schema({
         zipCode: { type: String, trim: true }
     },
     contactDetails: {
-        phoneNumber: { type: String, required: true, trim: true }, 
-        email: { type: String, required: true, trim: true } 
+        phoneNumber: { type: String, required: false, trim: true }, 
+        email: { type: String, required: false, trim: true } 
     },
     walletBalance: {
         type: Number,

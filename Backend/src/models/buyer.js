@@ -22,13 +22,13 @@ const buyerSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: true,
+        required: false,
         trim: true
     },
     auth0Ids: [
         {
             type: String,
-            required: true,
+            required: false,
             unique: true
         }
     ],
@@ -56,26 +56,26 @@ const buyerSchema = new mongoose.Schema({
     address: {
         houseNumber: {
             type: String,
-            required: true
+            required: false
         },
         street: {
             type: String,
-            required: true
+            required: false
         },
         city: {
             type: String,
-            required: true
+            required: false
         },
         state: {
             type: String,
-            required: true
+            required: false
         },
         landmark: {
             type: String
         },
         pincode: {
             type: String,
-            required: true
+            required: false
         }
 
     },  
