@@ -37,6 +37,8 @@ router.post("/google", async (req, res, next) => {
     console.log("*********************************************************************************************************************************");
 
 let newuser;
+// let _id;
+// le
     if (role === "buyer") {
 
         const user = await Buyer.findOne({ "email.address": email });
@@ -60,6 +62,7 @@ let newuser;
                 email:{address: email,isVerified: true},
                 image: picture,
             });
+
         }
     }
     const { _id } = newuser;

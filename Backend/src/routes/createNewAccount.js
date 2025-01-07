@@ -4,11 +4,56 @@ import otpModel from "../models/otp.js";
 import Buyer from "../models/buyer.js";
 import Seller from "../models/seller.js";
 import bcrypt from "bcrypt";
+import isLogin from "../middleware/isLogin.js";
 
 const router = express.Router();
 
-
 router.post("/", async (req, res) => {  
+    const { email, role, name, password, dateOfBirth } = req.body;
+
+    if (!email || !role || !name || !password) {
+        return res.status(400).json({ message: "Email, role, name, and password are required" });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    let user;
+    if (role === "buyer") {
+        user = new Buyer({
+            name,
+            email: { address: email, isVerified: true },
+            password: hashedPassword,
+            birthday: dateOfBirth
+        });
+    } else if (role === "seller") {
+        user = new Seller({
+            email: { address: email, isVerified: true },
+            password: hashedPassword,
+            businessName: name,
+            businessAddress: {},
+            contactDetails: { email }
+        });
+    } else {
+        return res.status(400).json({ message: "Invalid role" });
+    }
+
+    await user.save();
+
+    const token = jwt.sign({ _id: user._id, email, role }, config.jwt.secret, {
+        expiresIn: config.jwt.timeout,
+    });
+
+    res.status(201).json({
+        message: `${role.charAt(0).toUpperCase() + role.slice(1)} account created successfully`,
+        token,
+        user,
+    });
+});
+
+
+
+
+router.post("/verifyemail", async (req, res) => {  
     const { email, role } = req.body;
     await otpModel.deleteMany({ user: email, role: role });
 
