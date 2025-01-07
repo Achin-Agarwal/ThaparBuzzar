@@ -9,7 +9,7 @@ const authenticate = (req, res, next) => {
     }
 
     try {
-        const verified = jwt.verify(token, config.auth.jwtSecret);
+        const verified = jwt.verify(token, config.jwt.secret);
         req.user = verified;
         next();
     } catch (err) {
