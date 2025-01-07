@@ -1,14 +1,30 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AddProducts from "../components/AddProducts";
 import "../styles/ProductDashboard.css";
 import Button from "../components/Button";
 import Overview from "../components/Overview";
 import url from "../url";
-import {useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("productDetails");
-  const navigate=useNavigate();
+  const navigate = useNavigate();
+  useEffect(() => {
+    const tokens = localStorage.getItem("authToken");
+    console.log(tokens);
+    if (tokens) {
+      try {
+        setToken(tokens);
+        const decoded = jwtDecode(tokens);
+        console.log("Decoded Token:", decoded);
+        setDecodedToken(decoded);
+      } catch (error) {
+        console.error("Failed to decode token:", error);
+      }
+    } else {
+      navigate("/");
+    }
+  }, []);
 
   const renderContent = () => {
     switch (activeTab) {
