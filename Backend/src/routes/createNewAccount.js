@@ -9,8 +9,9 @@ const router = express.Router();
 
 
 router.post("/", async (req, res) => {  
-    await otpModel.deleteMany({ user: email, role: role });
     const { email, role } = req.body;
+    await otpModel.deleteMany({ user: email, role: role });
+
     console.log(role);
     // let buyer;
     // if (role === "buyer") {
