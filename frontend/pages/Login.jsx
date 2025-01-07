@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import ImageSlider from "../components/Image";
 import { useGoogleLogin } from "@react-oauth/google";
 import url from "../url";
+import image from "../src/assets/image.png";
 
 const LoginSwitcher = () => {
   const [activeTab, setActiveTab] = useState("buyer"); // 'buyer' or 'seller'
@@ -70,7 +71,7 @@ const LoginSwitcher = () => {
 
       // Send the code to your backend to exchange it for tokens and user info
       const response = await axios.post(
-        url+`/auth/google?code=${code}&role=${activeTab}`,
+        url + `/auth/google?code=${code}&role=${activeTab}`
       );
       console.log(response.data);
       const { token } = response.data;
@@ -151,7 +152,14 @@ const LoginSwitcher = () => {
               <h4 onClick={forgot}>Forgot your password?</h4>
             </div>
             <h3>OR</h3>
-            <Button label="Continue with Google" onClick={googleLogin}></Button>
+            <button className="google-button" onClick={googleLogin}>
+              <img
+                src={image}
+                alt="Google logo"
+                className="google-logo"
+              />
+              Continue with Google
+            </button>
           </div>
         </div>
       </div>

@@ -164,7 +164,7 @@ const AddProducts = () => {
       // Update existing product
       try {
         const response = await axios.patch(
-          `${url}/products/${currentProduct.id}`,
+          `${url}/products/${currentProduct._id}`,
           currentProduct
         );
         alert(`Product ${activeIndex + 1} updated successfully`);
