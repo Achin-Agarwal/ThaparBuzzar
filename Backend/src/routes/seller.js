@@ -79,6 +79,10 @@ router.delete('/delete/:id', async (req, res) => {
     }
 });
 
-// router.
+router.get("/userproducts",isLogin,safeHandler(async (req,res)=>{
+    req.user.role==='buyer'?null:res.status(401).json({message:"Unauthorized access"});
+    const user =await Seller.findById(req.user._id).populate("products").exec();
+    res.json(user);
+}));
 
 export default router;

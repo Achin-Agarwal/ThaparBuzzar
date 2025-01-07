@@ -8,7 +8,7 @@ import bcrypt from "bcrypt";
 const router = express.Router();
 
 
-router.post("/", async (req, res) => {
+router.post("/", async (req, res) => {  
     await otpModel.deleteMany({ user: email, role: role });
     const { email, role } = req.body;
     console.log(role);
