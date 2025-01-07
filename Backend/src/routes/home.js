@@ -18,4 +18,5 @@ router.get("/products", safeHandler(async (req, res) => {
    return res.json(products);
 }));
 
+
 export default router;

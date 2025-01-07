@@ -5,11 +5,12 @@ import { productSchema } from '../utils/zodSchemas.js';
 import { productImageUpload } from '../utils/multer.js';
 import { safeHandler } from '../middleware/safeHandler.js';
 import responseHandler from '../middleware/responseHandler.js';
+import isLogin from '../middleware/isLogin.js';
 const router = express.Router();
 
 // Add a new product
-router.post('/addproduct', productImageUpload, safeHandler( async (req, res) => {
-    
+router.post('/addproduct', isLogin, productImageUpload, safeHandler( async (req, res) => {
+        req.user.role==='buyer'?null:res.status(401).json({message:"Unauthorized access"});
         // Parse the incoming data
         const parsedData = {
             ...req.body,
@@ -77,5 +78,7 @@ router.delete('/delete/:id', async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 });
+
+router.
 
 export default router;
