@@ -19,6 +19,13 @@ const Dashboard = () => {
     }
   };
 
+  const handleSignOut = () => {
+    // Remove the token from local storage
+    localStorage.removeItem("authToken");
+    // Redirect to the logout URL
+    window.location.href = url + "/logout";
+  };
+
   return (
     <div className="dashboard">
       <div className="sidebar">
@@ -33,9 +40,7 @@ const Dashboard = () => {
           fontSize="18px"
         ></Button>
         <Button
-          onClick={() => {
-            window.location.href = url+"/logout";	
-          }}
+          onClick={handleSignOut}
           label="Sign Out"
           fontSize="18px"
         ></Button>

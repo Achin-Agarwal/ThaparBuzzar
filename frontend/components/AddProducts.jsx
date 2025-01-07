@@ -160,7 +160,7 @@ const AddProducts = () => {
     //   return;
     // }
 
-    if (currentProduct.id) {
+    if (currentProduct._id) {
       // Update existing product
       try {
         const response = await axios.patch(
