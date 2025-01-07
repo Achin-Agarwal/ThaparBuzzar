@@ -5,6 +5,8 @@ import Buyer from "../models/buyer.js";
 import Seller from "../models/seller.js";
 import bcrypt from "bcrypt";
 import isLogin from "../middleware/isLogin.js";
+import jwt from "jsonwebtoken";
+import config from "../config/config.js";
 
 const router = express.Router();
 

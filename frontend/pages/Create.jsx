@@ -15,7 +15,7 @@ const Create = () => {
     name: "",
     companyName: "",
     email: email,
-    number: "",
+    dateOfBirth: "",
     password: "",
     confirmPassword: "",
   });
@@ -58,7 +58,7 @@ const Create = () => {
       !errors.passwordMismatch &&
       !errors.weakPassword &&
       formData.email &&
-      formData.number &&
+      formData.dateOfBirth &&
       formData.password &&
       formData.confirmPassword
     );
@@ -73,17 +73,18 @@ const Create = () => {
     setErrors({ ...errors, userExists: "" });
 
     try {
-      const response = await axios.post(url+"/createnewaccount/verifyemail", {
+      const response = await axios.post(url+"/createnewaccount", {
         ...formData,
         role,
       });
+      console.log(response.data);
       if (response.data.success) {
         if (role === "seller") {
           console.log("seller");
           navigate("/dashboard");
         } else {
           console.log("buyer");
-          navigate("/");
+          navigate("/buyer");
         }
       } else {
         setErrors((prevErrors) => ({
@@ -144,11 +145,11 @@ const Create = () => {
           disabled
         />
         <InputField
-          text="Phone Number"
-          type="number"
-          name="number"
-          placeholder="Enter your phone number"
-          value={formData.number}
+          text="Date of Birth"
+          type="date"
+          name="dateOfBirth"
+          placeholder="Enter your date of birth"
+          value={formData.dateOfBirth}
           onChange={handleChange}
         />
         <InputField

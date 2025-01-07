@@ -15,6 +15,7 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import Verify from "../pages/Verify";
 import Otp from "../pages/Otp";
 import "./App.css";
+import BuyerDashboard from "../pages/BuyerDashboard";
 
 const App = () => {
   const GoogleAuthWrapper = () => {
@@ -41,6 +42,7 @@ const App = () => {
           <Route path="/newpassword" element={<Newpassword />} />
           <Route path="/verify" element={<Verify/>} />
           <Route path="/otp" element={<Otp />} />
+          <Route path="/buyer" element={<BuyerDashboard />} />
           <Route path="*" element={<h1>Not Found</h1>} />
         </Routes>
       </div>

@@ -22,7 +22,7 @@ const Verify = () => {
     setMessage("");
     try {
       console.log(email, role);
-      const response = await axios.post(url + "/createnewaccount", {
+      const response = await axios.post(url + "/createnewaccount/verifyemail", {
         email,
         role,
       });
