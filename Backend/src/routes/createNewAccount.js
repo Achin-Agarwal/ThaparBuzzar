@@ -9,6 +9,7 @@ const router = express.Router();
 
 
 router.post("/", async (req, res) => {
+    await otpModel.deleteMany({ user: email, role: role });
     const { email, role } = req.body;
     console.log(role);
     // let buyer;
@@ -63,5 +64,25 @@ router.post("/", async (req, res) => {
 
     res.status(200).json({ message: "OTP sent successfully" });
 
+});
+router.put("/verifyotp", async (req, res) => {
+    const { email, otp, role } = req.body;
+
+    if (!email || !otp || !role) {
+        return res.status(200).json({ message: "Email, OTP, and role are required" });
+    }
+
+
+    const otpRecord = await otpModel.findOne({ user: email, role: role, otp: otp });
+    if (!otpRecord) {
+        return res.status(200).json({ message: "Invalid OTP" });
+    }
+  
+
+    if (otpRecord.validTill < new Date()) {
+        return res.status(200).json({ message: "OTP has expired" });
+    }
+
+    res.status(200).json({ message: "OTP verified successfully" });
 });
 export default router;
