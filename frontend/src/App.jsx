@@ -12,6 +12,9 @@ import Forgot from "../pages/Forgot";
 import Reset from "../pages/Reset";
 import Newpassword from "../pages/Newpassword";
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import Verify from "../pages/Verify";
+import Otp from "../pages/Otp";
+import "./App.css";
 
 const App = () => {
   const GoogleAuthWrapper = () => {
@@ -36,6 +39,8 @@ const App = () => {
           <Route path="/forgot" element={<Forgot />} />
           <Route path="/reset" element={<Reset />} />
           <Route path="/newpassword" element={<Newpassword />} />
+          <Route path="/verify" element={<Verify/>} />
+          <Route path="/otp" element={<Otp />} />
           <Route path="*" element={<h1>Not Found</h1>} />
         </Routes>
       </div>

@@ -10,7 +10,9 @@ const router = express.Router();
 
 // Add a new product
 router.post('/addproduct', isLogin, productImageUpload, safeHandler( async (req, res) => {
-        req.user.role==='buyer'?null:res.status(401).json({message:"Unauthorized access"});
+    if (req.user.role === "buyer") {
+        return res.status(401).json({ message: "Unauthorized access" });
+      }
         // Parse the incoming data
         const parsedData = {
             ...req.body,
@@ -80,7 +82,10 @@ router.delete('/delete/:id', async (req, res) => {
 });
 
 router.get("/userproducts",isLogin,safeHandler(async (req,res)=>{
-    req.user.role==='buyer'?null:res.status(401).json({message:"Unauthorized access"});
+    if (req.user.role === "buyer") {
+        return res.status(401).json({ message: "Unauthorized access" });
+      }
+    console.log(req.user);
     const user =await Seller.findById(req.user._id).populate("products").exec();
     res.json(user);
 }));

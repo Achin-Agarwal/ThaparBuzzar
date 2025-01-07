@@ -3,16 +3,18 @@ import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 import InputField from "../components/Input";
 import "../styles/Create.css";
+import url from "../url";
 
 const Create = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const role = location.state.role;
+  const role = location.state?.role;
+  const email = location.state?.email;
   console.log(role);
   const [formData, setFormData] = useState({
     name: "",
     companyName: "",
-    email: "",
+    email: email,
     number: "",
     password: "",
     confirmPassword: "",
@@ -71,25 +73,24 @@ const Create = () => {
     setErrors({ ...errors, userExists: "" });
 
     try {
-      //   const response = await axios.post('http://localhost:5000/api/create', {
-      //     ...formData,
-      //     role,
-      //   });
-      //   if (response.data.success) {
-      if (role === "seller") {
-        console.log("seller");
-        navigate("/dashboard");
+      const response = await axios.post(url+"/createnewaccount/verifyemail", {
+        ...formData,
+        role,
+      });
+      if (response.data.success) {
+        if (role === "seller") {
+          console.log("seller");
+          navigate("/dashboard");
+        } else {
+          console.log("buyer");
+          navigate("/");
+        }
       } else {
-        console.log("buyer");
-        navigate("/");
-        // }
-        //   } else {
-        //     setErrors((prevErrors) => ({
-        //       ...prevErrors,
-        //       userExists: response.data.message,
-        //     }));
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          userExists: response.data.message,
+        }));
       }
-
       alert(
         `${
           role.charAt(0).toUpperCase() + role.slice(1)
@@ -138,8 +139,9 @@ const Create = () => {
           type="email"
           name="email"
           placeholder="Enter your email"
-          value={formData.email}
+          value={email}
           onChange={handleChange}
+          disabled
         />
         <InputField
           text="Phone Number"

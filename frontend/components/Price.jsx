@@ -1,0 +1,20 @@
+import React from "react";
+import "../styles/Price.css";
+
+const Price = ({ price, discount = 0, delivery = 0 }) => {
+  return (
+    <div className="prices">
+      <p>Price Details :</p>
+      <div className="pdd">
+        <p>Price : ₹{price}</p>
+        <p>Discount : ₹{discount}</p>
+        <p>Delivery Charges : ₹{delivery}</p>
+      </div>
+      <div className="total">
+        <span>Total : ₹{price - discount + delivery}</span>
+      </div>
+    </div>
+  );
+};
+
+export default Price;

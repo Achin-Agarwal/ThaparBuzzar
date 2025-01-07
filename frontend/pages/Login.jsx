@@ -56,7 +56,7 @@ const LoginSwitcher = () => {
   };
 
   const addUser = () => {
-    navigate("/create", { state: { role: activeTab } });
+    navigate("/verify", { state: { role: activeTab } });
   };
 
   const forgot = () => {

@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from "react";
 import { CartContext } from "../CartContext";
 import "../styles/Cart.css";
 import axios from "axios";
+import Price from "../components/Price";
 
 const Cart = () => {
   const { cart, updateQuantity, removeFromCart, clearCart } =
@@ -37,48 +38,56 @@ const Cart = () => {
     }
   };
 
+  const totalPrice = cart.reduce(
+    (total, item) => total + item.price * item.quantity,
+    0
+  );
+
   return (
     <div>
       <h1>Your Cart</h1>
-      <div>
-        {cart.length === 0 ? (
-          <p className="empty-cart-message">Your cart is empty.</p>
-        ) : (
-          cart.map((item) => (
-            <div key={item.id} className="cart">
-              <div className="fix-text">
-                <h2>{item.name}</h2>
-              </div>
-              <p>Price: ${item.price * item.quantity}</p>
-              <div className="quantity-controls">
-                <button
-                  onClick={() =>
-                    handleQuantityChange(item.id, item.quantity - 1)
-                  }
-                >
-                  -
-                </button>
-                <span>{item.quantity}</span>
-                <button
-                  onClick={() => {
-                    if (item.quantity < item.available) {
-                      handleQuantityChange(item.id, item.quantity + 1);
+      <div className="cart-flex">
+        <div className="carting">
+          {cart.length === 0 ? (
+            <p className="empty-cart-message">Your cart is empty.</p>
+          ) : (
+            cart.map((item) => (
+              <div key={item.id} className="cart">
+                <div className="fix-text">
+                  <h2>{item.name}</h2>
+                </div>
+                <p>Price: ${item.price * item.quantity}</p>
+                <div className="quantity-controls">
+                  <button
+                    onClick={() =>
+                      handleQuantityChange(item.id, item.quantity - 1)
                     }
-                  }}
-                  disabled={item.quantity >= item.available}
+                  >
+                    -
+                  </button>
+                  <span>{item.quantity}</span>
+                  <button
+                    onClick={() => {
+                      if (item.quantity < item.available) {
+                        handleQuantityChange(item.id, item.quantity + 1);
+                      }
+                    }}
+                    disabled={item.quantity >= item.available}
+                  >
+                    +
+                  </button>
+                </div>
+                <button
+                  onClick={() => removeFromCart(item.id)}
+                  className="remove-button"
                 >
-                  +
+                  Remove
                 </button>
               </div>
-              <button
-                onClick={() => removeFromCart(item.id)}
-                className="remove-button"
-              >
-                Remove
-              </button>
-            </div>
-          ))
-        )}
+            ))
+          )}
+        </div>
+        <div>{cart.length > 0 && <Price price={totalPrice}></Price>}</div>
       </div>
       <button onClick={handleCheckout}>Update the cart</button>
     </div>

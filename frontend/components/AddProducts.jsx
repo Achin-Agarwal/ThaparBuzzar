@@ -4,6 +4,8 @@ import Button from "./Button";
 import InputField from "./Input";
 import "../styles/AddProducts.css";
 import url from "../url";
+import { MdDeleteOutline } from "react-icons/md";
+import { jwtDecode } from "jwt-decode";
 
 const AddProducts = () => {
   const [products, setProducts] = useState([
@@ -19,35 +21,59 @@ const AddProducts = () => {
     },
   ]);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isEditable, setIsEditable] = useState(false);
   const [statusMessage, setStatusMessage] = useState("");
+  const [token, setToken] = useState("");
+  const [decodedToken, setDecodedToken] = useState({});
 
-  //   useEffect(() => {
-  //     const fetchProducts = async () => {
-  //       try {
-  //         const response = await axios.get(url + "/products");
-  //         setProducts(response.data.products.length > 0 ? response.data.products : [{ id: null,
-  // name: "",
-  // category: "",
-  // price: "",
-  // description: "",
-  // images: [],
-  // stock: { available: 0 },
-  // promoCode: { code: "", numberOfUses: 0 },}
-  // ]);
-  //       } catch (error) {
-  //         console.error('Error fetching products:', error);
-  //         setProducts([{ id: null,
-  // name: "",
-  // category: "",
-  // price: "",
-  // description: "",
-  // images: [],
-  // stock: { available: 0 },
-  // promoCode: { code: "", numberOfUses: 0 },}]); // Initialize with a blank product if fetching fails
-  //       }
-  //     };
-  //     fetchProducts();
-  //   }, []);
+  useEffect(() => {
+    const tokens = localStorage.getItem("authToken");
+    console.log(tokens);
+    if (tokens) {
+      try {
+        setToken(tokens);
+        const decoded = jwtDecode(tokens);
+        console.log("Decoded Token:", decoded);
+        setDecodedToken(decoded);
+      } catch (error) {
+        console.error("Failed to decode token:", error);
+      }
+    } else {
+      console.error("No token found in localStorage.");
+    }
+  }, []);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const token = localStorage.getItem("authToken");
+        console.log("this is " + token);
+        const response = await axios.get(url + "/seller/userproducts", {
+          headers: { authorization: `Bearer ${token}` },
+        });
+        console.log(response.data);
+        setProducts(
+          response.data.products.length > 0
+            ? response.data.products
+            : [
+                {
+                  id: null,
+                  name: "",
+                  category: "",
+                  price: "",
+                  description: "",
+                  images: [],
+                  stock: { available: "" },
+                  promoCode: { code: "", numberOfUses: "" },
+                },
+              ]
+        );
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+    fetchProducts();
+  }, []);
 
   const handleAddNewProduct = () => {
     setProducts([
@@ -64,6 +90,7 @@ const AddProducts = () => {
       },
     ]);
     setActiveIndex(products.length);
+    setIsEditable(true);
   };
 
   const handleInputChange = (index, event) => {
@@ -74,83 +101,29 @@ const AddProducts = () => {
         updatedProducts[index].images = files ? Array.from(files) : [];
       } else if (name.includes(".")) {
         const [section, field] = name.split(".");
-        updatedProducts[index][section][field] = field === "available" || field === "numberOfUses" ? Number(value) : value;
+        updatedProducts[index][section][field] =
+          field === "available" || field === "numberOfUses"
+            ? Number(value)
+            : value;
       } else {
         updatedProducts[index][name] = name === "price" ? Number(value) : value;
       }
       return updatedProducts;
     });
   };
-  const formatCategory = (category) => {
-    return category.charAt(0).toUpperCase() + category.slice(1).toLowerCase();
+
+  // const formatCategory = (category) => {
+  //   return category.charAt(0).toUpperCase() + category.slice(1).toLowerCase();
+  // };
+
+  const handleEditToggle = () => {
+    setIsEditable((prev) => !prev);
   };
-  
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const handleDelete = async () => {
     const currentProduct = products[activeIndex];
-  
-    if (
-      !currentProduct.name ||
-      !currentProduct.category ||
-      !currentProduct.price ||
-      !currentProduct.description ||
-      !currentProduct.images.length ||
-      currentProduct.stock.available <= 0
-    ) {
-      const message = `Please fill out all fields for Product ${
-        activeIndex + 1
-      }`;
-      setStatusMessage(message);
-      alert(message);
-      return;
-    }
-  
-    const formData = new FormData();
-    currentProduct.images.forEach((image) => {
-      formData.append("images", image);
-    });
-    formData.append("price", Number(currentProduct.price));
-    formData.append("name", currentProduct.name);
-    formData.append("description", currentProduct.description);
-    formData.append("category", formatCategory(currentProduct.category)); // Ensure proper format
-    formData.append("stock", JSON.stringify(currentProduct.stock)); // Serialize object
-    formData.append("promoCode", JSON.stringify(currentProduct.promoCode)); // Serialize object
-    formData.append("vendorId", "6774271dc39f56d27957a024"); // Include vendorId
-    console.log("Type of price before appending:", typeof JSON.stringify(currentProduct.promoCode));
-    console.log("FormData contents:");
-  for (let [key, value] of formData.entries()) {
-    console.log(key, value);
-  }
-  
-    try {
-      const response = await axios.post(
-        url + "/vendor/addproduct",
-        formData,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-        }
-      );
-      setProducts((prevProducts) => {
-        const updatedProducts = [...prevProducts];
-        updatedProducts[activeIndex].id = response.data.id;
-        return updatedProducts;
-      });
-      setStatusMessage(`Product ${activeIndex + 1} added successfully`);
-      alert(`Product ${activeIndex + 1} added successfully`);
-    } catch (error) {
-      console.error(error);
-      setStatusMessage(`Failed to add Product ${activeIndex + 1}`);
-      alert(`Failed to add Product ${activeIndex + 1}`);
-    }
-  };
-  
-
-  const handleDelete = async (event) => {
-    event.preventDefault();
-    const currentProduct = products[activeIndex];
-
-    if (!currentProduct.id) {
+    console.log("current id "+currentProduct._id);
+    if (!currentProduct._id) {
       setProducts((prevProducts) =>
         prevProducts.filter((_, index) => index !== activeIndex)
       );
@@ -160,17 +133,103 @@ const AddProducts = () => {
     }
 
     try {
-      await axios.delete(`${url}/products/${currentProduct.id}`);
+      await axios.delete(`${url}/seller/delete/${currentProduct._id}`);
       setProducts((prevProducts) =>
         prevProducts.filter((_, index) => index !== activeIndex)
       );
       setActiveIndex(0);
       setStatusMessage(`Product ${activeIndex + 1} deleted successfully`);
     } catch (error) {
-      console.error(error);
-      setStatusMessage(`Failed to delete Product ${activeIndex + 1}`);
+      console.error("Failed to delete product:", error);
     }
   };
+
+  const handleSave = async () => {
+    const currentProduct = products[activeIndex];
+
+    // // Validation
+    // if (
+    //   !currentProduct.name ||
+    //   !currentProduct.category ||
+    //   !currentProduct.price ||
+    //   !currentProduct.description ||
+    //   !currentProduct.images.length ||
+    //   currentProduct.stock.available <= 0
+    // ) {
+    //   alert(`Please fill out all fields for Product ${activeIndex + 1}`);
+    //   return;
+    // }
+
+    if (currentProduct.id) {
+      // Update existing product
+      try {
+        const response = await axios.patch(
+          `${url}/products/${currentProduct.id}`,
+          currentProduct
+        );
+        alert(`Product ${activeIndex + 1} updated successfully`);
+        console.log(response.data);
+      } catch (error) {
+        console.error("Failed to update product:", error);
+        alert(`Failed to update Product ${activeIndex + 1}`);
+      }
+    }
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const currentProduct = products[activeIndex];
+  
+    // Debug: Check if images are correctly stored in the state
+    console.log("Images to upload:", currentProduct.images);
+  
+    const token = localStorage.getItem("authToken");
+    const decoded = jwtDecode(token);
+  
+    const formData = new FormData();
+  
+    // Append images to formData
+    if (currentProduct.images && currentProduct.images.length > 0) {
+      currentProduct.images.forEach((image, index) => {
+        formData.append(`images`, image, image.name || `image_${index}`);
+      });
+    } else {
+      console.error("No images found to upload.");
+    }
+  
+    // Append other fields
+    formData.append("price", currentProduct.price);
+    formData.append("name", currentProduct.name);
+    formData.append("description", currentProduct.description);
+    formData.append("category", currentProduct.category);
+    formData.append("stock", JSON.stringify(currentProduct.stock));
+    formData.append("promoCode", JSON.stringify(currentProduct.promoCode));
+    formData.append("sellerId", decoded._id);
+  
+    // Debug: Log the formData content
+    for (let [key, value] of formData.entries()) {
+      console.log(key, value);
+    }
+  
+    try {
+      const response = await axios.post(url + "/seller/addproduct", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          authorization: `Bearer ${token}`,
+        },
+      });
+      setProducts((prevProducts) => {
+        const updatedProducts = [...prevProducts];
+        updatedProducts[activeIndex].id = response.data.id;
+        return updatedProducts;
+      });
+      alert(`Product ${activeIndex + 1} added successfully`);
+    } catch (error) {
+      console.error("Failed to add product:", error);
+      alert(`Failed to add Product ${activeIndex + 1}`);
+    }
+  };
+  
 
   console.log(products.length);
   return (
@@ -180,7 +239,10 @@ const AddProducts = () => {
           <Button
             key={`product-${index}`}
             label={`Product ${index + 1}`}
-            onClick={() => setActiveIndex(index)}
+            onClick={() => {
+              setActiveIndex(index);
+              setIsEditable(false);
+            }}
             isActive={activeIndex === index}
             fontSize="18px"
             border="2px solid black"
@@ -197,13 +259,37 @@ const AddProducts = () => {
         />
       </div>
       <div className="form">
-        <form>
+        <div className="del-save">
+          <Button
+            label={isEditable ? "Save" : "Edit"}
+            onClick={isEditable ? handleSave : () => setIsEditable(true)}
+            bgColor={isEditable ? "black" : "blue"}
+            color="white"
+            fontSize="18px"
+          />
+          {products.length > 1 && (
+            <Button
+              onClick={handleDelete}
+              bgColor="red"
+              color="white"
+              fontSize="18px"
+            >
+              <span
+                style={{ display: "flex", alignItems: "center", gap: "5px" }}
+              >
+                Delete <MdDeleteOutline size={24} />
+              </span>
+            </Button>
+          )}
+        </div>
+        <form onSubmit={handleSubmit}>
           <InputField
             placeholder="Name"
             type="text"
             name="name"
             value={products[activeIndex].name}
             onChange={(event) => handleInputChange(activeIndex, event)}
+            disabled={!isEditable}
           />
 
           <div className="input-field">
@@ -211,6 +297,8 @@ const AddProducts = () => {
               name="category"
               value={products[activeIndex].category}
               onChange={(event) => handleInputChange(activeIndex, event)}
+              disabled={!isEditable}
+              style={{ cursor: !isEditable ? "not-allowed" : "auto" }}
             >
               <option value="">Select Category</option>
               <option value="Electronics">Electronics</option>
@@ -219,6 +307,7 @@ const AddProducts = () => {
               <option value="Beauty">Beauty</option>
               <option value="Services">Services</option>
               <option value="Other">Other</option>
+              disabled={!isEditable}
             </select>
           </div>
 
@@ -228,6 +317,7 @@ const AddProducts = () => {
             name="price"
             value={products[activeIndex].price}
             onChange={(event) => handleInputChange(activeIndex, event)}
+            disabled={!isEditable}
           />
           <InputField
             placeholder="Description"
@@ -235,6 +325,7 @@ const AddProducts = () => {
             name="description"
             value={products[activeIndex].description}
             onChange={(event) => handleInputChange(activeIndex, event)}
+            disabled={!isEditable}
           />
           <InputField
             placeholder="Stock"
@@ -242,6 +333,7 @@ const AddProducts = () => {
             name="stock.available"
             value={products[activeIndex].stock?.available || ""}
             onChange={(event) => handleInputChange(activeIndex, event)}
+            disabled={!isEditable}
           />
           {/* <InputField
             placeholder="Estimated delivery"
@@ -264,6 +356,7 @@ const AddProducts = () => {
             name="images"
             accept="image/*"
             onChange={(event) => handleInputChange(activeIndex, event)}
+            disabled={!isEditable}
           />
           <InputField
             placeholder="Promo code"
@@ -271,6 +364,7 @@ const AddProducts = () => {
             name="promoCode.code"
             value={products[activeIndex].promoCode?.code || ""}
             onChange={(event) => handleInputChange(activeIndex, event)}
+            disabled={!isEditable}
           />
           <InputField
             placeholder="Number of uses for Promo Code"
@@ -278,25 +372,19 @@ const AddProducts = () => {
             name="promoCode.numberOfUses"
             value={products[activeIndex].promoCode?.numberOfUses || ""}
             onChange={(event) => handleInputChange(activeIndex, event)}
+            disabled={!isEditable}
           />
-          <div className="action-buttons">
-            {products.length > 1 && (
+          {products[activeIndex].id === null && (
+            <div className="action-buttons">
               <Button
-                label="Delete"
-                onClick={handleDelete}
+                label="Submit"
+                type="submit"
                 bgColor="black"
                 color="white"
                 fontSize="18px"
               />
-            )}
-            <Button
-              label="Submit"
-              onClick={handleSubmit}
-              bgColor="black"
-              color="white"
-              fontSize="18px"
-            />
-          </div>
+            </div>
+          )}
         </form>
       </div>
     </div>

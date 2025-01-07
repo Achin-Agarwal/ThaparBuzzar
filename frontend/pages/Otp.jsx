@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import "../styles/Reset.css";
 import url from "../url";
-const Reset = () => {
+const Otp = () => {
   const [otpArray, setOtpArray] = useState(new Array(6).fill("")); // Array for 6 OTP blocks
   const [generatedOtp, setGeneratedOtp] = useState(null);
   const [message, setMessage] = useState("");
@@ -55,7 +55,7 @@ const Reset = () => {
     const enteredOtp = otpArray.join("");
     console.log(enteredOtp);
     try {
-      const response = await axios.put(url + "/resetpassword/verifyotp", {
+      const response = await axios.put(url + "/createnewaccount/verifyotp", {
         email,
         otp: enteredOtp,
         role,
@@ -63,12 +63,12 @@ const Reset = () => {
       console.log(response);
       setMessage(response.data.message);
       if (response.status == 200) {
-        navigate("/newpassword", { state: { email, role, enteredOtp } });
+        navigate("/create", { state: { role,email } });
       } else {
         setError(response);
       }
     } catch (err) {
-      setError("The errror is " + err);
+      setError("The error is " + err);
     }
   };
 
@@ -98,4 +98,4 @@ const Reset = () => {
   );
 };
 
-export default Reset;
+export default Otp;

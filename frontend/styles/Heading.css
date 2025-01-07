@@ -1,8 +1,9 @@
 .head {
-  height: 100%;
+  height: auto;
   width: 100%;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 .image1 {
@@ -26,9 +27,64 @@
 .nav{
   display: flex;
   justify-content: space-between;
-  padding: 0 35px;
-  font-size: 21px;
+  padding: 0.4rem 1.2rem;
+  margin: 0.5rem 0rem;
+  font-size: 1.5rem;
   font-weight: 500;
   border: 2px solid black;
   cursor: pointer;
+}
+
+@media (max-width: 768px ) {
+  .image1 {
+    width: 23vh;
+    height: auto;
+  }
+  .image2 {
+    width: 16vh;
+    height: auto;
+  }
+  .image3 {
+    height: 6vh;
+  }
+  .nav{
+    padding: 0 0.5rem;
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .image1 {
+    width: 16vh;
+    height: 7vh;
+  }
+  .image2 {
+    width: 11vh;
+    height: 8vh;
+  }
+  .image3 {
+    height: 4vh;
+  }
+  .nav{
+    padding: 0 0.3rem;
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .image1 {
+    width: 15vh;
+    height: 6vh;
+  }
+  .image2 {
+    width: 10vh;
+    height: 8vh;
+  }
+  .image3 {
+    height: 4vh;
+  }
+  .nav{
+    padding: 0 0.2rem;
+    font-size: 0.5rem;
+  }
 }
