@@ -4,9 +4,11 @@ import "../styles/ProductDashboard.css";
 import Button from "../components/Button";
 import Overview from "../components/Overview";
 import url from "../url";
+import {useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("productDetails");
+  const navigate=useNavigate();
 
   const renderContent = () => {
     switch (activeTab) {
@@ -23,7 +25,7 @@ const Dashboard = () => {
     // Remove the token from local storage
     localStorage.removeItem("authToken");
     // Redirect to the logout URL
-    window.location.href = url + "/logout";
+    navigate("/");
   };
 
   return (
