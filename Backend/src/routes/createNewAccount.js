@@ -11,7 +11,7 @@ import config from "../config/config.js";
 const router = express.Router();
 
 router.post("/", async (req, res) => {  
-    const { email, role, name, password, phoneNumber,sellerName , businessName} = req.body;
+    const { email, role, name, password, number,sellerName , businessName} = req.body;
 
     if (!email || !role || !name || !password) {
         return res.status(400).json({ message: "Email, role, name, and password are required" });
@@ -26,7 +26,7 @@ router.post("/", async (req, res) => {
             email: { address: email, isVerified: true },
             password: hashedPassword,
             // birthday: dateOfBirth
-            phoneNumber,
+            phoneNumber:number,
         });
     } else if (role === "seller") {
         user = new Seller({
@@ -34,7 +34,7 @@ router.post("/", async (req, res) => {
             email: { address: email, isVerified: true },
             password: hashedPassword,
             businessName:businessName,
-            contactDetails: { email: email, phoneNumber: phoneNumber },
+            contactDetails: { email: email, phoneNumber: number },
         });
     } else {
         return res.status(400).json({ message: "Invalid role" });
