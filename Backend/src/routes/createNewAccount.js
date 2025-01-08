@@ -12,6 +12,7 @@ const router = express.Router();
 
 router.post("/", async (req, res) => {  
     const { email, role, name, password, number,sellerName , businessName} = req.body;
+    console.log(email, role, name, password, number,sellerName , businessName);
 
     if (!email || !role || !name || !password) {
         return res.status(400).json({ message: "Email, role, name, and password are required" });
@@ -30,7 +31,7 @@ router.post("/", async (req, res) => {
         });
     } else if (role === "seller") {
         user = new Seller({
-            sellerName,
+            // sellerName,
             email: { address: email, isVerified: true },
             password: hashedPassword,
             businessName:businessName,

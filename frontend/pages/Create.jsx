@@ -13,9 +13,11 @@ const Create = () => {
   console.log(role);
   const [formData, setFormData] = useState({
     name: "",
-    companyName: "",
+    // sellerName: "",
+    businessName: "",
     email: email,
-    dateOfBirth: "",
+    number:"",
+    // dateOfBirth: "",
     password: "",
     confirmPassword: "",
   });
@@ -58,7 +60,8 @@ const Create = () => {
       !errors.passwordMismatch &&
       !errors.weakPassword &&
       formData.email &&
-      formData.dateOfBirth &&
+      formData.number &&
+      // formData.dateOfBirth &&
       formData.password &&
       formData.confirmPassword
     );
@@ -77,7 +80,7 @@ const Create = () => {
         ...formData,
         role,
       });
-      const token = localStorage.setItem("authToken", response.data.token);
+      // const token = localStorage.setItem("authToken", response.data.token);
       if (response.data.message === "Buyer account created successfully") {
         if (role === "seller") {
           console.log("seller");
@@ -118,14 +121,15 @@ const Create = () => {
     <div className="create-container">
       <h2>Create {role.charAt(0).toUpperCase() + role.slice(1)} Account</h2>
       <form className="create-form" onSubmit={handleSubmit}>
-        {role === "seller" ? (
+        {role === "seller" ? (<>
           <InputField
-            placeholder="Enter Your Company Name"
+            placeholder="Enter your Business Name"
             type="text"
-            name="companyName"
-            value={formData.companyName}
+            name="businessName"
+            value={formData.businessName}
             onChange={handleChange}
           />
+          </>
         ) : (
           <InputField
             placeholder="Enter your Name"
@@ -145,13 +149,21 @@ const Create = () => {
           disabled
         />
         <InputField
+          text="number"
+          type="number"
+          name="number"
+          placeholder="Enter your number"
+          value={formData.number}
+          onChange={handleChange}
+        />
+        {/* <InputField
           text="Date of Birth"
           type="date"
           name="dateOfBirth"
           placeholder="Enter your date of birth"
           value={formData.dateOfBirth}
           onChange={handleChange}
-        />
+        /> */}
         <InputField
           text="Password"
           type="password"

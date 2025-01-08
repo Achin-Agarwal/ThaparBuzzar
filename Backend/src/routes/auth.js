@@ -111,29 +111,29 @@ router.post("/google", async (req, res, next) => {
   
 
 });
-router.post("/login ", async (req, res, next) => {
-    const { email, role } = req.body;
-    if (!email || !role) {
-        return res.status(400).json({ message: "Email and role are required" });
-    }
-    // if (role !== "buyer"  role !== "seller") {
-    //     return res.status(400).json({ message: "Role must be either buyer or seller" });
-    // }
+// router.post("/login ", async (req, res, next) => {
+//     const { email, role } = req.body;
+//     if (!email || !role) {
+//         return res.status(400).json({ message: "Email and role are required" });
+//     }
+//     // if (role !== "buyer"  role !== "seller") {
+//     //     return res.status(400).json({ message: "Role must be either buyer or seller" });
+//     // }
 
     
-    let user;
-    if (role === "buyer") {
-        user = await Buyer.findOne({ "email.address": email });
-    } else if (role === "seller") {
-        user = await Seller.findOne({ "email.address": email });
-    }
-    if (!user) {
-        return res.status(404).json({ message: "User not found" });
-    }
-    const { _id } = user;
-    const token = jwt.sign({ _id, email, role }, config.jwt.secret, {
-        expiresIn: config.jwt.timeout,
-    });
-    res.status(200).json({ message: "Login successful", token, user });
-}
+//     let user;
+//     if (role === "buyer") {
+//         user = await Buyer.findOne({ "email.address": email });
+//     } else if (role === "seller") {
+//         user = await Seller.findOne({ "email.address": email });
+//     }
+//     if (!user) {
+//         return res.status(404).json({ message: "User not found" });
+//     }
+//     const { _id } = user;
+//     const token = jwt.sign({ _id, email, role }, config.jwt.secret, {
+//         expiresIn: config.jwt.timeout,
+//     });
+//     res.status(200).json({ message: "Login successful", token, user });
+// }
 export default router;
