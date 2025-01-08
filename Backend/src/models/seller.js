@@ -13,6 +13,11 @@ const sellerSchema = new mongoose.Schema({
             default: false
         }
     },
+    sellerName: {
+        type: String,
+        required: false,
+        trim: true
+    },
     password: {
         type: String,
         required: false,
@@ -21,7 +26,7 @@ const sellerSchema = new mongoose.Schema({
     businessName: {
         type: String,
         required: false,
-        trim: true // Name of the seller's business
+        trim: true 
     },
     businessAddress: {
         street: { type: String, trim: true },

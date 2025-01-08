@@ -25,8 +25,12 @@ const buyerSchema = new mongoose.Schema({
         required: false,
         trim: true
     },
-    birthday: {
-        type: Date
+    // birthday: {
+    //     type: Date
+    // },
+    phoneNumber: {
+        type: String,
+        required: false
     },
     cart: [
         {
@@ -47,11 +51,11 @@ const buyerSchema = new mongoose.Schema({
         }
     ],
     address: {
-        houseNumber: {
+        roomNumber: {
             type: String,
             required: false
         },
-        street: {
+       floor: {
             type: String,
             required: false
         },
@@ -59,17 +63,10 @@ const buyerSchema = new mongoose.Schema({
             type: String,
             required: false
         },
-        state: {
+        hostel: {
             type: String,
             required: false
         },
-        landmark: {
-            type: String
-        },
-        pincode: {
-            type: String,
-            required: false
-        }
 
     },  
     wishlist: [

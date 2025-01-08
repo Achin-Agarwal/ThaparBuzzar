@@ -14,7 +14,7 @@ router.post("/google", async (req, res, next) => {
     console.log("google auth");
     const code = req.query.code;
     const role = req.query.role;
-    console.log("code: ");  
+    console.log("code: ");
     console.log(code);
     console.log("role: ");
     console.log(role);
@@ -31,50 +31,84 @@ router.post("/google", async (req, res, next) => {
         `https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${googleRes.tokens.access_token}`
     );
     const { email, name, picture } = userRes.data;
-    console.log("*********************************************************************************************************************************");
-    console.log("userRes: ");
-    console.log(userRes);
-    console.log("*********************************************************************************************************************************");
+    // console.log("*********************************************************************************************************************************");
+    // console.log("userRes: ");
+    // console.log(userRes);
+    // console.log("*********************************************************************************************************************************");
 
-let newuser;
-// let _id;
-// le
+    let newuser;
+    // let _id;
+    // le
     if (role === "buyer") {
 
         const user = await Buyer.findOne({ "email.address": email });
-
+console.log("user: ");
+console.log(user);
         if (!user) {
             newuser = await Buyer.create({
                 name,
-                email:{address: email,isVerified: true},
+                email: { address: email, isVerified: true },
                 image: picture,
             });
+            const { _id } = newuser;
+            const token = jwt.sign({ _id, email, role },
+                config.jwt.secret, {
+                expiresIn: config.jwt.timeout,
+            });
+            res.status(200).json({
+                message: 'user created successfully',
+                token,
+                newuser,
+            });
         }
+        const { _id } = user;
+        const token = jwt.sign({ _id, email, role },
+            config.jwt.secret, {
+            expiresIn: config.jwt.timeout,
+        });
+        res.status(200).json({
+            message: 'user created successfully',
+            token,
+            user,
+        });
     }
 
     if (role === "seller") {
 
         const user = await Seller.findOne({ "email.address": email });
 
+
         if (!user) {
             newuser = await Seller.create({
                 name,
-                email:{address: email,isVerified: true},
+                email: { address: email, isVerified: true },
                 image: picture,
+            });
+            const { _id } = newuser;
+            const token = jwt.sign({ _id, email, role },
+                config.jwt.secret, {
+                expiresIn: config.jwt.timeout,
+            });
+            res.status(200).json({
+                message: 'user created successfully',
+                token,
+                newuser,
             });
 
         }
+        const { _id } = user;
+        const token = jwt.sign({ _id, email, role },
+            config.jwt.secret, {
+            expiresIn: config.jwt.timeout,
+        });
+        res.status(200).json({
+            message: 'user created successfully',
+            token,
+            user,
+        });
+
     }
-    const { _id } = newuser;
-    const token = jwt.sign({ _id, email,role },
-        config.jwt.secret, {
-        expiresIn: config.jwt.timeout,
-    });
-    res.status(200).json({
-        message: 'user created successfully',
-        token,
-        newuser,
-    });
+  
 
 });
 export default router;
