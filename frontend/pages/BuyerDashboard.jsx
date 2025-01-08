@@ -1,23 +1,26 @@
 import React, { useEffect, useState } from "react";
-import AddProducts from "../components/AddProducts";
-import "../styles/ProductDashboard.css";
+import "../styles/BuyerDashboard.css";
 import Button from "../components/Button";
-import Overview from "../components/Overview";
 import url from "../url";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import UserProfile from "../components/UserProfile";
+import Orders from "../components/Orders";
+import { jwtDecode } from "jwt-decode";
 
 const BuyerDashboard = () => {
   const [activeTab, setActiveTab] = useState("productDetails");
+  const location=useLocation()
   const navigate = useNavigate();
+  const { response }=location.state || {};
+  console.log(response.user);
+
   useEffect(() => {
     const tokens = localStorage.getItem("authToken");
     console.log(tokens);
-    if (tokens) {
+    const decoded = jwtDecode(tokens);
+    console.log("Decoded Token:", decoded.role);
+    if (decoded.role === "buyer") {
       try {
-        setToken(tokens);
-        const decoded = jwtDecode(tokens);
-        console.log("Decoded Token:", decoded);
-        setDecodedToken(decoded);
       } catch (error) {
         console.error("Failed to decode token:", error);
       }
@@ -29,32 +32,30 @@ const BuyerDashboard = () => {
   const renderContent = () => {
     switch (activeTab) {
       case "productDetails":
-        return <AddProducts />;
+        return <UserProfile />;
       case "overview":
-        return <Overview />;
+        return <Orders />;
       default:
         return <h2>Select an option</h2>;
     }
   };
 
   const handleSignOut = () => {
-    // Remove the token from local storage
     localStorage.removeItem("authToken");
-    // Redirect to the logout URL
     navigate("/");
   };
 
   return (
-    <div className="dashboard">
-      <div className="sidebar">
+    <div className="buyerdashboard">
+      <div className="buyersidebar">
         <Button
           onClick={() => setActiveTab("productDetails")}
-          label="Product Details"
+          label="My Profile"
           fontSize="18px"
         ></Button>
         <Button
           onClick={() => setActiveTab("overview")}
-          label="Overview"
+          label="My Orders"
           fontSize="18px"
         ></Button>
         <Button
@@ -63,7 +64,7 @@ const BuyerDashboard = () => {
           fontSize="18px"
         ></Button>
       </div>
-      <div className="content">{renderContent()}</div>
+      <div className="buyercontent">{renderContent()}</div>
     </div>
   );
 };

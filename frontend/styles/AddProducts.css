@@ -38,17 +38,17 @@
     border: 2px solid black;
 }
 
-.input-field {
+.input-field1 {
     margin-bottom: 15px;
   }
   
-  .input-field label {
+  .input-field1 label {
     display: block;
     font-weight: bold;
     margin-bottom: 5px;
   }
   
-  .input-field select {
+  .input-field1 select {
     width: 50vw;
     padding: 12px;
     border: 2px solid #686767;
@@ -57,7 +57,7 @@
     font-size: 18px;
   }
   
-  .input-field input {
+  .input-field1 input {
     width: 50vw;
     padding: 12px;
     border: 2px solid #686767;
@@ -66,12 +66,12 @@
     font-size: 18px;
   }
   
-  .input-field input:focus,
-  .input-field select:focus {
+  .input-field1 input:focus,
+  .input-field1 select:focus {
     outline: none;
     border-color: #4CAF50;
   }
   
-  .input-field input::placeholder {
+  .input-field1 input::placeholder {
     color: #888;
   }

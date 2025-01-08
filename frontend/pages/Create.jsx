@@ -73,18 +73,18 @@ const Create = () => {
     setErrors({ ...errors, userExists: "" });
 
     try {
-      const response = await axios.post(url+"/createnewaccount", {
+      const response = await axios.post(url + "/createnewaccount", {
         ...formData,
         role,
       });
-      console.log(response.data);
-      if (response.data.success) {
+      const token = localStorage.setItem("authToken", response.data.token);
+      if (response.data.message === "Buyer account created successfully") {
         if (role === "seller") {
           console.log("seller");
           navigate("/dashboard");
         } else {
           console.log("buyer");
-          navigate("/buyer");
+          navigate("/buyer",{state:{response:response.data}});
         }
       } else {
         setErrors((prevErrors) => ({

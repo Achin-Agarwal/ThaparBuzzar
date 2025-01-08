@@ -5,6 +5,7 @@ import Button from "../components/Button";
 import Overview from "../components/Overview";
 import url from "../url";
 import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("productDetails");
@@ -12,17 +13,16 @@ const Dashboard = () => {
   useEffect(() => {
     const tokens = localStorage.getItem("authToken");
     console.log(tokens);
-    if (tokens) {
+    const decoded = jwtDecode(tokens);
+    console.log("Decoded Token:", decoded);
+    if (decoded.role === "seller") {
       try {
-        setToken(tokens);
-        const decoded = jwtDecode(tokens);
-        console.log("Decoded Token:", decoded);
         setDecodedToken(decoded);
       } catch (error) {
         console.error("Failed to decode token:", error);
       }
     } else {
-      navigate("/");
+      navigate("/login");
     }
   }, []);
 
@@ -41,7 +41,7 @@ const Dashboard = () => {
     // Remove the token from local storage
     localStorage.removeItem("authToken");
     // Redirect to the logout URL
-    navigate("/");
+    navigate("/login");
   };
 
   return (

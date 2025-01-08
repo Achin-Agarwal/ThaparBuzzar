@@ -6,6 +6,7 @@ import "../styles/AddProducts.css";
 import url from "../url";
 import { MdDeleteOutline } from "react-icons/md";
 import { jwtDecode } from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 
 const AddProducts = () => {
   const [products, setProducts] = useState([
@@ -25,51 +26,44 @@ const AddProducts = () => {
   const [statusMessage, setStatusMessage] = useState("");
   const [token, setToken] = useState("");
   const [decodedToken, setDecodedToken] = useState({});
-
-  useEffect(() => {
-    const tokens = localStorage.getItem("authToken");
-    console.log(tokens);
-    if (tokens) {
-      try {
-        setToken(tokens);
-        const decoded = jwtDecode(tokens);
-        console.log("Decoded Token:", decoded);
-        setDecodedToken(decoded);
-      } catch (error) {
-        console.error("Failed to decode token:", error);
-      }
-    } else {
-      console.error("No token found in localStorage.");
-    }
-  }, []);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProducts = async () => {
-      try {
-        const token = localStorage.getItem("authToken");
-        console.log("this is " + token);
-        const response = await axios.get(url + "/seller/userproducts", {
-          headers: { authorization: `Bearer ${token}` },
-        });
-        console.log(response.data);
-        setProducts(
-          response.data.products.length > 0
-            ? response.data.products
-            : [
-                {
-                  id: null,
-                  name: "",
-                  category: "",
-                  price: "",
-                  description: "",
-                  images: [],
-                  stock: { available: "" },
-                  promoCode: { code: "", numberOfUses: "" },
-                },
-              ]
-        );
-      } catch (error) {
-        console.error("Error fetching products:", error);
+      const tokens = localStorage.getItem("authToken");
+      console.log(tokens);
+      const decoded = jwtDecode(tokens);
+      console.log("Decoded Token:", decoded);
+      if (decoded.role === "seller") {
+        try {
+          const token = localStorage.getItem("authToken");
+          console.log("this is " + token);
+          const response = await axios.get(url + "/seller/userproducts", {
+            headers: { authorization: `Bearer ${token}` },
+          });
+          console.log(response.data);
+          setProducts(
+            response.data.products.length > 0
+              ? response.data.products
+              : [
+                  {
+                    id: null,
+                    name: "",
+                    category: "",
+                    price: "",
+                    description: "",
+                    images: [],
+                    stock: { available: "" },
+                    promoCode: { code: "", numberOfUses: "" },
+                  },
+                ]
+          );
+        } catch (error) {
+          console.error("Error fetching products:", error);
+        }
+      }
+      else{
+        navigate("/login");
       }
     };
     fetchProducts();
@@ -122,7 +116,7 @@ const AddProducts = () => {
 
   const handleDelete = async () => {
     const currentProduct = products[activeIndex];
-    console.log("current id "+currentProduct._id);
+    console.log("current id " + currentProduct._id);
     if (!currentProduct._id) {
       setProducts((prevProducts) =>
         prevProducts.filter((_, index) => index !== activeIndex)
@@ -179,15 +173,15 @@ const AddProducts = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const currentProduct = products[activeIndex];
-  
+
     // Debug: Check if images are correctly stored in the state
     console.log("Images to upload:", currentProduct.images);
-  
+
     const token = localStorage.getItem("authToken");
     const decoded = jwtDecode(token);
-  
+
     const formData = new FormData();
-  
+
     // Append images to formData
     if (currentProduct.images && currentProduct.images.length > 0) {
       currentProduct.images.forEach((image, index) => {
@@ -196,7 +190,7 @@ const AddProducts = () => {
     } else {
       console.error("No images found to upload.");
     }
-  
+
     // Append other fields
     formData.append("price", currentProduct.price);
     formData.append("name", currentProduct.name);
@@ -205,12 +199,12 @@ const AddProducts = () => {
     formData.append("stock", JSON.stringify(currentProduct.stock));
     formData.append("promoCode", JSON.stringify(currentProduct.promoCode));
     formData.append("sellerId", decoded._id);
-  
+
     // Debug: Log the formData content
     for (let [key, value] of formData.entries()) {
       console.log(key, value);
     }
-  
+
     try {
       const response = await axios.post(url + "/seller/addproduct", formData, {
         headers: {
@@ -229,7 +223,6 @@ const AddProducts = () => {
       alert(`Failed to add Product ${activeIndex + 1}`);
     }
   };
-  
 
   console.log(products.length);
   return (
@@ -292,7 +285,7 @@ const AddProducts = () => {
             disabled={!isEditable}
           />
 
-          <div className="input-field">
+          <div className="input-field1">
             <select
               name="category"
               value={products[activeIndex].category}

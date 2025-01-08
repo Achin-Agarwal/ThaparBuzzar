@@ -10,6 +10,7 @@ const InputField = ({
   onChange,
   accept,
   disabled,
+  width,
 }) => {
   return (
     <div className="input-field">
@@ -23,7 +24,7 @@ const InputField = ({
         onChange={onChange}
         accept={accept}
         disabled={disabled}
-        style={{ cursor: disabled ? "not-allowed" : "auto" }}
+        style={{ cursor: disabled ? "not-allowed" : "auto" ,width: width}}
         required
         multiple
       />

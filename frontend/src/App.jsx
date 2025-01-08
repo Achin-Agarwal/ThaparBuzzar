@@ -16,6 +16,8 @@ import Verify from "../pages/Verify";
 import Otp from "../pages/Otp";
 import "./App.css";
 import BuyerDashboard from "../pages/BuyerDashboard";
+import UserProfile from "../components/UserProfile";
+import Orders from "../components/Orders";
 
 const App = () => {
   const GoogleAuthWrapper = () => {
@@ -43,6 +45,8 @@ const App = () => {
           <Route path="/verify" element={<Verify/>} />
           <Route path="/otp" element={<Otp />} />
           <Route path="/buyer" element={<BuyerDashboard />} />
+          <Route path="/profile" element={<UserProfile />} />
+          <Route path="/orders" element={<Orders/>} />
           <Route path="*" element={<h1>Not Found</h1>} />
         </Routes>
       </div>
