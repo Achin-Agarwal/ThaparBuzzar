@@ -42,8 +42,8 @@ router.post("/google", async (req, res, next) => {
     if (role === "buyer") {
 
         const user = await Buyer.findOne({ "email.address": email });
-console.log("user: ");
-console.log(user);
+// console.log("user: ");
+// console.log(user);
         if (!user) {
             newuser = await Buyer.create({
                 name,
