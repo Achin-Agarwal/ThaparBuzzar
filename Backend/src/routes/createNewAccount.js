@@ -22,6 +22,7 @@ router.post("/", async (req, res) => {
 
     let user;
     if (role === "buyer") {
+        console.log("buyer creation block",role);
         user = new Buyer({
             name,
             email: { address: email, isVerified: true },
@@ -30,6 +31,8 @@ router.post("/", async (req, res) => {
             phoneNumber:number,
         });
     } else if (role === "seller") {
+        console.log("seller creation block",role);
+
         user = new Seller({
             // sellerName,
             email: { address: email, isVerified: true },
@@ -40,6 +43,8 @@ router.post("/", async (req, res) => {
     } else {
         return res.status(400).json({ message: "Invalid role" });
     }
+    console.log("user created");    
+    console.log (user);
 
     await user.save();
 
