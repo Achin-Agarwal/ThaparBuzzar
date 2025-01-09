@@ -129,8 +129,8 @@ router.post('/addservices', isLogin, productImageUpload, safeHandler(async (req,
     const parsedData = {
         ...req.body,
         price: parseFloat(req.body.price),
-        stock: JSON.parse(req.body.stock),
-        promoCode: req.body.promoCode ? JSON.parse(req.body.promoCode) : undefined
+        // stock: JSON.parse(req.body.stock),
+        // promoCode: req.body.promoCode ? JSON.parse(req.body.promoCode) : undefined
     };
     console.log("body: ");
     console.log(req.body);
@@ -159,7 +159,6 @@ router.post('/addservices', isLogin, productImageUpload, safeHandler(async (req,
         seller: sellerId,
         image: images,
         mobileNumber,
-        stock,
         additionalInfo
     });
     const savedProduct = await newService.save();

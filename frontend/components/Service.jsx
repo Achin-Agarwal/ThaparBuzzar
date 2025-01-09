@@ -194,10 +194,10 @@ const Service = () => {
     formData.append("price", currentService.price);
     formData.append("name", currentService.name);
     formData.append("description", currentService.description);
-    formData.append("category", currentService.category);
-    formData.append("stock", JSON.stringify(currentService.stock));
-    formData.append("promoCode", JSON.stringify(currentService.promoCode));
     formData.append("sellerId", decoded._id);
+    formData.append("domain", currentService.domain);
+    formData.append("mobileNumber", currentService.mobileNumber);
+    formData.append("additionalInfo", currentService.additionalInfo);
 
     // Debug: Log the formData content
     for (let [key, value] of formData.entries()) {
