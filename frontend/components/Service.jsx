@@ -8,7 +8,7 @@ import { MdDeleteOutline } from "react-icons/md";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 
-const AddProducts = () => {
+const Service = () => {
   const [products, setProducts] = useState([
     {
       id: null,
@@ -179,7 +179,7 @@ const AddProducts = () => {
 
     const token = localStorage.getItem("authToken");
     const decoded = jwtDecode(token);
-    console.log("Decoded Token:", decoded); 
+
     const formData = new FormData();
 
     // Append images to formData
@@ -384,4 +384,4 @@ const AddProducts = () => {
   );
 };
 
-export default AddProducts;
+export default Service;

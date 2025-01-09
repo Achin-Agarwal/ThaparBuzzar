@@ -14,7 +14,7 @@ router.post("/", async (req, res) => {
     const { email, role, name, password, number,sellerName , businessName} = req.body;
     console.log(email, role, name, password, number,sellerName , businessName);
 
-    if (!email || !role || !name || !password) {
+    if (!email || !role || !password) {
         return res.status(400).json({ message: "Email, role, name, and password are required" });
     }
     

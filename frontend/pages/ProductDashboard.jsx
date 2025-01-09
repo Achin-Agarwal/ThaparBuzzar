@@ -14,10 +14,8 @@ const Dashboard = () => {
     const tokens = localStorage.getItem("authToken");
     console.log(tokens);
     const decoded = jwtDecode(tokens);
-    console.log("Decoded Token:", decoded);
     if (decoded.role === "seller") {
       try {
-        setDecodedToken(decoded);
       } catch (error) {
         console.error("Failed to decode token:", error);
       }
@@ -55,6 +53,16 @@ const Dashboard = () => {
         <Button
           onClick={() => setActiveTab("overview")}
           label="Overview"
+          fontSize="18px"
+        ></Button>
+        <Button
+          onClick={() => setActiveTab("service")}
+          label="Service Details"
+          fontSize="18px"
+        ></Button>
+        <Button
+          onClick={() => setActiveTab("announcement")}
+          label="Announcement"
           fontSize="18px"
         ></Button>
         <Button

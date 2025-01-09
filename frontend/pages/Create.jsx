@@ -10,7 +10,6 @@ const Create = () => {
   const navigate = useNavigate();
   const role = location.state?.role;
   const email = location.state?.email;
-  console.log(role);
   const [formData, setFormData] = useState({
     name: "",
     // sellerName: "",
@@ -80,11 +79,11 @@ const Create = () => {
         ...formData,
         role,
       });
-      console.log('response',response.data);
+      console.log("response", response.data);
       const token = localStorage.setItem("authToken", response.data.token);
-      if (token) {
+      if (response.data.token) {
         if (response.data.message === "Seller account created successfully") {
-          console.log("seller");
+          console.log("seller 1");
           navigate("/dashboard");
         } else if (
           response.data.message === "Buyer account created successfully"
@@ -98,11 +97,6 @@ const Create = () => {
           userExists: response.data.message,
         }));
       }
-      alert(
-        `${
-          role.charAt(0).toUpperCase() + role.slice(1)
-        } account created successfully!`
-      );
     } catch (err) {
       if (err.response && err.response.status === 409) {
         setErrors({

@@ -18,6 +18,7 @@ import "./App.css";
 import BuyerDashboard from "../pages/BuyerDashboard";
 import UserProfile from "../components/UserProfile";
 import Orders from "../components/Orders";
+import Service from "../components/Service";
 
 const App = () => {
   const GoogleAuthWrapper = () => {
@@ -47,6 +48,7 @@ const App = () => {
           <Route path="/buyer" element={<BuyerDashboard />} />
           <Route path="/profile" element={<UserProfile />} />
           <Route path="/orders" element={<Orders/>} />
+          <Route path="/service" element={<Service/>} />
           <Route path="*" element={<h1>Not Found</h1>} />
         </Routes>
       </div>
