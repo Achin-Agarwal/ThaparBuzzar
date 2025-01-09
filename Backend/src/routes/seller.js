@@ -30,12 +30,14 @@ router.post('/addproduct', isLogin, productImageUpload, safeHandler( async (req,
 
         const { name, description, price, category, stock, promoCode } = validatedData;
         const sellerId = req.body.sellerId;
+
         console.log("Seller ID: "); console.log(sellerId);
+
         if (!sellerId) { console.log(sellerId);
             return res.error(400, 'Seller ID is required', 'MISSING_VENDOR_ID');
         }
         const seller = await Seller.findById(sellerId);
-
+console.log("Seller: "); console.log(seller);
         // Collect filenames from uploaded files
         const images = req.files.map((file) => file.filename);
 
@@ -50,6 +52,9 @@ router.post('/addproduct', isLogin, productImageUpload, safeHandler( async (req,
             promoCode
         });
         const savedProduct = await newProduct.save();
+        if (!seller) {
+            return res.status(404).json({ message: 'Seller not found' });
+        }
         seller.products.push(savedProduct._id);
         await seller.save();
 
