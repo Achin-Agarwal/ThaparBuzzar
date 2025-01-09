@@ -19,6 +19,7 @@ import BuyerDashboard from "../pages/BuyerDashboard";
 import UserProfile from "../components/UserProfile";
 import Orders from "../components/Orders";
 import Service from "../components/Service";
+import Announcements from "../components/Announcements";
 
 const App = () => {
   const GoogleAuthWrapper = () => {
@@ -49,6 +50,7 @@ const App = () => {
           <Route path="/profile" element={<UserProfile />} />
           <Route path="/orders" element={<Orders/>} />
           <Route path="/service" element={<Service/>} />
+          <Route path="/announcement" element={<Announcements/>} />
           <Route path="*" element={<h1>Not Found</h1>} />
         </Routes>
       </div>

@@ -6,6 +6,8 @@ import Overview from "../components/Overview";
 import url from "../url";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+import Service from "../components/Service";
+import Announcements from "../components/Announcements";
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("productDetails");
@@ -30,6 +32,10 @@ const Dashboard = () => {
         return <AddProducts />;
       case "overview":
         return <Overview />;
+      case "service":
+        return <Service />;
+      case "announcement":
+        return <Announcements />;
       default:
         return <h2>Select an option</h2>;
     }
