@@ -10,41 +10,45 @@ import config from "../config/config.js";
 
 const router = express.Router();
 
-router.post("/", async (req, res) => {  
-    const { email, role, name, password, number,sellerName , businessName} = req.body;
-    console.log(email, role, name, password, number,sellerName , businessName);
+router.post("/", async (req, res) => {
+    const { email, role, name, password, number, sellerName, businessName } = req.body;
+    console.log(email, role, name, password, number, sellerName, businessName);
 
     if (!email || !role || !name || !password) {
-        return res.status(400).json({ message: "Email, role, name, and password are required" });
+        return res.status(200).json({ message: "Email, role, name, and password are required" });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
+    const existingUser = await (role === "buyer" ? Buyer.findOne({ "email.address": email }) : Seller.findOne({ "email.address": email }));
 
+    if (existingUser) {
+        return res.status(200).json({ message: "Email already registered" });
+    }
     let user;
     if (role === "buyer") {
-        console.log("buyer creation block",role);
+        // console.log("buyer creation block", role);
         user = new Buyer({
             name,
             email: { address: email, isVerified: true },
             password: hashedPassword,
             // birthday: dateOfBirth
-            phoneNumber:number,
+            phoneNumber: number,
         });
     } else if (role === "seller") {
-        console.log("seller creation block",role);
+        // console.log("seller creation block", role);
 
         user = new Seller({
             // sellerName,
             email: { address: email, isVerified: true },
             password: hashedPassword,
-            businessName:businessName,
+            businessName: businessName,
             contactDetails: { email: email, phoneNumber: number },
         });
     } else {
         return res.status(400).json({ message: "Invalid role" });
     }
-    console.log("user created");    
-    console.log (user);
+    console.log("user created");
+    console.log(user);
 
     await user.save();
 
@@ -62,7 +66,7 @@ router.post("/", async (req, res) => {
 
 
 
-router.post("/verifyemail", async (req, res) => {  
+router.post("/verifyemail", async (req, res) => {
     const { email, role } = req.body;
     await otpModel.deleteMany({ user: email, role: role });
 
@@ -108,7 +112,7 @@ router.post("/verifyemail", async (req, res) => {
     const validTill = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes from now
 
     const newOtp = new otpModel({
-       user: email,
+        user: email,
         otp: otp,
         validTill: validTill,
         role: role,
@@ -132,7 +136,7 @@ router.put("/verifyotp", async (req, res) => {
     if (!otpRecord) {
         return res.status(200).json({ message: "Invalid OTP" });
     }
-  
+
 
     if (otpRecord.validTill < new Date()) {
         return res.status(200).json({ message: "OTP has expired" });
