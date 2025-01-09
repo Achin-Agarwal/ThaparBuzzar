@@ -23,7 +23,8 @@ const buyerSchema = new mongoose.Schema({
     password: {
         type: String,
         required: false,
-        trim: true
+        trim: true,
+        default: "account createdby google"
     },
     // birthday: {
     //     type: Date
