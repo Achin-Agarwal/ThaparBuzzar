@@ -115,6 +115,12 @@ router.post("/google", async (req, res, next) => {
 
 router.post("/login ", async (req, res, next) => {
     const { email, role, password } = req.body;
+    console.log("email: ");
+    console.log(email);
+    console.log("role: ");
+    console.log(role);
+    console.log("password: ");
+    console.log (password);
     if (!email || !role) {
         return res.status(400).json({ message: "Email and role are required" });
     }
