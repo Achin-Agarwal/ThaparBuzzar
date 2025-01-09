@@ -9,7 +9,7 @@ import url from "../url";
 import image from "../src/assets/image.png";
 
 const LoginSwitcher = () => {
-  const [activeTab, setActiveTab] = useState("buyer"); // 'buyer' or 'seller'
+  const [activeTab, setActiveTab] = useState("buyer");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -32,19 +32,26 @@ const LoginSwitcher = () => {
     setLoading(true);
     setError("");
     try {
-      //   const response = await axios.post('http://localhost:5000/api/login', {
-      //     email,
-      //     password,
-      //     role: activeTab,
-      //   });
-
-      //   const { token } = response.data;
-      //   localStorage.setItem('authToken', token);
-      //   alert(`${activeTab.charAt(0).toUpperCase() + activeTab.slice(1)} logged in successfully!`);
       console.log(email, password, activeTab);
-      if (activeTab === "buyer") {
+      const response = await axios.post(url + "/auth/login", {
+        email,
+        password,
+        role: activeTab,
+      });
+
+      const { token } = response.data;
+      const decoded = jwtDecode(token);
+      console.log(decoded);
+      localStorage.setItem("authToken", token);
+      alert(
+        `${
+          activeTab.charAt(0).toUpperCase() + activeTab.slice(1)
+        } logged in successfully!`
+      );
+      console.log(email, password, activeTab);
+      if (decoded.role === "buyer") {
         navigate("/");
-      } else if (activeTab === "seller") {
+      } else if (decoded.role === "seller") {
         navigate("/dashboard");
       }
     } catch (err) {
@@ -141,6 +148,7 @@ const LoginSwitcher = () => {
               disabled={loading}
               fontSize="18px"
               padding="12px 22px"
+              onClick={handleLogin}
             ></Button>
           </div>
           <div className="dont-have-account">
@@ -153,11 +161,7 @@ const LoginSwitcher = () => {
             </div>
             <h3>OR</h3>
             <button className="google-button" onClick={googleLogin}>
-              <img
-                src={image}
-                alt="Google logo"
-                className="google-logo"
-              />
+              <img src={image} alt="Google logo" className="google-logo" />
               Continue with Google
             </button>
           </div>
