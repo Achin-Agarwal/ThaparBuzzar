@@ -9,16 +9,16 @@ import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 
 const Service = () => {
-  const [products, setProducts] = useState([
+  const [services, setServices] = useState([
     {
       id: null,
       name: "",
-      category: "",
+      domain: "",
       price: "",
       description: "",
       images: [],
-      stock: { available: "" },
-      promoCode: { code: "", numberOfUses: "" },
+      mobileNumber: "",
+      additionalInfo: "",
     },
   ]);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -29,7 +29,7 @@ const Service = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchProducts = async () => {
+    const fetchServices = async () => {
       const tokens = localStorage.getItem("authToken");
       console.log(tokens);
       const decoded = jwtDecode(tokens);
@@ -38,71 +38,70 @@ const Service = () => {
         try {
           const token = localStorage.getItem("authToken");
           console.log("this is " + token);
-          const response = await axios.get(url + "/seller/userproducts", {
+          const response = await axios.get(url + "/seller/userservices", {
             headers: { authorization: `Bearer ${token}` },
           });
           console.log(response.data);
-          setProducts(
-            response.data.products.length > 0
-              ? response.data.products
+          setServices(
+            response.data.services.length > 0
+              ? response.data.services
               : [
                   {
                     id: null,
                     name: "",
-                    category: "",
+                    domain: "",
                     price: "",
                     description: "",
                     images: [],
-                    stock: { available: "" },
-                    promoCode: { code: "", numberOfUses: "" },
+                    mobileNumber: "",
+                    additionalInfo: "",
                   },
                 ]
           );
         } catch (error) {
-          console.error("Error fetching products:", error);
+          console.error("Error fetching services:", error);
         }
-      }
-      else{
+      } else {
         navigate("/login");
       }
     };
-    fetchProducts();
+    fetchServices();
   }, []);
 
-  const handleAddNewProduct = () => {
-    setProducts([
-      ...products,
+  const handleAddNewService = () => {
+    setServices([
+      ...services,
       {
         id: null,
         name: "",
-        category: "",
+        domain: "",
         price: "",
         description: "",
         images: [],
-        stock: { available: "" },
-        promoCode: { code: "", numberOfUses: "" },
+        mobileNumber: "",
+        additionalInfo: "",
       },
     ]);
-    setActiveIndex(products.length);
+    setActiveIndex(services.length);
     setIsEditable(true);
   };
 
   const handleInputChange = (index, event) => {
     const { name, value, files } = event.target;
-    setProducts((prevProducts) => {
-      const updatedProducts = [...prevProducts];
+    setServices((prevServices) => {
+      const updatedServices = [...prevServices];
       if (name === "images") {
-        updatedProducts[index].images = files ? Array.from(files) : [];
+        updatedServices[index].images = files ? Array.from(files) : [];
       } else if (name.includes(".")) {
         const [section, field] = name.split(".");
-        updatedProducts[index][section][field] =
+        updatedServices[index][section][field] =
           field === "available" || field === "numberOfUses"
             ? Number(value)
             : value;
       } else {
-        updatedProducts[index][name] = name === "price" ? Number(value) : value;
+        updatedServices[index][name] = name === "price" ? Number(value) : value;
       }
-      return updatedProducts;
+      return updatedServices;
     });
   };
 
@@ -115,67 +114,67 @@ const Service = () => {
   };
 
   const handleDelete = async () => {
-    const currentProduct = products[activeIndex];
-    console.log("current id " + currentProduct._id);
-    if (!currentProduct._id) {
-      setProducts((prevProducts) =>
-        prevProducts.filter((_, index) => index !== activeIndex)
+    const currentService = services[activeIndex];
+    console.log("current id " + currentService._id);
+    if (!currentService._id) {
+      setServices((prevServices) =>
+        prevServices.filter((_, index) => index !== activeIndex)
       );
       setActiveIndex(0);
-      setStatusMessage(`Product ${activeIndex + 1} deleted`);
+      setStatusMessage(`Service ${activeIndex + 1} deleted`);
       return;
     }
 
     try {
-      await axios.delete(`${url}/seller/delete/${currentProduct._id}`);
-      setProducts((prevProducts) =>
-        prevProducts.filter((_, index) => index !== activeIndex)
+      await axios.delete(`${url}/seller/deleteservice/${currentService._id}`);
+      setServices((prevServices) =>
+        prevServices.filter((_, index) => index !== activeIndex)
       );
       setActiveIndex(0);
-      setStatusMessage(`Product ${activeIndex + 1} deleted successfully`);
+      setStatusMessage(`Service ${activeIndex + 1} deleted successfully`);
     } catch (error) {
-      console.error("Failed to delete product:", error);
+      console.error("Failed to delete service:", error);
     }
   };
 
   const handleSave = async () => {
-    const currentProduct = products[activeIndex];
+    const currentService = services[activeIndex];
 
     // // Validation
     // if (
-    //   !currentProduct.name ||
-    //   !currentProduct.category ||
-    //   !currentProduct.price ||
-    //   !currentProduct.description ||
-    //   !currentProduct.images.length ||
-    //   currentProduct.stock.available <= 0
+    //   !currentService.name ||
+    //   !currentService.category ||
+    //   !currentService.price ||
+    //   !currentService.description ||
+    //   !currentService.images.length ||
+    //   currentService.stock.available <= 0
     // ) {
-    //   alert(`Please fill out all fields for Product ${activeIndex + 1}`);
+    //   alert(`Please fill out all fields for Service ${activeIndex + 1}`);
     //   return;
     // }
 
-    if (currentProduct._id) {
-      // Update existing product
+    if (currentService._id) {
+      // Update existing Service
       try {
         const response = await axios.patch(
-          `${url}/products/${currentProduct._id}`,
-          currentProduct
+          `${url}/services/${currentService._id}`,
+          currentService
         );
-        alert(`Product ${activeIndex + 1} updated successfully`);
+        alert(`Service ${activeIndex + 1} updated successfully`);
         console.log(response.data);
       } catch (error) {
-        console.error("Failed to update product:", error);
-        alert(`Failed to update Product ${activeIndex + 1}`);
+        console.error("Failed to update Service:", error);
+        alert(`Failed to update Service ${activeIndex + 1}`);
       }
     }
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const currentProduct = products[activeIndex];
+    const currentService = services[activeIndex];
 
     // Debug: Check if images are correctly stored in the state
-    console.log("Images to upload:", currentProduct.images);
+    console.log("Images to upload:", currentService.images);
 
     const token = localStorage.getItem("authToken");
     const decoded = jwtDecode(token);
@@ -183,8 +182,8 @@ const Service = () => {
     const formData = new FormData();
 
     // Append images to formData
-    if (currentProduct.images && currentProduct.images.length > 0) {
-      currentProduct.images.forEach((image, index) => {
+    if (currentService.images && currentService.images.length > 0) {
+      currentService.images.forEach((image, index) => {
         formData.append(`images`, image, image.name || `image_${index}`);
       });
     } else {
@@ -192,12 +191,12 @@ const Service = () => {
     }
 
     // Append other fields
-    formData.append("price", currentProduct.price);
-    formData.append("name", currentProduct.name);
-    formData.append("description", currentProduct.description);
-    formData.append("category", currentProduct.category);
-    formData.append("stock", JSON.stringify(currentProduct.stock));
-    formData.append("promoCode", JSON.stringify(currentProduct.promoCode));
+    formData.append("price", currentService.price);
+    formData.append("name", currentService.name);
+    formData.append("description", currentService.description);
+    formData.append("category", currentService.category);
+    formData.append("stock", JSON.stringify(currentService.stock));
+    formData.append("promoCode", JSON.stringify(currentService.promoCode));
     formData.append("sellerId", decoded._id);
 
     // Debug: Log the formData content
@@ -206,32 +205,32 @@ const Service = () => {
     }
 
     try {
-      const response = await axios.post(url + "/seller/addproduct", formData, {
+      const response = await axios.post(url + "/seller/addservices", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           authorization: `Bearer ${token}`,
         },
       });
-      setProducts((prevProducts) => {
-        const updatedProducts = [...prevProducts];
-        updatedProducts[activeIndex].id = response.data.id;
-        return updatedProducts;
+      setServices((prevServices) => {
+        const updatedServices = [...prevServices];
+        updatedServices[activeIndex].id = response.data.id;
+        return updatedServices;
       });
-      alert(`Product ${activeIndex + 1} added successfully`);
+      alert(`Service ${activeIndex + 1} added successfully`);
     } catch (error) {
-      console.error("Failed to add product:", error);
-      alert(`Failed to add Product ${activeIndex + 1}`);
+      console.error("Failed to add Service:", error);
+      alert(`Failed to add Service ${activeIndex + 1}`);
     }
   };
 
-  console.log(products.length);
+  console.log(services.length);
   return (
     <div className="add-products">
-      <div className="product-buttons">
-        {products.map((_, index) => (
+      <div className="service-buttons">
+        {services.map((service, index) => (
           <Button
-            key={`product-${index}`}
-            label={`Product ${index + 1}`}
+            key={`service-${index}`}
+            label={service.name || `Service ${index + 1}`}
             onClick={() => {
               setActiveIndex(index);
               setIsEditable(false);
@@ -243,7 +242,7 @@ const Service = () => {
         ))}
         <Button
           label="+"
-          onClick={handleAddNewProduct}
+          onClick={handleAddNewService}
           isIcon
           borderRadius="5px"
           padding="10px 15px"
@@ -260,7 +259,7 @@ const Service = () => {
             color="white"
             fontSize="18px"
           />
-          {products.length > 1 && (
+          {services.length > 1 && (
             <Button
               onClick={handleDelete}
               bgColor="red"
@@ -275,40 +274,28 @@ const Service = () => {
             </Button>
           )}
         </div>
-        <form onSubmit={handleSubmit}>
+        <form>
+        <InputField
+            placeholder="Domain"
+            type="text"
+            name="domain"
+            value={services[activeIndex].domain}
+            onChange={(event) => handleInputChange(activeIndex, event)}
+            disabled={!isEditable}
+          />
           <InputField
             placeholder="Name"
             type="text"
             name="name"
-            value={products[activeIndex].name}
+            value={services[activeIndex].name}
             onChange={(event) => handleInputChange(activeIndex, event)}
             disabled={!isEditable}
           />
-
-          <div className="input-field1">
-            <select
-              name="category"
-              value={products[activeIndex].category}
-              onChange={(event) => handleInputChange(activeIndex, event)}
-              disabled={!isEditable}
-              style={{ cursor: !isEditable ? "not-allowed" : "auto" }}
-            >
-              <option value="">Select Category</option>
-              <option value="Electronics">Electronics</option>
-              <option value="Fashion">Fashion</option>
-              <option value="Collectibles and Art">Collectibles and Art</option>
-              <option value="Beauty">Beauty</option>
-              <option value="Services">Services</option>
-              <option value="Other">Other</option>
-              disabled={!isEditable}
-            </select>
-          </div>
-
           <InputField
             placeholder="Price"
             type="number"
             name="price"
-            value={products[activeIndex].price}
+            value={services[activeIndex].price}
             onChange={(event) => handleInputChange(activeIndex, event)}
             disabled={!isEditable}
           />
@@ -316,33 +303,10 @@ const Service = () => {
             placeholder="Description"
             type="text"
             name="description"
-            value={products[activeIndex].description}
+            value={services[activeIndex].description}
             onChange={(event) => handleInputChange(activeIndex, event)}
             disabled={!isEditable}
           />
-          <InputField
-            placeholder="Stock"
-            type="number"
-            name="stock.available"
-            value={products[activeIndex].stock?.available || ""}
-            onChange={(event) => handleInputChange(activeIndex, event)}
-            disabled={!isEditable}
-          />
-          {/* <InputField
-            placeholder="Estimated delivery"
-            type="text"
-            name="delivery"
-            value={products[activeIndex].delivery}
-            onChange={(event) => handleInputChange(activeIndex, event)}
-          /> */}
-          {/* <h1>Product Colours</h1> */}
-          {/* <InputField
-            placeholder="Color name"
-            type="text"
-            name="colorName"
-            value={products[activeIndex].colorName}
-            onChange={(event) => handleInputChange(activeIndex, event)}
-          /> */}
           <InputField
             placeholder="Images"
             type="file"
@@ -352,22 +316,23 @@ const Service = () => {
             disabled={!isEditable}
           />
           <InputField
-            placeholder="Promo code"
+            placeholder="Contact Details"
             type="text"
-            name="promoCode.code"
-            value={products[activeIndex].promoCode?.code || ""}
+            name="mobileNumber"
+            value={services[activeIndex].mobileNumber}
             onChange={(event) => handleInputChange(activeIndex, event)}
             disabled={!isEditable}
           />
           <InputField
             placeholder="Number of uses for Promo Code"
             type="number"
-            name="promoCode.numberOfUses"
-            value={products[activeIndex].promoCode?.numberOfUses || ""}
+            name="additionalInfo"
+            value={services[activeIndex].additionalInfo}
             onChange={(event) => handleInputChange(activeIndex, event)}
             disabled={!isEditable}
           />
-          {products[activeIndex].id === null && (
+        </form>
+        {services[activeIndex].id === null && (
             <div className="action-buttons">
               <Button
                 label="Submit"
@@ -375,10 +340,10 @@ const Service = () => {
                 bgColor="black"
                 color="white"
                 fontSize="18px"
+                onClick={handleSubmit}
               />
             </div>
           )}
-        </form>
       </div>
     </div>
   );

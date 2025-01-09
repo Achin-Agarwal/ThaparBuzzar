@@ -7,6 +7,7 @@ import ImageSlider from "../components/Image";
 import { useGoogleLogin } from "@react-oauth/google";
 import url from "../url";
 import image from "../src/assets/image.png";
+import { jwtDecode } from "jwt-decode";
 
 const LoginSwitcher = () => {
   const [activeTab, setActiveTab] = useState("buyer");
@@ -32,16 +33,16 @@ const LoginSwitcher = () => {
     setLoading(true);
     setError("");
     try {
-      console.log(email, password, activeTab);
       const response = await axios.post(url + "/auth/login", {
         email,
         password,
         role: activeTab,
       });
+      console.log(response.data);
 
       const { token } = response.data;
-      const decoded = jwtDecode(token);
-      console.log(decoded);
+      const decode=jwtDecode(token)
+      console.log(decode)
       localStorage.setItem("authToken", token);
       alert(
         `${
@@ -49,9 +50,9 @@ const LoginSwitcher = () => {
         } logged in successfully!`
       );
       console.log(email, password, activeTab);
-      if (decoded.role === "buyer") {
+      if (decode.role === "buyer") {
         navigate("/");
-      } else if (decoded.role === "seller") {
+      } else if (decode.role === "seller") {
         navigate("/dashboard");
       }
     } catch (err) {
@@ -162,7 +163,7 @@ const LoginSwitcher = () => {
             <h3>OR</h3>
             <button className="google-button" onClick={googleLogin}>
               <img src={image} alt="Google logo" className="google-logo" />
-              Continue with Google
+              Sign in with Google
             </button>
           </div>
         </div>

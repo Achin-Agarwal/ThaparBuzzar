@@ -61,8 +61,7 @@ const AddProducts = () => {
         } catch (error) {
           console.error("Error fetching products:", error);
         }
-      }
-      else{
+      } else {
         navigate("/login");
       }
     };
@@ -179,7 +178,7 @@ const AddProducts = () => {
 
     const token = localStorage.getItem("authToken");
     const decoded = jwtDecode(token);
-    console.log("Decoded Token:", decoded); 
+    console.log("Decoded Token:", decoded);
     const formData = new FormData();
 
     // Append images to formData
@@ -228,10 +227,10 @@ const AddProducts = () => {
   return (
     <div className="add-products">
       <div className="product-buttons">
-        {products.map((_, index) => (
+        {products.map((product, index) => (
           <Button
             key={`product-${index}`}
-            label={`Product ${index + 1}`}
+            label={product.name || `Product ${index + 1}`}
             onClick={() => {
               setActiveIndex(index);
               setIsEditable(false);
@@ -275,7 +274,7 @@ const AddProducts = () => {
             </Button>
           )}
         </div>
-        <form onSubmit={handleSubmit}>
+        <form>
           <InputField
             placeholder="Name"
             type="text"
@@ -367,18 +366,19 @@ const AddProducts = () => {
             onChange={(event) => handleInputChange(activeIndex, event)}
             disabled={!isEditable}
           />
-          {products[activeIndex].id === null && (
-            <div className="action-buttons">
-              <Button
-                label="Submit"
-                type="submit"
-                bgColor="black"
-                color="white"
-                fontSize="18px"
-              />
-            </div>
-          )}
         </form>
+        {products[activeIndex].id === null && (
+          <div className="action-buttons">
+            <Button
+              label="Submit"
+              type="submit"
+              bgColor="black"
+              color="white"
+              fontSize="18px"
+              onClick={handleSubmit}
+            />
+          </div>
+        )}
       </div>
     </div>
   );
