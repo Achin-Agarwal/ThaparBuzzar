@@ -16,7 +16,7 @@ const Create = () => {
     // sellerName: "",
     businessName: "",
     email: email,
-    number:"",
+    number: "",
     // dateOfBirth: "",
     password: "",
     confirmPassword: "",
@@ -80,14 +80,17 @@ const Create = () => {
         ...formData,
         role,
       });
-      // const token = localStorage.setItem("authToken", response.data.token);
-      if (response.data.message === "Buyer account created successfully") {
-        if (role === "seller") {
+      console.log('response',response.data);
+      const token = localStorage.setItem("authToken", response.data.token);
+      if (token) {
+        if (response.data.message === "Seller account created successfully") {
           console.log("seller");
           navigate("/dashboard");
-        } else {
+        } else if (
+          response.data.message === "Buyer account created successfully"
+        ) {
           console.log("buyer");
-          navigate("/buyer",{state:{response:response.data}});
+          navigate("/buyer", { state: { response: response.data } });
         }
       } else {
         setErrors((prevErrors) => ({
@@ -121,14 +124,15 @@ const Create = () => {
     <div className="create-container">
       <h2>Create {role.charAt(0).toUpperCase() + role.slice(1)} Account</h2>
       <form className="create-form" onSubmit={handleSubmit}>
-        {role === "seller" ? (<>
-          <InputField
-            placeholder="Enter your Business Name"
-            type="text"
-            name="businessName"
-            value={formData.businessName}
-            onChange={handleChange}
-          />
+        {role === "seller" ? (
+          <>
+            <InputField
+              placeholder="Enter your Business Name"
+              type="text"
+              name="businessName"
+              value={formData.businessName}
+              onChange={handleChange}
+            />
           </>
         ) : (
           <InputField

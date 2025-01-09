@@ -12,14 +12,14 @@ const router = express.Router();
 
 router.post("/", async (req, res) => {  
     const { email, role, name, password, number,sellerName , businessName} = req.body;
-    console.log(email, role, name, password, number,sellerName , businessName);
-
-    if (!email || !role || !name || !password) {
-        return res.status(400).json({ message: "Email, role, name, and password are required" });
+    
+    if (!email || !role || !password) {
+        return res.status(200).json({ message: "Email, role, name, and password are required" });
     }
-
+    
     const hashedPassword = await bcrypt.hash(password, 10);
-
+    
+    console.log(email, role, name,hashedPassword, number,sellerName , businessName);
     let user;
     if (role === "buyer") {
         console.log("buyer creation block",role);
