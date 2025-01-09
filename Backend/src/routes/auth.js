@@ -112,6 +112,7 @@ router.post("/google", async (req, res, next) => {
 
 
 });
+
 router.post("/login ", async (req, res, next) => {
     const { email, role, password } = req.body;
     if (!email || !role) {
@@ -145,5 +146,4 @@ router.post("/login ", async (req, res, next) => {
     });
     res.status(200).json({ message: "Login successful", token, user });
 });
-
 export default router;
