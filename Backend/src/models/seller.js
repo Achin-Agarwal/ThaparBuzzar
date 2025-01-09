@@ -54,6 +54,12 @@ const sellerSchema = new mongoose.Schema({
             ref: 'Product' // Products sold by the seller
         }
     ],
+    services: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Service' // Services offered by the seller
+        }
+    ],
     ratings: {
         averageRating: { type: Number, default: 0.0 }, // Average rating of the seller
         numberOfReviews: { type: Number, default: 0 } // Number of reviews received
