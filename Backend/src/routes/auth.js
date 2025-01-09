@@ -113,7 +113,8 @@ router.post("/google", async (req, res, next) => {
 
 });
 
-router.post("/login ", async (req, res, next) => {
+router.post("/login", async (req, res, next) => {
+    console.log("login");
     const { email, role, password } = req.body;
     console.log("email: ");
     console.log(email);
