@@ -88,6 +88,39 @@ router.delete('/delete/:id', async (req, res) => {
     }
 });
 
+
+// Delete a product
+router.delete('/delete/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const deletedProduct = await Product.findByIdAndDelete(id);
+        if (!deletedProduct) {
+            return res.status(404).json({ message: 'Product not found' });
+        }
+
+        const seller = await Seller.findById(deletedProduct.seller);
+        if (seller) {
+            seller.products.pull(deletedProduct._id);
+            await seller.save();
+        }
+
+        res.status(200).json({ message: 'Product deleted successfully' });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+router.get("/userproducts", isLogin, safeHandler(async (req, res) => {
+    if (req.user.role === "buyer") {
+        return res.status(401).json({ message: "Unauthorized access" });
+    }
+    console.log(req.user);
+    const user = await Seller.findById(req.user._id).populate("products").exec();
+    res.json(user);
+}));
+
+
+
 router.post('/addservices', isLogin, productImageUpload, safeHandler(async (req, res) => {
     if (req.user.role === "buyer") {
         return res.status(401).json({ message: "Unauthorized access" });
@@ -143,32 +176,32 @@ router.post('/addservices', isLogin, productImageUpload, safeHandler(async (req,
 
 
 // Delete a product
-router.delete('/delete/:id', async (req, res) => {
+router.delete('/deleteservice/:id', async (req, res) => {
     try {
         const { id } = req.params;
 
-        const deletedProduct = await Product.findByIdAndDelete(id);
+        const deletedProduct = await Service.findByIdAndDelete(id);
         if (!deletedProduct) {
             return res.status(404).json({ message: 'Product not found' });
         }
 
         const seller = await Seller.findById(deletedProduct.seller);
         if (seller) {
-            seller.products.pull(deletedProduct._id);
+            seller.services.pull(deletedProduct._id);
             await seller.save();
         }
 
-        res.status(200).json({ message: 'Product deleted successfully' });
+        res.status(200).json({ message: 'service deleted successfully' });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 });
-router.get("/userproducts", isLogin, safeHandler(async (req, res) => {
+router.get("/userservices", isLogin, safeHandler(async (req, res) => {
     if (req.user.role === "buyer") {
         return res.status(401).json({ message: "Unauthorized access" });
     }
     console.log(req.user);
-    const user = await Seller.findById(req.user._id).populate("products").exec();
+    const user = await Seller.findById(req.user._id).populate("services").exec();
     res.json(user);
 }));
 
