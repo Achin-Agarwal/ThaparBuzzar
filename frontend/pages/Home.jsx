@@ -8,23 +8,24 @@ import img from "../src/assets/clg logo.png";
 import { useNavigate } from "react-router-dom";
 import ImageSlider from "../components/Image";
 import Scroll from "../components/Scroll";
+import { FaArrowRight } from "react-icons/fa";
 
 const Home = () => {
   const [products, setProducts] = useState([]);
   const navigate = useNavigate();
   console.log(products);
-  const images=[
-      "../src/assets/1.jpg",
-      "../src/assets/2.jpg",
-      "../src/assets/3.jpg",
-      "../src/assets/4.jpg",
-      "../src/assets/5.jpg",
-      "../src/assets/6.jpg",
-      "../src/assets/7.jpg",
-      "../src/assets/8.jpg",
-      "../src/assets/9.jpg",
-      "../src/assets/10.jpg",
-    ];
+  const images = [
+    "../src/assets/1.jpg",
+    "../src/assets/2.jpg",
+    "../src/assets/3.jpg",
+    "../src/assets/4.jpg",
+    "../src/assets/5.jpg",
+    "../src/assets/6.jpg",
+    "../src/assets/7.jpg",
+    "../src/assets/8.jpg",
+    "../src/assets/9.jpg",
+    "../src/assets/10.jpg",
+  ];
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -59,26 +60,33 @@ const Home = () => {
   };
 
   return (
-    <div>
-      <div className="home-image"><ImageSlider images={images}/></div>
-      <h1>Bestsellers</h1>
-      <div className="bestsellers">
-        {products.map((product) => (
-          <div className="card-container" key={product.category}>
-            <div className="bestseller-card">
-              <h4>{product.category}</h4>
-              <Card
-                name={product.name}
-                image={
-                  img
-                }
-                price={product.price}
-                rating={product.rating}
-                onClick={() => handleCardClick(product.category)}
-              />
+    <div className="home-container">
+      <div className="home-image">
+        <ImageSlider images={images} />
+      </div>
+      <div className="bestsellers-section">
+        <h1 className="bestsellers-heading">Bestsellers</h1>
+        <div className="bestsellers">
+          {products.map((product) => (
+            <div className="card-container" key={product.category}>
+              <div className="bestseller-card">
+                <h4 className="category-heading">
+                  {product.category}
+                  <span onClick={() => handleCardClick(product.category)}>
+                  <FaArrowRight />
+                  </span>
+                </h4>
+                <Card
+                  name={product.name}
+                  image={img}
+                  price={product.price}
+                  rating={product.rating}
+                  onClick={() => handleCardClick(product.category)}
+                />
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
       <Scroll />
     </div>
