@@ -20,6 +20,8 @@ import UserProfile from "../components/UserProfile";
 import Orders from "../components/Orders";
 import Service from "../components/Service";
 import Announcements from "../components/Announcements";
+import BuyNow from "../pages/BuyNow";
+import COD from "../components/COD";
 
 const App = () => {
   const GoogleAuthWrapper = () => {
@@ -51,6 +53,8 @@ const App = () => {
           <Route path="/orders" element={<Orders/>} />
           <Route path="/service" element={<Service/>} />
           <Route path="/announcement" element={<Announcements/>} />
+          <Route path="/buynow" element={<BuyNow/>} />
+          <Route path="/cod" element={<COD/>} />
           <Route path="*" element={<h1>Not Found</h1>} />
         </Routes>
       </div>

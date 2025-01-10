@@ -11,8 +11,6 @@ const BuyerDashboard = () => {
   const [activeTab, setActiveTab] = useState("productDetails");
   const location=useLocation()
   const navigate = useNavigate();
-  const { response }=location.state || {};
-  console.log(response.user);
 
   useEffect(() => {
     const tokens = localStorage.getItem("authToken");

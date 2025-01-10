@@ -196,31 +196,11 @@ const UserProfile = () => {
             disabled={!isEditable}
           />
           <div className="address-container">
-            <p>Addresses:</p>
-            {isEditable && (
-              <Button
-                label="+"
-                onClick={() => addAddress(activeIndex)}
-                bgColor="green"
-                color="white"
-              />
-            )}
+            <h2>Addresses:</h2>
           </div>
           <div className="address-fields-container">
             {products[activeIndex].addresses.map((address, addressIndex) => (
               <div key={addressIndex} className="address-fields">
-                <div className="cross-button">
-                  {isEditable && products[activeIndex].addresses.length > 1 && (
-                    <Button
-                      onClick={() => deleteAddress(activeIndex, addressIndex)}
-                      bgColor="red"
-                      color="white"
-                      padding="5px"
-                    >
-                        <ImCross/>
-                    </Button>
-                  )}
-                </div>
                 <InputField
                   placeholder="City"
                   type="text"

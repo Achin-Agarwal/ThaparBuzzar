@@ -62,8 +62,6 @@ const AddProducts = () => {
         } catch (error) {
           console.error("Error fetching products:", error);
         }
-      } else {
-        navigate("/login");
       }
     };
     fetchProducts();

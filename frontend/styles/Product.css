@@ -84,8 +84,10 @@
     cursor: not-allowed;
   }
   
-  .action-buttons {
+  .action-buttonss {
     display: flex;
+    justify-content: center;
+    padding: 0.5rem 0rem;
     gap: 1rem;
   }
   

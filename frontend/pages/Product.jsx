@@ -91,7 +91,7 @@ const Product = ({productadd}) => {
 
   const handleBuyNow = () => {
     alert(`Proceeding to buy ${products.name} with quantity ${quantity}`);
-    // Implement actual buy logic
+    navigate("/buynow", { state: { price:products.price*quantity } });
   };
 
   const increaseQuantity = () => {
@@ -158,7 +158,7 @@ const Product = ({productadd}) => {
               +
             </button>
           </div>
-          <div className="action-buttons">
+          <div className="action-buttonss">
             {products.stock?.available > 0 ? (
               <>
                 <button className="btn add-to-cart" onClick={handleAddToCart}>
