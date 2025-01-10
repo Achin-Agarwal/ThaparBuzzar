@@ -4,14 +4,17 @@ import config from './src/config/config.js';
 import responseHandler from './src/middleware/responseHandler.js';
 import cors from 'cors';
 import path from 'path';
+//routes
 import seller from './src/routes/seller.js';
 import home from './src/routes/home.js';
 import restpass from './src/routes/resetPassword.js';
 import auth from './src/routes/auth.js';
 import creteNewAccount from './src/routes/createNewAccount.js';
-import { fileURLToPath } from 'url';
 
 const app = express();
+const __dirname = path.resolve();
+app.use(express.static(path.join(__dirname, 'public')));
+
 app.use(express.json());
 
 connectMongo();
@@ -22,9 +25,7 @@ connectMongo();
 //     console.log(req.url, req.method);
 //     next();
 // })
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-app.use(express.static(path.join(__dirname, 'public')));
+
 
 app.use(responseHandler);
 app.use(cors({
