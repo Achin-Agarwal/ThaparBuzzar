@@ -9,6 +9,7 @@ import home from './src/routes/home.js';
 import restpass from './src/routes/resetPassword.js';
 import auth from './src/routes/auth.js';
 import creteNewAccount from './src/routes/createNewAccount.js';
+import { fileURLToPath } from 'url';
 
 const app = express();
 app.use(express.json());
@@ -21,7 +22,8 @@ connectMongo();
 //     console.log(req.url, req.method);
 //     next();
 // })
-
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(responseHandler);
