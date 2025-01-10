@@ -168,9 +168,9 @@ const LoginSwitcher = () => {
           </div>
         </div>
       </div>
-      <div className="login-image">
+      {/* <div className="login-image">
         <ImageSlider images={images} />
-      </div>
+      </div> */}
     </div>
   );
 };

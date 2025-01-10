@@ -50,31 +50,36 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard">
-      <div className="sidebar">
+      <div className="sidebar" style={{ backgroundColor: "black" }}>
         <Button
           onClick={() => setActiveTab("productDetails")}
           label="Product Details"
           fontSize="18px"
+          borderRadius="16px"
         ></Button>
         <Button
           onClick={() => setActiveTab("overview")}
           label="Overview"
           fontSize="18px"
+          borderRadius="16px"
         ></Button>
         <Button
           onClick={() => setActiveTab("service")}
           label="Service Details"
           fontSize="18px"
+          borderRadius="16px"
         ></Button>
         <Button
           onClick={() => setActiveTab("announcement")}
           label="Announcement"
           fontSize="18px"
+          borderRadius="16px"
         ></Button>
         <Button
           onClick={handleSignOut}
           label="Sign Out"
           fontSize="18px"
+          borderRadius="16px"
         ></Button>
       </div>
       <div className="content">{renderContent()}</div>

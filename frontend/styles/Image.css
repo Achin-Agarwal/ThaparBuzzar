@@ -35,8 +35,8 @@
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 50rem;
-  height: 25rem;
+  width: 60vw;
+  height: 67vh;
   background-size: cover;
   background-position: center;
   transition: transform 0.7s, opacity 0.5s;

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "../styles/Heading.css";
-import clglogo from "../src/assets/clg logo.png";
+import clglogo from "../src/assets/images.jpg";
 import buzzarlogo from "../src/assets/buzzar logo.png";
 import sign from "../src/assets/sign.jpg";
 import search from "../src/assets/search.png";
@@ -10,6 +10,9 @@ import axios from "axios";
 import url from "../url";
 import { useLocation, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+import { CgProfile } from "react-icons/cg";
+import { IoIosSearch } from "react-icons/io";
+import { BsHandbag } from "react-icons/bs";
 
 const Heading = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -34,11 +37,10 @@ const Heading = () => {
       console.log(decode);
       if (decode.role === "seller") {
         navigate("/dashboard");
-      } else if(decode.role === "buyer"){
+      } else if (decode.role === "buyer") {
         navigate("/buyer");
       }
-    }
-    else {
+    } else {
       navigate("/login");
     }
   };
@@ -54,29 +56,29 @@ const Heading = () => {
         </div>
         <div className="heads">
           <div>
-            <img
-              style={{ cursor: "pointer" }}
-              src={sign}
-              alt="Sign In"
+            <CgProfile
+              color="white"
+              size="40px"
               className="image3"
+              style={{ cursor: "pointer" }}
               onClick={handleLogin}
             />
           </div>
           <div>
-            <img
-              src={search}
-              alt="Search"
+            <IoIosSearch
+              color="white"
+              size="40px"
               className="image3"
               style={{ cursor: "pointer" }}
             />
           </div>
           <div>
-            <img
-              src={cart}
-              alt="Shopping Cart"
+            <BsHandbag
+              color="white"
+              size="35px"
               className="image3"
-              onClick={() => handleCart()}
               style={{ cursor: "pointer" }}
+              onClick={handleCart}
             />
           </div>
         </div>

@@ -7,6 +7,7 @@ import url from "../url";
 import { MdDeleteOutline } from "react-icons/md";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
+import { FaPlus } from "react-icons/fa";
 
 const Service = () => {
   const [services, setServices] = useState([
@@ -226,7 +227,7 @@ const Service = () => {
   console.log(services.length);
   return (
     <div className="add-products">
-      <div className="service-buttons">
+      <div className="product-buttons">
         {services.map((service, index) => (
           <Button
             key={`service-${index}`}
@@ -238,17 +239,22 @@ const Service = () => {
             isActive={activeIndex === index}
             fontSize="18px"
             border="2px solid black"
+            borderRadius="16px"
+            padding="10px 15px"
+            margin="0 10px"
+            bgColor="black"
           />
         ))}
         <Button
-          label="+"
           onClick={handleAddNewService}
-          isIcon
-          borderRadius="5px"
-          padding="10px 15px"
+          borderRadius="15px"
+          padding="0px 8px"
           fontSize="18px"
           border="2px solid black"
-        />
+            margin="0 10px"
+            bgColor="black"
+            color="white"
+        ><FaPlus size="25"/></Button>
       </div>
       <div className="form">
         <div className="del-save">
@@ -258,6 +264,7 @@ const Service = () => {
             bgColor={isEditable ? "black" : "blue"}
             color="white"
             fontSize="18px"
+            borderRadius="12px"
           />
           {services.length > 1 && (
             <Button
@@ -265,6 +272,7 @@ const Service = () => {
               bgColor="red"
               color="white"
               fontSize="18px"
+              borderRadius="12px"
             >
               <span
                 style={{ display: "flex", alignItems: "center", gap: "5px" }}
@@ -324,7 +332,7 @@ const Service = () => {
             disabled={!isEditable}
           />
           <InputField
-            placeholder="Number of uses for Promo Code"
+            placeholder="Additional Infomation"
             type="number"
             name="additionalInfo"
             value={services[activeIndex].additionalInfo}
@@ -340,6 +348,7 @@ const Service = () => {
                 bgColor="black"
                 color="white"
                 fontSize="18px"
+                borderRadius="12px"
                 onClick={handleSubmit}
               />
             </div>

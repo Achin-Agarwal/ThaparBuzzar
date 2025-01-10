@@ -14,18 +14,25 @@ const Home = () => {
   const [products, setProducts] = useState([]);
   const navigate = useNavigate();
   console.log(products);
+  // const images = [
+  //   "../src/assets/1.jpg",
+  //   "../src/assets/2.jpg",
+  //   "../src/assets/3.jpg",
+  //   "../src/assets/4.jpg",
+  //   "../src/assets/5.jpg",
+  //   "../src/assets/6.jpg",
+  //   "../src/assets/7.jpg",
+  //   "../src/assets/8.jpg",
+  //   "../src/assets/9.jpg",
+  //   "../src/assets/10.jpg",
+  // ];
   const images = [
-    "../src/assets/1.jpg",
-    "../src/assets/2.jpg",
-    "../src/assets/3.jpg",
-    "../src/assets/4.jpg",
-    "../src/assets/5.jpg",
-    "../src/assets/6.jpg",
-    "../src/assets/7.jpg",
-    "../src/assets/8.jpg",
-    "../src/assets/9.jpg",
-    "../src/assets/10.jpg",
+    `${url}/public/images/products/Screenshot 2024-06-28 001118.png-1735716034567.png`,
+    `${url}/public/images/products/Screenshot 2024-06-28 001118.png-1735716034567.png`,
+    `${url}/public/images/products/Screenshot 2024-06-28 001118.png-1735716034567.png`,
+    `${url}/public/images/products/Screenshot 2024-06-28 001118.png-1735716034567.png`
   ];
+  console.log(images);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -53,6 +60,9 @@ const Home = () => {
     };
     fetchProducts();
   }, []);
+  function convertSpacesToEncoded(str) {
+    return str.replace(/ /g, "%20");
+  }
 
   const handleCardClick = (category) => {
     console.log(category);
@@ -78,7 +88,7 @@ const Home = () => {
                 </h4>
                 <Card
                   name={product.name}
-                  image={img}
+                  image={`${url}/public/images/products/${product.image[0]}`}
                   price={product.price}
                   rating={product.rating}
                   onClick={() => handleCardClick(product.category)}
