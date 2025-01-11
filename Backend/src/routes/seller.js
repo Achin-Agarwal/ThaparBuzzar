@@ -33,7 +33,7 @@ router.post('/addannouncement', isLogin, multiImageUpload, safeHandler(async (re
 
     const newAnnouncement = new Announcement({
         sellerName: seller.sellerName,
-        buisnessName: seller.businessName,
+        businessName: seller.businessName,
         rateBifercation,
         days,
         images: {

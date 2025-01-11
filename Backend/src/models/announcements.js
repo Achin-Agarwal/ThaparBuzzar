@@ -11,7 +11,7 @@ import mongoose from "mongoose";
         required: true,
         trim: true
     },
-    buisnessName: {
+    businessName: {
         type: String,
         required: true,
         trim: true
@@ -45,7 +45,14 @@ import mongoose from "mongoose";
     isDisapproved :{
         type: Boolean,
         default: false
+    },approvedOn:{
+        type: Date,
+        required: false
     },
+    expiresin:{
+        type: Date,
+        required: false
+    }
     
 });
 const Announcement = mongoose.model("Announcement", announcementSchema);
