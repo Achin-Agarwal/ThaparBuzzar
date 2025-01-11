@@ -7,6 +7,7 @@ const router = express.Router();
 import config from "..//config/config.js";
 import Buyer from "../models/buyer.js";
 import Seller from "../models/seller.js";
+import Admin from "../models/admin.js";
 import bcrypt from "bcrypt";
 
 
