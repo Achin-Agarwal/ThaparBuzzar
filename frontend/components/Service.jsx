@@ -153,6 +153,7 @@ const Service = () => {
     //   alert(`Please fill out all fields for Service ${activeIndex + 1}`);
     //   return;
     // }
+    console.log(currentService)
 
     if (currentService._id) {
       // Update existing Service
@@ -307,9 +308,9 @@ const Service = () => {
             onChange={(event) => handleInputChange(activeIndex, event)}
             disabled={!isEditable}
           />
-          <InputField
+          <textarea
+            className="custom-textarea"
             placeholder="Description"
-            type="text"
             name="description"
             value={services[activeIndex].description}
             onChange={(event) => handleInputChange(activeIndex, event)}

@@ -22,6 +22,9 @@ import Service from "../components/Service";
 import Announcements from "../components/Announcements";
 import BuyNow from "../pages/BuyNow";
 import COD from "../components/COD";
+import AdminLogin from "../pages/AdminLogin";
+import Admin from "../pages/Admin";
+import RequestDetail from "../pages/RequestDetail";
 
 const App = () => {
   const GoogleAuthWrapper = () => {
@@ -55,6 +58,9 @@ const App = () => {
           <Route path="/announcement" element={<Announcements/>} />
           <Route path="/buynow" element={<BuyNow/>} />
           <Route path="/cod" element={<COD/>} />
+          <Route path="/adminlogin" element={<AdminLogin />} />
+          <Route path="/admin" element={<Admin/>} />
+          <Route path="/request/:id" element={<RequestDetail />} />
           <Route path="*" element={<h1>Not Found</h1>} />
         </Routes>
       </div>

@@ -88,7 +88,7 @@ const Home = () => {
                 </h4>
                 <Card
                   name={product.name}
-                  image={`${url}/public/images/products/${product.image[0]}`}
+                  image={`${url}/images/products/${product.image?.[0] || "default.jpg"}`}
                   price={product.price}
                   rating={product.rating}
                   onClick={() => handleCardClick(product.category)}

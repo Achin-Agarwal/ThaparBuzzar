@@ -317,9 +317,9 @@ const AddProducts = () => {
             onChange={(event) => handleInputChange(activeIndex, event)}
             disabled={!isEditable}
           />
-          <InputField
-            placeholder="Description"
-            type="text"
+          <textarea
+            className="custom-textarea"
+            placeholder="Descrition"
             name="description"
             value={products[activeIndex].description}
             onChange={(event) => handleInputChange(activeIndex, event)}

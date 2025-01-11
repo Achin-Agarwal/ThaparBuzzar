@@ -133,3 +133,73 @@
   transform: translateX(8px); /* Slightly more movement when clicked */
   color: #003f7f; /* Even darker shade for active state */
 }
+
+.bestsellers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem; /* Spacing between cards */
+  justify-content: center; /* Center align all cards */
+  align-items: flex-start; /* Align items to the top */
+  width: 100%;
+}
+
+.card-container {
+  flex: 1 1 calc(25% - 1.5rem); /* Four cards per row with spacing */
+  max-width: calc(25% - 1.5rem);
+  min-width: 250px;
+  background: linear-gradient(145deg, #ffffff, #f7f7f7); /* Subtle gradient */
+  border: 0.125rem solid rgba(0, 0, 0, 0.1); /* Light border */
+  border-radius: 1rem; /* Rounded corners */
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1); /* Soft shadow */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-container:hover {
+  transform: translateY(-0.5rem); /* Slight lift effect */
+  box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.2); /* Enhanced shadow */
+}
+
+.bestseller-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem; /* Space around card content */
+  text-align: center;
+}
+
+.bestseller-card h4 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 1rem; /* Space below category heading */
+}
+
+.category-heading {
+  display: flex;
+  align-items: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: #007bff; /* Accent color */
+  gap: 0.5rem; /* Space between text and icon */
+  cursor: pointer;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.category-heading:hover {
+  color: #0056b3; /* Darker accent on hover */
+  transform: scale(1.05); /* Subtle zoom effect */
+}
+
+.category-heading span {
+  display: flex;
+  align-items: center;
+  color: #555;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.category-heading span:hover {
+  color: #333;
+  transform: translateX(5px); /* Smooth arrow movement */
+}
