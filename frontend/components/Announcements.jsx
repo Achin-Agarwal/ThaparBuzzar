@@ -36,9 +36,10 @@ const Announcements = () => {
           const response = await axios.get(url + "/seller/addannouncement", {
             headers: { authorization: `Bearer ${token}` },
           });
+          console.log(response.data.announcement);
           setServices(
-            response.data.services.length > 0
-              ? response.data.services
+            response.data.announcement.length > 0
+              ? response.data.announcement
               : [
                   {
                     id: null,

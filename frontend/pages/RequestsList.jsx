@@ -37,7 +37,7 @@ const RequestsList = ({ status, searchQuery }) => {
       const token = localStorage.getItem("authToken");
       console.log(token)
       
-      const response = await axios.patch(`${url}/admin/${action}/${id}`, {
+      const response = await axios.get(`${url}/admin/${action}/${id}`, {
         headers: { authorization: `Bearer ${token}` },
       });
       console.log(response.data);
