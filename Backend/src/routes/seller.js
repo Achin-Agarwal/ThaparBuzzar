@@ -50,9 +50,9 @@ console.log("Seller: "); console.log(seller);
     res.status(201).json({ message: 'Announcement added successfully' });
 }));
 router.get("/addannouncement", isLogin, safeHandler(async (req, res) => {
-    if (req.user.role === "buyer") {
-        return res.status(401).json({ message: "Unauthorized access" });
-    }
+    // if (req.user.role === "buyer") {
+    //     return res.status(401).json({ message: "Unauthorized access" });
+    // }
     console.log(req.user);
     const user = await Seller.findById(req.user._id).populate("announcement").exec();
     res.json(user);
