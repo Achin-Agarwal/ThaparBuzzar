@@ -6,11 +6,6 @@ import mongoose from "mongoose";
     //     unique: true,
     //     trim: true
     // },
-    sellerName: {
-        type: String,
-        required: true,
-        trim: true
-    },
     businessName: {
         type: String,
         required: true,

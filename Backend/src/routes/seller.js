@@ -33,7 +33,7 @@ console.log("Seller: "); console.log(seller);
     const productImages = req.files.productImages.map((file) => file.filename);
 
     const newAnnouncement = new Announcement({
-        sellerName: seller.sellerName,
+        // sellerName: seller.sellerName,
         businessName: seller.businessName,
         rateBifercation,
         days,

@@ -12,11 +12,6 @@ const sellerSchema = new mongoose.Schema({
             default: false
         }
     },
-    sellerName: {
-        type: String,
-        required: false,
-        trim: true
-    },
     password: {
         type: String,
         required: false,
