@@ -15,7 +15,7 @@ const ensureFolderExists = (folderPath) => {
 };
 
 const createStorage = (folder) => {
-    const folderPath = path.join(__dirname, `../public/${folder}`);
+    const folderPath = path.join(__dirname, `../../public/${folder}`);
     ensureFolderExists(folderPath);
 
     return multer.diskStorage({
@@ -35,7 +35,7 @@ const createMultiStorage = (folders) => {
         storage: multer.diskStorage({
             destination: (req, file, cb) => {
                 const folder = folders[file.fieldname];
-                const folderPath = path.join(__dirname, `../public/${folder}`);
+                const folderPath = path.join(__dirname, `../../public/${folder}`);
                 ensureFolderExists(folderPath);
                 cb(null, folderPath);
             },
