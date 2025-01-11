@@ -16,7 +16,9 @@ router.post('/addannouncement', isLogin, multiImageUpload, safeHandler(async (re
     }
     const { rateBifercation,days } = req.body;
     const sellerId = req.body.sellerId;
-
+    console.log("Seller ID: "); console.log(sellerId);
+    console.log("Rate bifercation: "); console.log(rateBifercation);
+    console.log("Days: "); console.log(days);
     if (!sellerId) {
         return res.error(200, 'Seller ID is required', 'MISSING_VENDOR_ID');
     }
@@ -42,7 +44,7 @@ router.post('/addannouncement', isLogin, multiImageUpload, safeHandler(async (re
 
     seller.announcement.push(newAnnouncement);
     await seller.save();
-
+    console.log("New announcement: "); console.log(newAnnouncement);
     res.status(201).json({ message: 'Announcement added successfully' });
 }));
 
