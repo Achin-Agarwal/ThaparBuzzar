@@ -41,13 +41,21 @@ router.post('/addannouncement', isLogin, multiImageUpload, safeHandler(async (re
             productImages: productImages
         }
     });
+    const savedAnnouncement = await newAnnouncement.save();
 
     seller.announcement.push(newAnnouncement);
     await seller.save();
     console.log("New announcement: "); console.log(newAnnouncement);
     res.status(201).json({ message: 'Announcement added successfully' });
 }));
-
+router.get("/userannouncements", isLogin, safeHandler(async (req, res) => {
+    if (req.user.role === "buyer") {
+        return res.status(401).json({ message: "Unauthorized access" });
+    }
+    console.log(req.user);
+    const user = await Seller.findById(req.user._id).populate("announcement").exec();
+    res.json(user);
+}));
 
 // Add a new product
 router.post('/addproduct', isLogin, productImageUpload, safeHandler(async (req, res) => {
