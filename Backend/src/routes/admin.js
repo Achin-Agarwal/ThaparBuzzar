@@ -1,6 +1,4 @@
 import express from "express";
-import nodemailer from "nodemailer";
-import otpModel from "../models/otp.js";
 import Buyer from "../models/buyer.js";
 import Seller from "../models/seller.js";
 import bcrypt from "bcrypt";

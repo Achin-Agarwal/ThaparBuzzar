@@ -42,6 +42,10 @@ import mongoose from "mongoose";
         type: Boolean,
         default: false
     },
+    isDisapproved :{
+        type: Boolean,
+        default: false
+    },
     
 });
 const Announcement = mongoose.model("Announcement", announcementSchema);
