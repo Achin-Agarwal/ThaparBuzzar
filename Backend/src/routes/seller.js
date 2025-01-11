@@ -49,7 +49,7 @@ console.log("Seller: "); console.log(seller);
     console.log("New announcement: "); console.log(newAnnouncement);
     res.status(201).json({ message: 'Announcement added successfully' });
 }));
-router.get("/userannouncements", isLogin, safeHandler(async (req, res) => {
+router.get("/addannouncement", isLogin, safeHandler(async (req, res) => {
     if (req.user.role === "buyer") {
         return res.status(401).json({ message: "Unauthorized access" });
     }
