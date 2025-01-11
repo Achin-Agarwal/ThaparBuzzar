@@ -117,7 +117,7 @@ const Announcements = () => {
     // Append other fields
     formData.append("rateBifercation", currentService.rateBifercation);
     formData.append("days", currentService.days);
-    formData.append("amount", currentService.amount);
+    formData.append("amount", currentService.days*100);
     // formData.append("upi", currentService.upi);
     formData.append("sellerId", decoded._id);
 
@@ -224,7 +224,7 @@ const Announcements = () => {
             placeholder="Amount"
             type="number"
             name="amount"
-            value={services[activeIndex].amount}
+            value={services[activeIndex].days*100}
             onChange={(event) => handleInputChange(activeIndex, event)}
             disabled={!isEditable}
           />
