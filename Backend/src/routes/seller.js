@@ -26,7 +26,8 @@ router.post('/addannouncement', isLogin, multiImageUpload, safeHandler(async (re
     if (!seller) {
         return res.status(404).json({ message: 'Seller not found' });
     }
-
+    console.log("**************************************************");
+console.log("Seller: "); console.log(seller);
     // Collect filenames from uploaded files
     const paymentConfirmationImages = req.files.paymentConfirmation.map((file) => file.filename);
     const productImages = req.files.productImages.map((file) => file.filename);
