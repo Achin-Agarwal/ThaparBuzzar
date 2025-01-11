@@ -28,3 +28,27 @@ const createStorage = (folder) => {
 export const productImageUpload = multer({
     storage: createStorage(config.paths.images.product),
 }).array('images', 10); // Allow up to 10 images
+
+// New function to handle both payment confirmation and product confirmation images
+const createMultiStorage = (folders) => {
+    return multer({
+        storage: multer.diskStorage({
+            destination: (req, file, cb) => {
+                const folder = folders[file.fieldname];
+                const folderPath = path.join(__dirname, `../public/${folder}`);
+                ensureFolderExists(folderPath);
+                cb(null, folderPath);
+            },
+            filename: (_, file, cb) =>
+                cb(null, `${file.originalname}-${Date.now()}${path.extname(file.originalname)}`),
+        }),
+    });
+};
+
+export const multiImageUpload = createMultiStorage({
+    paymentConfirmation: config.paths.images.paymentConfirmation,
+    productImages: config.paths.images.productImages,
+}).fields([
+    { name: 'paymentConfirmation', maxCount: 10 },
+    { name: 'productImages', maxCount: 10 },
+]);

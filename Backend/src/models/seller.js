@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-
 const sellerSchema = new mongoose.Schema({
     email: {
         address: {
@@ -58,6 +57,13 @@ const sellerSchema = new mongoose.Schema({
         {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Service' // Services offered by the seller
+        }
+    ],
+    announcement: [
+
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Announcement' // Announcements made by the seller
         }
     ],
     ratings: {

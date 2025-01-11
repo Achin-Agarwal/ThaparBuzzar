@@ -18,6 +18,8 @@ const config = {
     paths: {
         images: {
             product: "images/products",
+            paymentConfirmation: 'images/paymentConfirmations',
+            productImages: 'images/productImages'
         },
     },
     google: {

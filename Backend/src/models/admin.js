@@ -14,6 +14,11 @@ import mongoose from "mongoose";
         type: String,  
         required: true,  
         trim: true  
+    },
+    upid: {  
+        type: String,  
+        required: true,  
+        trim: true  
     }
 }); 
 const Admin = mongoose.model("Admin", adminSchema);

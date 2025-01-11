@@ -2,12 +2,50 @@ import express from 'express';
 import Product from '../models/product.js';
 import Service from '../models/services.js';
 import Seller from '../models/seller.js';
+import Announcement from '../models/announcements.js';
 import { productSchema } from '../utils/zodSchemas.js';
-import { productImageUpload } from '../utils/multer.js';
+import { productImageUpload , multiImageUpload } from '../utils/multer.js';
 import { safeHandler } from '../middleware/safeHandler.js';
-import responseHandler from '../middleware/responseHandler.js';
 import isLogin from '../middleware/isLogin.js';
 const router = express.Router();
+
+// Add an announcement
+router.post('/addannouncement', isLogin, multiImageUpload, safeHandler(async (req, res) => {
+    if (req.user.role === "buyer") {
+        return res.status(401).json({ message: "Unauthorized access" });
+    }
+    const { rateBifercation,days } = req.body;
+    const sellerId = req.body.sellerId;
+
+    if (!sellerId) {
+        return res.error(200, 'Seller ID is required', 'MISSING_VENDOR_ID');
+    }
+    const seller = await Seller.findById(sellerId);
+    if (!seller) {
+        return res.status(404).json({ message: 'Seller not found' });
+    }
+
+    // Collect filenames from uploaded files
+    const paymentConfirmationImages = req.files.paymentConfirmation.map((file) => file.filename);
+    const productImages = req.files.productImages.map((file) => file.filename);
+
+    const newAnnouncement = new Announcement({
+        sellerName: seller.sellerName,
+        buisnessName: seller.businessName,
+        rateBifercation,
+        days,
+        images: {
+            paymentConfirmation: paymentConfirmationImages,
+            productImages: productImages
+        }
+    });
+
+    seller.announcement.push(newAnnouncement);
+    await seller.save();
+
+    res.status(201).json({ message: 'Announcement added successfully' });
+}));
+
 
 // Add a new product
 router.post('/addproduct', isLogin, productImageUpload, safeHandler(async (req, res) => {
@@ -63,7 +101,28 @@ router.post('/addproduct', isLogin, productImageUpload, safeHandler(async (req, 
     res.status(201).json(savedProduct);
 
 }));
+router.patch('/addproduct', isLogin, productImageUpload, safeHandler(async (req, res) => {  
 
+    const {updates} = req.body;
+    const id = req.body.user._id;
+    if(!isValid(productSchema, update)){
+        return res.status(404).json({message: "user not found"});
+    }
+    
+    const filteredUpdates = Object.fromEntries(
+        Object.entries(updates).filter(([_, value]) => value != null)
+    );
+    const product = await Product.findByIdAndUpdate(
+        id,
+        filteredUpdates,
+        {
+            new: true,
+            runValidators: true 
+        }
+    );
+    
+res.sucess(200,"Product updated successfully",product);
+}));
 
 
 // Delete a product
