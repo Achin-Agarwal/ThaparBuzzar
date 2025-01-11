@@ -135,7 +135,10 @@ router.post("/login", async (req, res, next) => {
         user = await Buyer.findOne({ "email.address": email });
     } else if (role === "seller") {
         user = await Seller.findOne({ "email.address": email });
+    }else if (role === "admin") {
+        user = await Admin.findOne({ email });
     }
+
     if (!user) {
         return res.status(404).json({ message: "User not found" });
     }

@@ -10,7 +10,7 @@ import home from './src/routes/home.js';
 import restpass from './src/routes/resetPassword.js';
 import auth from './src/routes/auth.js';
 import creteNewAccount from './src/routes/createNewAccount.js';
-
+import admin from './src/routes/admin.js';
 const app = express();
 const __dirname = path.resolve();
 app.use(express.static(path.join(__dirname, 'public')));
@@ -87,6 +87,7 @@ app.use("/seller", seller);
 app.use("/home", home);
 app.use("/resetpassword", restpass);
 app.use("/auth", auth);
+app.use("/admin", admin);
 // /profile route to check the logged-in buyer's profile
 // import pkg from 'express-openid-connect';
 // const { requiresAuth } = pkg;

@@ -5,19 +5,20 @@ import Buyer from "../models/buyer.js";
 import Seller from "../models/seller.js";
 import bcrypt from "bcrypt";
 import isLogin from "../middleware/isLogin.js";
+import Admin from "../models/admin.js";
 import jwt from "jsonwebtoken";
 import config from "../config/config.js";
 
 const router = express.Router();
 
-router.post("/", async (req, res) => {  
-    const { email, role, name, password, number,sellerName , businessName} = req.body;
-    console.log(email, role, name, password, number,sellerName , businessName);
+router.post("/", async (req, res) => {
+    const { email, role, name, password, number, sellerName, businessName, upiid } = req.body;
+    console.log(email, role, name, password, number, sellerName, businessName);
 
     if (!email || !role || !password) {
         return res.status(400).json({ message: "Email, role, name, and password are required" });
     }
-    
+
     const hashedPassword = await bcrypt.hash(password, 10);
 
     let user;
@@ -39,6 +40,17 @@ router.post("/", async (req, res) => {
             password: hashedPassword,
             businessName: businessName,
             contactDetails: { email: email, phoneNumber: number },
+        }
+        );
+
+    } else if (role === "admin") {
+        // console.log("seller creation block", role);
+
+        user = new Admin({
+            name,
+            email,
+            password: hashedPassword,
+            upid: upiid,
         });
     } else {
         return res.status(400).json({ message: "Invalid role" });
