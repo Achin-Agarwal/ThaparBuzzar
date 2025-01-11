@@ -57,6 +57,7 @@ router.get("/userannouncements", isLogin, safeHandler(async (req, res) => {
     const user = await Seller.findById(req.user._id).populate("announcement").exec();
     res.json(user);
 }));
+// get all anouncement of a seller
 
 // Add a new product
 router.post('/addproduct', isLogin, productImageUpload, safeHandler(async (req, res) => {

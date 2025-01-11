@@ -8,7 +8,7 @@ import Announcement from "../models/announcements.js";
 const router = express.Router();
 
 router.get("/pendingAnnouncements",islogin,async (req, res) => {
-    if (req.user.role !== "admin") {    
+    if (req.user.role!== "admin") {    
         return res.status(403).json({ message: "Forbidden" });
     }
         const announcements = await Announcement.find({ isApproved: false,
@@ -26,8 +26,35 @@ router.get("/disapprovedAnnouncements", islogin, async (req, res) => {
 });
 router.patch("/approve/:id", islogin, async (req, res) => {
     const { id } = req.params;
-    const announcement = await Announcement.findByIdAndUpdate(id, { isApproved: true });
+
+   
+        const announcement = await Announcement.findById(id);
+        if (!announcement) {
+            return res.status(404).json({ message: "Announcement not found" });
+        }
+
+        const approvedOn = new Date();
+        const validityPeriod = announcement.days || 0; // Default to 0 days if not provided
+        const expiresOn = new Date(approvedOn.getTime() + validityPeriod * 24 * 60 * 60 * 1000);
+
+        announcement.isApproved = true;
+        announcement.approvedOn = approvedOn;
+        announcement.expiresin = expiresOn;
+
+        await announcement.save();
+
+        res.status(200).json({
+            message: "Announcement approved successfully",
+            announcement,
+        });
+   
+});
+
+router.patch("/dissapprove/:id", islogin, async (req, res) => {
+    const { id } = req.params;
+    const announcement = await Announcement.findByIdAndUpdate(id, { isDisapproved: true });
     res.status(200).json({ message: "Announcement approved successfully", announcement });
 }
+
 );
 export default router;

@@ -28,10 +28,9 @@ import mongoose from "mongoose";
             }
         ]
     },
-    days:{
+    days:{// no of days a announcement will stay vails startinf from the approved date
         type: Number,
         required: false,
-        trim: true
     },
     isApproved:{
         type: Boolean,
