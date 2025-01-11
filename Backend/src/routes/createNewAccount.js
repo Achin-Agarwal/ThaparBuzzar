@@ -50,7 +50,7 @@ router.post("/", async (req, res) => {
             name,
             email,
             password: hashedPassword,
-            upid: upiid,
+            upiid,
         });
     } else {
         return res.status(400).json({ message: "Invalid role" });

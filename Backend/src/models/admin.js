@@ -15,7 +15,7 @@ import mongoose from "mongoose";
         required: true,  
         trim: true  
     },
-    upid: {  
+    upiid: {  
         type: String,  
         required: true,  
         trim: true  
