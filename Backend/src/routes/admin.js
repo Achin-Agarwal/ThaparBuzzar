@@ -24,7 +24,7 @@ router.get("/disapprovedAnnouncements", islogin, async (req, res) => {
     const announcements = await Announcement.find({ isDisapproved: true });
     res.status(200).json({ announcements });
 });
-router.patch("/approve/:id", islogin, async (req, res) => {
+router.get("/approve/:id", islogin, async (req, res) => {
     const { id } = req.params;
 
    
@@ -50,7 +50,7 @@ router.patch("/approve/:id", islogin, async (req, res) => {
    
 });
 
-router.patch("/dissapprove/:id", islogin, async (req, res) => {
+router.get("/dissapprove/:id", islogin, async (req, res) => {
     const { id } = req.params;
     const announcement = await Announcement.findByIdAndUpdate(id, { isDisapproved: true });
     res.status(200).json({ message: "Announcement dissapproved successfully", announcement });
