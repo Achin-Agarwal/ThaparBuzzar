@@ -14,7 +14,7 @@ router.post('/addannouncement', isLogin, multiImageUpload, safeHandler(async (re
     if (req.user.role === "buyer") {
         return res.status(401).json({ message: "Unauthorized access" });
     }
-    const { rateBifercation,days } = req.body;
+    const { rateBifercation,days,amount } = req.body;
     const sellerId = req.body.sellerId;
     console.log("Seller ID: "); console.log(sellerId);
     console.log("Rate bifercation: "); console.log(rateBifercation);
@@ -34,6 +34,7 @@ console.log("Seller: "); console.log(seller);
 
     const newAnnouncement = new Announcement({
         // sellerName: seller.sellerName,
+        amount,
         businessName: seller.businessName,
         rateBifercation,
         days,

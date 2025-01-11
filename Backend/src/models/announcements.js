@@ -46,6 +46,10 @@ import mongoose from "mongoose";
     expiresin:{
         type: Date,
         required: false
+    },
+    amount:{
+        type: Number,
+        required: false
     }
     
 });
