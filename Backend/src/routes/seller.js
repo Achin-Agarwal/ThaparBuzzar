@@ -76,11 +76,11 @@ router.post('/addproduct', isLogin, productImageUpload, safeHandler(async (req, 
     console.log(req.body);
     console.log("parsed data: ");
     console.log(parsedData);
-    const validatedData = productSchema.parse(parsedData);
-    console.log("validated data: ");
-    console.log(validatedData);
+    // const validatedData = productSchema.parse(parsedData);
+    // console.log("validated data: ");
+    // console.log(validatedData);
 
-    const { name, description, price, category, stock, promoCode } = validatedData;
+    const { name, description, price, category, stock, promoCode } = parsedData;
     const sellerId = req.body.sellerId;
     console.log("promocode: "); console.log(promoCode);
     console.log("Seller ID: "); console.log(sellerId);
