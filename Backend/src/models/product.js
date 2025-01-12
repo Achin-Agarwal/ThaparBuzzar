@@ -45,13 +45,11 @@ const productSchema = new mongoose.Schema({
             type: Date
         }]
     },
-    promoCode: {
-        code: {
-            type: Number
-        },
-        numberOfUses: {
-            type: Number
-        },
+    discountedPrice: {  
+        type: Number
+    },
+    numberOfUses: {
+        type: Number
     },
     rating: {
         type: Number,

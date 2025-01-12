@@ -62,16 +62,22 @@ router.get("/addannouncement", isLogin, safeHandler(async (req, res) => {
 
 // Add a new product
 router.post('/addproduct', isLogin, productImageUpload, safeHandler(async (req, res) => {
+    console.log("/addproduct");
     if (req.user.role === "buyer") {
         return res.status(401).json({ message: "Unauthorized access" });
     }
     // Parse the incoming data
-    const parsedData = {
-        ...req.body,
-        price: parseFloat(req.body.price),
-        stock: JSON.parse(req.body.stock),
-        promoCode: req.body.promoCode ? JSON.parse(req.body.promoCode) : undefined
-    };
+      // Parse the incoming data
+      let parsedData;
+      
+          parsedData = {
+              ...req.body,
+              price: parseFloat(req.body.price),
+              discountedPrice: parseFloat(req.body.discountedPrice),
+              numberOfUses: parseFloat(req.body.numberOfUses),
+              stock: parseFloat(req.body.stock),
+          };
+    
     console.log("body: ");
     console.log(req.body);
     console.log("parsed data: ");
@@ -80,16 +86,16 @@ router.post('/addproduct', isLogin, productImageUpload, safeHandler(async (req, 
     // console.log("validated data: ");
     // console.log(validatedData);
 
-    const { name, description, price, category, stock, promoCode } = parsedData;
-    const sellerId = req.body.sellerId;
-    console.log("promocode: "); console.log(promoCode);
-    console.log("Seller ID: "); console.log(sellerId);
+    const { sellerId,name, description, price, category, stock, discountedPrice, numberOfUses } = parsedData;
+    // console.log("promocode: "); console.log(promoCode);
+    // console.log("Seller ID: "); console.log(sellerId);
 
     if (!sellerId) {
         console.log(sellerId);
         return res.error(400, 'Seller ID is required', 'MISSING_VENDOR_ID');
     }
     const seller = await Seller.findById(sellerId);
+
     console.log("Seller: "); console.log(seller);
     // Collect filenames from uploaded files
     const images = req.files.map((file) => file.filename);
@@ -101,8 +107,9 @@ router.post('/addproduct', isLogin, productImageUpload, safeHandler(async (req, 
         seller: sellerId,
         image: images,
         category,
-        stock,
-        promoCode
+        stock: { available: stock },
+        numberOfUses,
+        discountedPrice
     });
     const savedProduct = await newProduct.save();
     if (!seller) {

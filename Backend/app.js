@@ -101,9 +101,9 @@ app.use("/admin", admin);
 //TEST OUT THIS ERROR JARGON FIRST
 app.use((error, req, res, next) => {
   console.log(error); // temp log
-  if (error.errors && error.errors[0].message) {
-      return res.error(400, error.errors[0].message, 'VALIDATION_ERROR');
-  }
+  // if (error.errors && error.errors[0].message) {
+  //     return res.error(400, error.errors[0].message, 'VALIDATION_ERROR');
+  // }
 
   if (error.isOperational) {
       const statusCode = error.statusCode || 500;
