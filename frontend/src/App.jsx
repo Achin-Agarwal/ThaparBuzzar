@@ -25,6 +25,7 @@ import COD from "../components/COD";
 import AdminLogin from "../pages/AdminLogin";
 import Admin from "../pages/Admin";
 import RequestDetail from "../pages/RequestDetail";
+import Sale from "../pages/Sale";
 
 const App = () => {
   const GoogleAuthWrapper = () => {
@@ -61,6 +62,7 @@ const App = () => {
           <Route path="/adminlogin" element={<AdminLogin />} />
           <Route path="/admin" element={<Admin/>} />
           <Route path="/request/:id" element={<RequestDetail />} />
+          <Route path="/sale/:sale" element={<Sale />} />
           <Route path="*" element={<h1>Not Found</h1>} />
         </Routes>
       </div>

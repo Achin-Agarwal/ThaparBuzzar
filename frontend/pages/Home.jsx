@@ -73,6 +73,10 @@ const Home = () => {
     console.log(category);
     navigate(`/category/${category}`);
   };
+  const handleSale = (sale) => {
+    console.log(sale);
+    navigate(`/sale/${sale}`);
+  };
 
   return (
     <div className="home-container">
@@ -110,6 +114,42 @@ const Home = () => {
                 rating={product.rating}
                 description={product.description}
                 onClick={() => handleCardClick(product.category)}
+              />
+            </div>
+          ))}
+        </div>
+      </section>
+      <section className="bestsellers-section">
+        <h1 className="section-title">
+          <SplitText
+            text="Explore On Sale"
+            className="section-title"
+            delay={150}
+            animationFrom={{ opacity: 0, transform: "translate3d(0,50px,0)" }}
+            animationTo={{ opacity: 1, transform: "translate3d(0,0,0)" }}
+            easing="easeOutCubic"
+            threshold={0.2}
+            rootMargin="-50px"
+            onLetterAnimationComplete={handleAnimationComplete}
+          />
+        </h1>
+        <div className="product-grid">
+          {products.map((product) => (
+            // <div className="card-wrapper" key={product.category}>
+            <div>
+              {/* <h4 className="category-header">
+                {product.category}
+                <span onClick={() => handleCardClick(product.category)}>
+                  <FaArrowRight />
+                </span>
+              </h4> */}
+              <Card
+                name={product.name}
+                image={`${url}/images/products/${product.image?.[0] || img}`}
+                price={product.price}
+                rating={product.rating}
+                description={product.description}
+                onClick={() => handleSale(product.category)}
               />
             </div>
           ))}
