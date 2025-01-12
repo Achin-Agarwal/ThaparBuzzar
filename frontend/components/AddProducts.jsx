@@ -217,6 +217,10 @@ const AddProducts = () => {
     formData.append("category", currentProduct.category);
     formData.append("sellerId", decoded._id);
     formData.append("stock", currentProduct.stock);
+    if (currentProduct.discountedPrice > currentProduct.price) {
+      alert("Discounted price should be less than or equal to actual price");
+      return;
+    }
 
     formData.append("discountedPrice", currentProduct.discountedPrice || "0");
     if (currentProduct.stock < currentProduct.numberOfUses) {
