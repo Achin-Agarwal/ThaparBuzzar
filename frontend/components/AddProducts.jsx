@@ -229,7 +229,6 @@ const AddProducts = () => {
     }
     formData.append("numberOfUses", currentProduct.numberOfUses || "0");
 
-    // Debug: Log the formData content
     for (let [key, value] of formData.entries()) {
       console.log(key, value);
     }
@@ -408,7 +407,6 @@ const AddProducts = () => {
               ))}
             </div>
           </div>
-
           <InputField
             placeholder="Discounted Price"
             type="number"
