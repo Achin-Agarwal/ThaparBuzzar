@@ -157,7 +157,7 @@ const AddProducts = () => {
       const token = localStorage.getItem("authToken");
       try {
         const response = await axios.patch(
-          `${url}/addproducts/${currentProduct._id}`,
+          `${url}/seller/addproduct/${currentProduct._id}`,
           {
             currentProduct,
           },
