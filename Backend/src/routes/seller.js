@@ -82,7 +82,7 @@ router.post('/addproduct', isLogin, productImageUpload, safeHandler(async (req, 
 
     const { name, description, price, category, stock, promoCode } = validatedData;
     const sellerId = req.body.sellerId;
-
+    console.log("promocode: "); console.log(promoCode);
     console.log("Seller ID: "); console.log(sellerId);
 
     if (!sellerId) {
