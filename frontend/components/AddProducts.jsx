@@ -18,8 +18,9 @@ const AddProducts = () => {
       price: "",
       description: "",
       images: [],
-      stock: "" ,
-      discountedPrice: "", numberOfUses: "" ,
+      stock: "",
+      discountedPrice: "",
+      numberOfUses: "",
     },
   ]);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -54,8 +55,9 @@ const AddProducts = () => {
                     price: "",
                     description: "",
                     images: [],
-                    stock: "" ,
-                    discountedPrice: "", numberOfUses: "" ,
+                    stock: "",
+                    discountedPrice: "",
+                    numberOfUses: "",
                   },
                 ]
           );
@@ -77,8 +79,9 @@ const AddProducts = () => {
         price: "",
         description: "",
         images: [],
-        stock: "" ,
-         discountedPrice: "", numberOfUses: "" ,
+        stock: "",
+        discountedPrice: "",
+        numberOfUses: "",
       },
     ]);
     setActiveIndex(products.length);
@@ -94,9 +97,7 @@ const AddProducts = () => {
       } else if (name.includes(".")) {
         const [section, field] = name.split(".");
         updatedProducts[index][section][field] =
-          field === "stock" || field === "numberOfUses"
-            ? Number(value)
-            : value;
+          field === "stock" || field === "numberOfUses" ? Number(value) : value;
       } else {
         updatedProducts[index][name] = name === "price" ? Number(value) : value;
       }
@@ -138,6 +139,7 @@ const AddProducts = () => {
 
   const handleSave = async () => {
     const currentProduct = products[activeIndex];
+    console.log("current id " + currentProduct._id);
     if (
       !currentProduct.name ||
       !currentProduct.category ||
@@ -152,13 +154,24 @@ const AddProducts = () => {
 
     if (currentProduct._id) {
       // Update existing product
+      const token = localStorage.getItem("authToken");
       try {
         const response = await axios.patch(
-          `${url}/products/${currentProduct._id}`,
-          currentProduct
+          `${url}/addproducts/${currentProduct._id}`,
+          {
+            currentProduct,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
         );
         console.log(response.data);
-        alert(`Product ${activeIndex + 1} updated successfully`);
+        if (response.data.message === "Product updated successfully")
+          alert(`Product ${activeIndex + 1} updated successfully`);
+        else alert(`Product ${activeIndex + 1} not updated`);
       } catch (error) {
         console.error("Failed to update product:", error);
         alert(`Failed to update Product ${activeIndex + 1}`);
@@ -206,18 +219,12 @@ const AddProducts = () => {
     formData.append("sellerId", decoded._id);
     formData.append("stock", currentProduct.stock);
 
-    formData.append(
-      "discountedPrice",
-      currentProduct.discountedPrice || "0"
-    );
-    if(currentProduct.stock<currentProduct.numberOfUses){
-      alert("Number of uses should be less than or equal to stock available")
+    formData.append("discountedPrice", currentProduct.discountedPrice || "0");
+    if (currentProduct.stock < currentProduct.numberOfUses) {
+      alert("Number of uses should be less than or equal to stock available");
       return;
     }
-    formData.append(
-      "numberOfUses",
-      currentProduct.numberOfUses || "0"
-    );
+    formData.append("numberOfUses", currentProduct.numberOfUses || "0");
 
     // Debug: Log the formData content
     for (let [key, value] of formData.entries()) {
@@ -270,10 +277,12 @@ const AddProducts = () => {
           padding="0px 8px"
           fontSize="18px"
           border="2px solid black"
-            margin="0 10px"
-            bgColor="black"
-            color="white"
-        ><FaPlus size="25"/></Button>
+          margin="0 10px"
+          bgColor="black"
+          color="white"
+        >
+          <FaPlus size="25" />
+        </Button>
       </div>
       <div className="form">
         <div className="del-save">
@@ -283,7 +292,7 @@ const AddProducts = () => {
             bgColor={isEditable ? "black" : "blue"}
             color="white"
             fontSize="18px"
-             borderRadius="12px"
+            borderRadius="12px"
           />
           {products.length > 1 && (
             <Button
@@ -291,7 +300,7 @@ const AddProducts = () => {
               bgColor="red"
               color="white"
               fontSize="18px"
-               borderRadius="12px"
+              borderRadius="12px"
             >
               <span
                 style={{ display: "flex", alignItems: "center", gap: "5px" }}
@@ -403,7 +412,7 @@ const AddProducts = () => {
               bgColor="black"
               color="white"
               fontSize="18px"
-               borderRadius="12px"
+              borderRadius="12px"
               onClick={handleSubmit}
             />
           </div>
