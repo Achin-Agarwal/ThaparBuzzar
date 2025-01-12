@@ -4,6 +4,7 @@ const SearchBar = ({ onSearch }) => {
   const [inputValue, setInputValue] = useState("");
 
   const handleSearch = () => {
+    console.log("inputValue", inputValue);
     onSearch(inputValue.trim());
   };
 

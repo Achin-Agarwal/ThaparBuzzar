@@ -1,52 +1,99 @@
-.product-card {
-  border: none;
-  border-radius: 1rem;
-  padding: 1rem;
-  background: linear-gradient(to bottom, #ffffff, #f4f4f9);
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  text-align: center;
+.product-card-outer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 40px;
+}
+
+.product-card-inner {
+  position: relative;
+  background-color: rgb(241, 241, 241);
+  width: 350px;
+  height: auto; /* Adjust dynamically */
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  padding: 20px 20px 40px;
+  border-radius: 10px;
+  transition: 0.3s;
 }
 
-.product-card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.2);
+.product-card-inner:hover {
+  transform: translateY(-15px);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
 }
 
 .product-image {
   width: 100%;
-  height: 12rem;
+  height: 200px; /* Fixed height for images */
+  display: grid;
+  place-items: center;
+}
+
+.product-image img {
+  width: 17vw;
+  height: 32vh;
   object-fit: cover;
-  border-radius: 0.75rem;
-  margin-bottom: 1rem;
 }
 
-.product-card h3 {
-  font-size: 1.25rem;
-  color: #333;
-  margin-bottom: 0.5rem;
+.namePrice {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
 }
 
-.product-card p {
-  font-size: 1rem;
-  color: #666;
-  margin-bottom: 0.5rem;
+.namePrice h3 {
+  font-size: 1.3em;
+  text-transform: capitalize;
+  color: black;
 }
 
-.product-card button {
-  background: #007bff;
-  color: #fff;
+.namePrice span {
+  font-size: 1.5em;
+  color: red;
+}
+
+.description {
+  font-size: 16px;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* Show only two lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 10px 0;
+  color: #555;
+}
+
+.stars {
+  font-size: 1.3em;
+  color: #f8e825;
+  margin: 10px 0;
+}
+
+.buy-button {
+  position: relative;
+  margin-top: auto;
+  text-align: right;
+}
+
+.buy-button button {
+  padding: 10px 20px;
+  border-radius: 7px;
   border: none;
-  border-radius: 0.5rem;
-  padding: 0.5rem 1rem;
-  font-size: 1rem;
+  background-color: #3f3f3f;
+  color: rgb(255, 255, 255);
+  font-size: 18px;
+  text-transform: capitalize;
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: 0.5s;
 }
 
-.product-card button:hover {
-  background: #0056b3;
+.buy-button button:hover {
+  transform: scale(1.1);
+  background-color: pink;
+  color: #f8e825;
 }

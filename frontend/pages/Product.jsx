@@ -114,9 +114,9 @@ const Product = ({productadd}) => {
             <>
               <img
                 //   src={product.image[currentImageIndex]}
-                src={img}
+                src={`${url}/images/products/${products.image[currentImageIndex] || img}`}
                 alt={products.name}
-                className="product-image"
+                className="product-imagee"
               />
               <button className="image-arrow left" onClick={handlePrevImage}>
                 <FaArrowLeft />
@@ -134,7 +134,7 @@ const Product = ({productadd}) => {
               <p className="sold">{products.stock.sold} items sold</p>
             )}
           </div>
-          <p className="price">Price: ${products.price}</p>
+          <p className="price">Price: ₹{products.price}</p>
           <div>
             {products.stock?.available > 10 && (
               <p className="stock in-stock">In Stock</p>
@@ -186,8 +186,8 @@ const Product = ({productadd}) => {
             <Card
               key={product._id}
               name={product.name}
-              image={img}
-              // description={product.description}
+              image={`${url}/images/products/${product.image?.[0] || img}`}
+              description={product.description}
               price={product.price}
               rating={product.rating}
               onClick={() => handleCardClick(product._id)}

@@ -138,19 +138,17 @@ const AddProducts = () => {
 
   const handleSave = async () => {
     const currentProduct = products[activeIndex];
-
-    // // Validation
-    // if (
-    //   !currentProduct.name ||
-    //   !currentProduct.category ||
-    //   !currentProduct.price ||
-    //   !currentProduct.description ||
-    //   !currentProduct.images.length ||
-    //   currentProduct.stock.available <= 0
-    // ) {
-    //   alert(`Please fill out all fields for Product ${activeIndex + 1}`);
-    //   return;
-    // }
+    if (
+      !currentProduct.name ||
+      !currentProduct.category ||
+      !currentProduct.price ||
+      !currentProduct.description ||
+      !currentProduct.images.length ||
+      currentProduct.stock.available <= 0
+    ) {
+      alert(`Please fill out all fields for Product ${activeIndex + 1}`);
+      return;
+    }
 
     if (currentProduct._id) {
       // Update existing product
@@ -171,6 +169,17 @@ const AddProducts = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const currentProduct = products[activeIndex];
+    if (
+      !currentProduct.name ||
+      !currentProduct.category ||
+      !currentProduct.price ||
+      !currentProduct.description ||
+      !currentProduct.images.length ||
+      currentProduct.stock.available <= 0
+    ) {
+      alert(`Please fill out all fields for Product ${activeIndex + 1}`);
+      return;
+    }
 
     // Debug: Check if images are correctly stored in the state
     console.log("Images to upload:", currentProduct.images);
@@ -194,9 +203,16 @@ const AddProducts = () => {
     formData.append("name", currentProduct.name);
     formData.append("description", currentProduct.description);
     formData.append("category", currentProduct.category);
-    formData.append("stock", JSON.stringify(currentProduct.stock));
-    formData.append("promoCode", JSON.stringify(currentProduct.promoCode));
     formData.append("sellerId", decoded._id);
+
+    formData.append(
+      "promoCode.code",
+      currentProduct.promoCode.code || "0"
+    );
+    formData.append(
+      "promoCode.numberOfUses",
+      currentProduct.promoCode.numberOfUses || "0"
+    );
 
     // Debug: Log the formData content
     for (let [key, value] of formData.entries()) {
@@ -319,7 +335,7 @@ const AddProducts = () => {
           />
           <textarea
             className="custom-textarea"
-            placeholder="Descrition"
+            placeholder="Description"
             name="description"
             value={products[activeIndex].description}
             onChange={(event) => handleInputChange(activeIndex, event)}
@@ -329,7 +345,7 @@ const AddProducts = () => {
             placeholder="Stock"
             type="number"
             name="stock.available"
-            value={products[activeIndex].stock?.available || ""}
+            value={products[activeIndex].stock.available}
             onChange={(event) => handleInputChange(activeIndex, event)}
             disabled={!isEditable}
           />
@@ -353,22 +369,23 @@ const AddProducts = () => {
             type="file"
             name="images"
             accept="image/*"
+            value={`${url}/images/products/${products[activeIndex].image}`}
             onChange={(event) => handleInputChange(activeIndex, event)}
             disabled={!isEditable}
           />
           <InputField
-            placeholder="Promo code"
-            type="text"
+            placeholder="Discounted Price"
+            type="number"
             name="promoCode.code"
-            value={products[activeIndex].promoCode?.code || ""}
+            value={products[activeIndex].promoCode.code}
             onChange={(event) => handleInputChange(activeIndex, event)}
             disabled={!isEditable}
           />
           <InputField
-            placeholder="Number of uses for Promo Code"
+            placeholder="Number of uses for Discounted Price"
             type="number"
             name="promoCode.numberOfUses"
-            value={products[activeIndex].promoCode?.numberOfUses || ""}
+            value={products[activeIndex].promoCode.numberOfUses}
             onChange={(event) => handleInputChange(activeIndex, event)}
             disabled={!isEditable}
           />

@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import ImageSlider from "../components/Image";
 import Scroll from "../components/Scroll";
 import { FaArrowRight } from "react-icons/fa";
+import SplitText from "../temporary/SplitText";
 
 const Home = () => {
   const [products, setProducts] = useState([]);
@@ -26,11 +27,15 @@ const Home = () => {
   //   "../src/assets/9.jpg",
   //   "../src/assets/10.jpg",
   // ];
+
+  const handleAnimationComplete = () => {
+    console.log("All letters have animated!");
+  };
   const images = [
     `${url}/public/images/products/Screenshot 2024-06-28 001118.png-1735716034567.png`,
     `${url}/public/images/products/Screenshot 2024-06-28 001118.png-1735716034567.png`,
     `${url}/public/images/products/Screenshot 2024-06-28 001118.png-1735716034567.png`,
-    `${url}/public/images/products/Screenshot 2024-06-28 001118.png-1735716034567.png`
+    `${url}/public/images/products/Screenshot 2024-06-28 001118.png-1735716034567.png`,
   ];
   console.log(images);
 
@@ -71,33 +76,45 @@ const Home = () => {
 
   return (
     <div className="home-container">
-      <div className="home-image">
+      <div className="home-slider">
         <ImageSlider images={images} />
       </div>
-      <div className="bestsellers-section">
-        <h1 className="bestsellers-heading">Bestsellers</h1>
-        <div className="bestsellers">
+      <section className="bestsellers-section">
+        <h1 className="section-title">
+          <SplitText
+            text="Explore Top Categories"
+            className="section-title"
+            delay={150}
+            animationFrom={{ opacity: 0, transform: "translate3d(0,50px,0)" }}
+            animationTo={{ opacity: 1, transform: "translate3d(0,0,0)" }}
+            easing="easeOutCubic"
+            threshold={0.2}
+            rootMargin="-50px"
+            onLetterAnimationComplete={handleAnimationComplete}
+          />
+        </h1>
+        <div className="product-grid">
           {products.map((product) => (
-            <div className="card-container" key={product.category}>
-              <div className="bestseller-card">
-                <h4 className="category-heading">
-                  {product.category}
-                  <span onClick={() => handleCardClick(product.category)}>
+            // <div className="card-wrapper" key={product.category}>
+            <div>
+              {/* <h4 className="category-header">
+                {product.category}
+                <span onClick={() => handleCardClick(product.category)}>
                   <FaArrowRight />
-                  </span>
-                </h4>
-                <Card
-                  name={product.name}
-                  image={`${url}/images/products/${product.image?.[0] || "default.jpg"}`}
-                  price={product.price}
-                  rating={product.rating}
-                  onClick={() => handleCardClick(product.category)}
-                />
-              </div>
+                </span>
+              </h4> */}
+              <Card
+                name={product.name}
+                image={`${url}/images/products/${product.image?.[0] || img}`}
+                price={product.price}
+                rating={product.rating}
+                description={product.description}
+                onClick={() => handleCardClick(product.category)}
+              />
             </div>
           ))}
         </div>
-      </div>
+      </section>
       <Scroll />
     </div>
   );

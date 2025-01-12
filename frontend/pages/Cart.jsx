@@ -63,7 +63,6 @@ const Cart = () => {
       //   items: cart,
       // });
       // console.log("Buy Now Response:", response.data);
-      alert("Order placed successfully!");
       navigate("/buynow",{state:{price:totalPrice}});
     } catch (error) {
       console.error("Error placing order:", error);

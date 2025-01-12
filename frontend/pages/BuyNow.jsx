@@ -1,16 +1,38 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../styles/BuyNow.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import Price from "../components/Price";
 import Address from "../components/Address";
 import COD from "../components/COD";
 import Button from "../components/Button";
+import {jwtDecode} from "jwt-decode";
 
 const BuyNow = () => {
   const [activeTab, setActiveTab] = useState("productDetails");
   const navigate = useNavigate();
   const location = useLocation();
   const price = location.state.price;
+
+  useEffect(() => {
+    const fetch = async () => {
+      try {
+        const token = localStorage.getItem("authToken");
+        console.log(token)
+        if (!token) {
+          navigate("/login");
+        } else {
+          const decode = jwtDecode(token);
+          console.log(decode);
+          if (decode.role !== "buyer") {
+            navigate("/login");
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching cart:", error);
+      }
+    };
+    fetch();
+  }, []);
 
   const handleEdit = () => {
     navigate("/buyer");
