@@ -18,8 +18,8 @@ const AddProducts = () => {
       price: "",
       description: "",
       images: [],
-      stock: { available: "" },
-      code: "", numberOfUses: "" ,
+      stock: "" ,
+      discountedPrice: "", numberOfUses: "" ,
     },
   ]);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -54,8 +54,8 @@ const AddProducts = () => {
                     price: "",
                     description: "",
                     images: [],
-                    stock: { available: "" },
-                    code: "", numberOfUses: "" ,
+                    stock: "" ,
+                    discountedPrice: "", numberOfUses: "" ,
                   },
                 ]
           );
@@ -77,8 +77,8 @@ const AddProducts = () => {
         price: "",
         description: "",
         images: [],
-        stock: { available: "" },
-         code: "", numberOfUses: "" ,
+        stock: "" ,
+         discountedPrice: "", numberOfUses: "" ,
       },
     ]);
     setActiveIndex(products.length);
@@ -94,7 +94,7 @@ const AddProducts = () => {
       } else if (name.includes(".")) {
         const [section, field] = name.split(".");
         updatedProducts[index][section][field] =
-          field === "available" || field === "numberOfUses"
+          field === "stock" || field === "numberOfUses"
             ? Number(value)
             : value;
       } else {
@@ -144,7 +144,7 @@ const AddProducts = () => {
       !currentProduct.price ||
       !currentProduct.description ||
       !currentProduct.images.length ||
-      currentProduct.stock.available <= 0
+      currentProduct.stock <= 0
     ) {
       alert(`Please fill out all fields for Product ${activeIndex + 1}`);
       return;
@@ -157,8 +157,8 @@ const AddProducts = () => {
           `${url}/products/${currentProduct._id}`,
           currentProduct
         );
-        alert(`Product ${activeIndex + 1} updated successfully`);
         console.log(response.data);
+        alert(`Product ${activeIndex + 1} updated successfully`);
       } catch (error) {
         console.error("Failed to update product:", error);
         alert(`Failed to update Product ${activeIndex + 1}`);
@@ -175,7 +175,7 @@ const AddProducts = () => {
       !currentProduct.price ||
       !currentProduct.description ||
       !currentProduct.images.length ||
-      currentProduct.stock.available <= 0
+      currentProduct.stock <= 0
     ) {
       alert(`Please fill out all fields for Product ${activeIndex + 1}`);
       return;
@@ -204,16 +204,16 @@ const AddProducts = () => {
     formData.append("description", currentProduct.description);
     formData.append("category", currentProduct.category);
     formData.append("sellerId", decoded._id);
-    formData.append("stock.available", currentProduct.stock.available);
+    formData.append("stock", currentProduct.stock);
 
     formData.append(
-      "code",
-      currentProduct.code || "0"
+      "discountedPrice",
+      currentProduct.discountedPrice || "0"
     );
-    formData.append(
-      "numberOfUses",
-      currentProduct.numberOfUses || "0"
-    );
+    if(currentProduct.stock<currentProduct.numberOfUses){
+      alert("Number of uses should be less than or equal to stock available")
+      return;
+    }
 
     // Debug: Log the formData content
     for (let [key, value] of formData.entries()) {
@@ -345,8 +345,8 @@ const AddProducts = () => {
           <InputField
             placeholder="Stock"
             type="number"
-            name="stock.available"
-            value={products[activeIndex].stock.available}
+            name="stock"
+            value={products[activeIndex].stock}
             onChange={(event) => handleInputChange(activeIndex, event)}
             disabled={!isEditable}
           />
@@ -377,8 +377,8 @@ const AddProducts = () => {
           <InputField
             placeholder="Discounted Price"
             type="number"
-            name="code"
-            value={products[activeIndex].code}
+            name="discountedPrice"
+            value={products[activeIndex].discountedPrice}
             onChange={(event) => handleInputChange(activeIndex, event)}
             disabled={!isEditable}
           />
