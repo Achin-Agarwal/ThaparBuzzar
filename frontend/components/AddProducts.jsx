@@ -19,7 +19,7 @@ const AddProducts = () => {
       description: "",
       images: [],
       stock: { available: "" },
-      promoCode: { code: "", numberOfUses: "" },
+      code: "", numberOfUses: "" ,
     },
   ]);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -55,7 +55,7 @@ const AddProducts = () => {
                     description: "",
                     images: [],
                     stock: { available: "" },
-                    promoCode: { code: "", numberOfUses: "" },
+                    code: "", numberOfUses: "" ,
                   },
                 ]
           );
@@ -78,7 +78,7 @@ const AddProducts = () => {
         description: "",
         images: [],
         stock: { available: "" },
-        promoCode: { code: "", numberOfUses: "" },
+         code: "", numberOfUses: "" ,
       },
     ]);
     setActiveIndex(products.length);
@@ -204,14 +204,15 @@ const AddProducts = () => {
     formData.append("description", currentProduct.description);
     formData.append("category", currentProduct.category);
     formData.append("sellerId", decoded._id);
+    formData.append("stock.available", currentProduct.stock.available);
 
     formData.append(
-      "promoCode.code",
-      currentProduct.promoCode.code || "0"
+      "code",
+      currentProduct.code || "0"
     );
     formData.append(
-      "promoCode.numberOfUses",
-      currentProduct.promoCode.numberOfUses || "0"
+      "numberOfUses",
+      currentProduct.numberOfUses || "0"
     );
 
     // Debug: Log the formData content
@@ -376,16 +377,16 @@ const AddProducts = () => {
           <InputField
             placeholder="Discounted Price"
             type="number"
-            name="promoCode.code"
-            value={products[activeIndex].promoCode.code}
+            name="code"
+            value={products[activeIndex].code}
             onChange={(event) => handleInputChange(activeIndex, event)}
             disabled={!isEditable}
           />
           <InputField
             placeholder="Number of uses for Discounted Price"
             type="number"
-            name="promoCode.numberOfUses"
-            value={products[activeIndex].promoCode.numberOfUses}
+            name="numberOfUses"
+            value={products[activeIndex].numberOfUses}
             onChange={(event) => handleInputChange(activeIndex, event)}
             disabled={!isEditable}
           />
