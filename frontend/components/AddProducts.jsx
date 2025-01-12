@@ -214,6 +214,10 @@ const AddProducts = () => {
       alert("Number of uses should be less than or equal to stock available")
       return;
     }
+    formData.append(
+      "numberOfUses",
+      currentProduct.numberOfUses || "0"
+    );
 
     // Debug: Log the formData content
     for (let [key, value] of formData.entries()) {
