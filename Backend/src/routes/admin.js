@@ -52,7 +52,7 @@ router.get("/approve/:id", islogin, async (req, res) => {
 
 router.get("/dissapprove/:id", islogin, async (req, res) => {
     const { id } = req.params;
-    const announcement = await Announcement.findByIdAndUpdate(id, { isDisapproved: true });
+    const announcement = await Announcement.findByIdAndUpdate(id, { isDisapproved: true,isApproved: false }, { new: true });
     res.status(200).json({ message: "Announcement dissapproved successfully", announcement });
 }
 

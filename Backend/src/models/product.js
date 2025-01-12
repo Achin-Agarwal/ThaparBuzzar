@@ -47,7 +47,7 @@ const productSchema = new mongoose.Schema({
     },
     promoCode: {
         code: {
-            type: String
+            type: Number
         },
         numberOfUses: {
             type: Number
