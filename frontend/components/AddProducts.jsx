@@ -145,7 +145,6 @@ const AddProducts = () => {
       !currentProduct.category ||
       !currentProduct.price ||
       !currentProduct.description ||
-      !currentProduct.images.length ||
       currentProduct.stock <= 0
     ) {
       alert(`Please fill out all fields for Product ${activeIndex + 1}`);
@@ -378,15 +377,34 @@ const AddProducts = () => {
             value={products[activeIndex].colorName}
             onChange={(event) => handleInputChange(activeIndex, event)}
           /> */}
-          <InputField
-            placeholder="Images"
-            type="file"
-            name="images"
-            accept="image/*"
-            value={`${url}/images/products/${products[activeIndex].image}`}
-            onChange={(event) => handleInputChange(activeIndex, event)}
-            disabled={!isEditable}
-          />
+          <div>
+            <InputField
+              placeholder="Images"
+              type="file"
+              name="images"
+              accept="image/*"
+              value={`${url}/images/products/${products[activeIndex].image}`}
+              onChange={(event) => handleInputChange(activeIndex, event)}
+              disabled={!isEditable}
+              multiple 
+            />
+            <div style={{ display: "flex", gap: "10px", marginTop: "10px" }}>
+              {products[activeIndex]?.image?.map((image, index) => (
+                <img
+                  key={index}
+                  src={`${url}/images/products/${image}`}
+                  alt={`Product Image ${index + 1}`}
+                  style={{
+                    width: "100px",
+                    height: "100px",
+                    objectFit: "cover",
+                    borderRadius: "8px",
+                  }}
+                />
+              ))}
+            </div>
+          </div>
+
           <InputField
             placeholder="Discounted Price"
             type="number"
