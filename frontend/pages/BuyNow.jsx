@@ -11,7 +11,9 @@ const BuyNow = () => {
   const [activeTab, setActiveTab] = useState("productDetails");
   const navigate = useNavigate();
   const location = useLocation();
+  console.log(location.state);
   const price = location.state.price;
+  const discount= location.state.discount;
 
   useEffect(() => {
     const fetch = async () => {
@@ -41,7 +43,7 @@ const BuyNow = () => {
   return (
     <div className="buyNowContainer">
       <div className="priceSection">
-        <Price price={price} />
+        <Price price={price} discount={discount}/>
       </div>
       <div className="detailsSection">
         <div className="tabs">

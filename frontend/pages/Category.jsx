@@ -64,6 +64,7 @@ const Category = () => {
             description={product.description}
             price={product.price}
             rating={product.rating}
+            discountedPrice={product.discountedPrice}
             onClick={() => handleCardClick(product._id)}
           />
         ))}

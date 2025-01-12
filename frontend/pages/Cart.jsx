@@ -10,7 +10,7 @@ const Cart = () => {
     useContext(CartContext);
 
   const [updatedCart, setUpdatedCart] = useState([]);
-  const navigate=useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCart = async () => {
@@ -30,7 +30,6 @@ const Cart = () => {
   const handleQuantityChange = (id, newQuantity) => {
     if (newQuantity > 0) {
       updateQuantity(id, newQuantity);
-      // Track the updated items in updatedCart
       const updatedItem = cart.find((item) => item.id === id);
       const newUpdatedCart = [
         ...updatedCart.filter((item) => item.id !== id),
@@ -63,14 +62,24 @@ const Cart = () => {
       //   items: cart,
       // });
       // console.log("Buy Now Response:", response.data);
-      navigate("/buynow",{state:{price:totalPrice}});
+      navigate("/buynow", { state: { price: totalPrice,discount:totalDiscount } });
     } catch (error) {
       console.error("Error placing order:", error);
     }
   };
 
+  const calculateDiscountedPrice = (item) => {
+    return item.discount
+      ? (item.price - item.price * (item.discount / 100)) * item.quantity
+      : item.price * item.quantity;
+  };
+
   const totalPrice = cart.reduce(
-    (total, item) => total + item.price * item.quantity,
+    (total, item) => total + calculateDiscountedPrice(item),
+    0
+  );
+  const totalDiscount = cart.reduce(
+    (total, item) => total + item.discountedPrice * item.quantity,
     0
   );
 
@@ -84,20 +93,39 @@ const Cart = () => {
           ) : (
             cart.map((item) => (
               <div key={item.id} className="cart">
-                <div className="fix-text " >
+                <div className="fix-text">
                   <h2>{item.name}</h2>
                 </div>
-                <p style={{fontSize: "18px"}}>Price: ${item.price * item.quantity}</p>
+                <div
+                  className="price-section"
+                  style={{ alignItems: "start", gap: "10px" }}
+                >
+                  {item.discountedPrice ? (
+                    <>
+                      <div style={{ display: "flex", gap: "15px" }}>
+                        <span className="original-price">
+                          ₹{item.price * item.quantity}
+                        </span>
+                        <span className="discounted-price">
+                          ₹{item.discountedPrice * item.quantity}
+                        </span>
+                      </div>
+                    </>
+                  ) : (
+                    <span className="price">₹{item.price * item.quantity}</span>
+                  )}
+                </div>
+
                 <div className="quantity-controls">
                   <button
                     onClick={() =>
                       handleQuantityChange(item.id, item.quantity - 1)
                     }
-                    style={{fontSize: "18px"}}
+                    style={{ fontSize: "18px" }}
                   >
                     -
                   </button>
-                  <span style={{fontSize: "18px"}}>{item.quantity}</span>
+                  <span style={{ fontSize: "18px" }}>{item.quantity}</span>
                   <button
                     onClick={() => {
                       if (item.quantity < item.available) {
@@ -105,7 +133,7 @@ const Cart = () => {
                       }
                     }}
                     disabled={item.quantity >= item.available}
-                    style={{fontSize: "18px"}}
+                    style={{ fontSize: "18px" }}
                   >
                     +
                   </button>
@@ -120,7 +148,7 @@ const Cart = () => {
             ))
           )}
         </div>
-        <div>{cart.length > 0 && <Price price={totalPrice}></Price>}</div>
+        <div>{cart.length > 0 && <Price price={totalPrice.toFixed(2)} discount={totalDiscount.toFixed(2)}/>}</div>
       </div>
       <div className="cart-actions">
         <button onClick={handleUpdateCart} className="update-button">

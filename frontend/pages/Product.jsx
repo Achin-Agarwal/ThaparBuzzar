@@ -77,7 +77,7 @@ const Product = ({productadd}) => {
     //   quantity,
     //   // image: products.images[currentImageIndex],
     // };
-    const cartItem = { id: products._id, name: products.name, price: products.price, quantity: quantity ,available:products.stock.available};
+    const cartItem = { id: products._id, name: products.name, price: products.price, quantity: quantity ,available:products.stock.available,discountedPrice:products.discountedPrice,image:products.image[currentImageIndex] };
     addToCart(cartItem);
     try {
       //   const response = await axios.post("http://your-backend-url/cart", { cartItem });
@@ -88,6 +88,13 @@ const Product = ({productadd}) => {
       console.error("Error submitting cart:", error);
     }
   };
+
+  const price = products.price || 0;
+  const discountedPrice = products.discountedPrice || 0;
+  const discountPercentage =
+    discountedPrice && price
+      ? Math.round(((price - discountedPrice) / price) * 100)
+      : 0;
 
   const handleBuyNow = () => {
     alert(`Proceeding to buy ${products.name} with quantity ${quantity}`);
@@ -134,8 +141,22 @@ const Product = ({productadd}) => {
               <p className="sold">{products.stock.sold} items sold</p>
             )}
           </div>
-          <p className="price">Price: ₹{products.price}</p>
-          <div>
+          <div className="price-section" style={{alignItems:"start",gap:"10px"}}>
+            {discountedPrice ? (
+              <>
+                <div style={{ display: "flex", gap: "15px" }}>
+                  <span className="original-price">₹{price}</span>
+                  <span className="discounted-price">₹{discountedPrice}</span>
+                </div>
+                <span className="discount-percentage">
+                  ({discountPercentage}% OFF)
+                </span>
+              </>
+            ) : (
+              <span className="price">₹{price}</span>
+            )}
+          </div>
+          <div style={{ display: "flex", gap: "10px", margin: "15px 0px"}}>
             {products.stock?.available > 10 && (
               <p className="stock in-stock">In Stock</p>
             )}
@@ -147,7 +168,6 @@ const Product = ({productadd}) => {
               <p className="stock out-of-stock">Out of Stock</p>
             )}
           </div>
-
           <p className="rating">Rating: {renderStars(products.rating || 0)}</p>
           <div className="quantity-control">
             <button onClick={decreaseQuantity} className="quantity-btn">
@@ -190,6 +210,7 @@ const Product = ({productadd}) => {
               description={product.description}
               price={product.price}
               rating={product.rating}
+              discountedPrice={product.discountedPrice}
               onClick={() => handleCardClick(product._id)}
             />
           ))}

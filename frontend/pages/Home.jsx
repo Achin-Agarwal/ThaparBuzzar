@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import "../styles/Home.css";
-import thapar from "../src/assets/thapar.png";
 import axios from "axios";
 import Card from "../temporary/Card";
 import url from "../url";
@@ -8,41 +7,23 @@ import img from "../src/assets/clg logo.png";
 import { useNavigate } from "react-router-dom";
 import ImageSlider from "../components/Image";
 import Scroll from "../components/Scroll";
-import { FaArrowRight } from "react-icons/fa";
 import SplitText from "../temporary/SplitText";
 
 const Home = () => {
-  const [products, setProducts] = useState([]);
+  const [topCategoryProducts, setTopCategoryProducts] = useState([]);
+  const [discountedProducts, setDiscountedProducts] = useState([]);
   const navigate = useNavigate();
-  console.log(products);
-  // const images = [
-  //   "../src/assets/1.jpg",
-  //   "../src/assets/2.jpg",
-  //   "../src/assets/3.jpg",
-  //   "../src/assets/4.jpg",
-  //   "../src/assets/5.jpg",
-  //   "../src/assets/6.jpg",
-  //   "../src/assets/7.jpg",
-  //   "../src/assets/8.jpg",
-  //   "../src/assets/9.jpg",
-  //   "../src/assets/10.jpg",
-  // ];
 
-  const handleAnimationComplete = () => {
-    console.log("All letters have animated!");
-  };
   const images = [
     `${url}/public/images/products/Screenshot 2024-06-28 001118.png-1735716034567.png`,
     `${url}/public/images/products/Screenshot 2024-06-28 001118.png-1735716034567.png`,
-    `${url}/public/images/products/Screenshot 2024-06-28 001118.png-1735716034567.png`,
-    `${url}/public/images/products/Screenshot 2024-06-28 001118.png-1735716034567.png`,
   ];
-  console.log(images);
 
   useEffect(() => {
-    const fetchProducts = async () => {
+    // Fetch top category products
+    const fetchTopCategoryProducts = async () => {
       try {
-        const response = await axios.get(url + "/home/products");
+        const response = await axios.get(`${url}/home/products`);
         const products = response.data;
 
         // Find the product with the max price in each category
@@ -56,25 +37,31 @@ const Home = () => {
           return acc;
         }, {});
 
-        // Convert the object back to an array
-        const filteredProducts = Object.values(maxPriceProducts);
-        setProducts(filteredProducts);
+        setTopCategoryProducts(Object.values(maxPriceProducts));
       } catch (error) {
-        console.log(error);
+        console.error("Error fetching top category products:", error);
       }
     };
-    fetchProducts();
+
+    // Fetch discounted products
+    const fetchDiscountedProducts = async () => {
+      try {
+        const response = await axios.get(`${url}/home/discounted-products`);
+        setDiscountedProducts(response.data);
+      } catch (error) {
+        console.error("Error fetching discounted products:", error);
+      }
+    };
+
+    fetchTopCategoryProducts();
+    fetchDiscountedProducts();
   }, []);
-  function convertSpacesToEncoded(str) {
-    return str.replace(/ /g, "%20");
-  }
 
   const handleCardClick = (category) => {
-    console.log(category);
     navigate(`/category/${category}`);
   };
+
   const handleSale = (sale) => {
-    console.log(sale);
     navigate(`/sale/${sale}`);
   };
 
@@ -91,22 +78,11 @@ const Home = () => {
             delay={150}
             animationFrom={{ opacity: 0, transform: "translate3d(0,50px,0)" }}
             animationTo={{ opacity: 1, transform: "translate3d(0,0,0)" }}
-            easing="easeOutCubic"
-            threshold={0.2}
-            rootMargin="-50px"
-            onLetterAnimationComplete={handleAnimationComplete}
           />
         </h1>
         <div className="product-grid">
-          {products.map((product) => (
-            // <div className="card-wrapper" key={product.category}>
-            <div>
-              {/* <h4 className="category-header">
-                {product.category}
-                <span onClick={() => handleCardClick(product.category)}>
-                  <FaArrowRight />
-                </span>
-              </h4> */}
+          {topCategoryProducts.map((product) => (
+            <div key={product.category}>
               <Card
                 name={product.name}
                 image={`${url}/images/products/${product.image?.[0] || img}`}
@@ -114,6 +90,7 @@ const Home = () => {
                 rating={product.rating}
                 description={product.description}
                 onClick={() => handleCardClick(product.category)}
+                discountedPrice={product.discountedPrice}
               />
             </div>
           ))}
@@ -127,22 +104,11 @@ const Home = () => {
             delay={150}
             animationFrom={{ opacity: 0, transform: "translate3d(0,50px,0)" }}
             animationTo={{ opacity: 1, transform: "translate3d(0,0,0)" }}
-            easing="easeOutCubic"
-            threshold={0.2}
-            rootMargin="-50px"
-            onLetterAnimationComplete={handleAnimationComplete}
           />
         </h1>
         <div className="product-grid">
-          {products.map((product) => (
-            // <div className="card-wrapper" key={product.category}>
-            <div>
-              {/* <h4 className="category-header">
-                {product.category}
-                <span onClick={() => handleCardClick(product.category)}>
-                  <FaArrowRight />
-                </span>
-              </h4> */}
+          {discountedProducts.map((product) => (
+            <div key={product.id}>
               <Card
                 name={product.name}
                 image={`${url}/images/products/${product.image?.[0] || img}`}
@@ -150,6 +116,7 @@ const Home = () => {
                 rating={product.rating}
                 description={product.description}
                 onClick={() => handleSale(product.category)}
+                discountedPrice={product.discountedPrice}
               />
             </div>
           ))}
