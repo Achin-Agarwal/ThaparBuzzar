@@ -1,87 +1,108 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { CartContext } from "../CartContext";
 import "../styles/Cart.css";
 import axios from "axios";
 import Price from "../components/Price";
 import { useNavigate } from "react-router-dom";
+import url from "../url";
 
 const Cart = () => {
-  const { cart, updateQuantity, removeFromCart, clearCart } =
-    useContext(CartContext);
-
-  const [updatedCart, setUpdatedCart] = useState([]);
+  const { cart, setCart, removeFromCart } = useContext(CartContext);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCart = async () => {
       try {
-        console.log(cart);
-        // Fetch the cart data from the backend if needed
-        // const response = await axios.get("http://your-backend-url/cart");
-        // setCart(response.data.cart); // Assuming backend returns { cart: [] }
+        const token = localStorage.getItem("authToken");
+        const response = await axios.get(`${url}/buyer/usercart`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setCart(response.data.cart);
+        console.log(cart)
       } catch (error) {
         console.error("Error fetching cart:", error);
       }
     };
-
     fetchCart();
   }, []);
 
-  const handleQuantityChange = (id, newQuantity) => {
-    if (newQuantity > 0) {
-      updateQuantity(id, newQuantity);
-      const updatedItem = cart.find((item) => item.id === id);
-      const newUpdatedCart = [
-        ...updatedCart.filter((item) => item.id !== id),
-        { ...updatedItem, quantity: newQuantity },
-      ];
-      setUpdatedCart(newUpdatedCart);
+  const handleUpdateQuantity = (id, newQuantity) => {
+    setCart((prevCart) =>
+      prevCart.map((item) =>
+        item.id === id ? { ...item, quantity: newQuantity } : item
+      )
+    );
+  };
+
+  const handleIncreaseQuantity = async (item) => {
+    console.log(item)
+    try {
+      const token = localStorage.getItem("authToken");
+      const response = await axios.post(
+        `${url}/buyer/addtocart/${item._id}/1`, // Adjusted for incrementing by 1
+        {},
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      // Update cart based on backend response
+      console.log(response.data.cart);
+      setCart(response.data.cart);
+    } catch (error) {
+      console.error("Error increasing quantity:", error);
+      alert("Failed to increase quantity. Please try again.");
     }
   };
 
-  const handleUpdateCart = async () => {
-    if (updatedCart.length === 0) {
-      alert("No changes to update.");
+  const handleDecreaseQuantity = async (item) => {
+    if (item.quantity <= 1) {
+      alert("Quantity cannot be less than 1.");
       return;
     }
+    console.log(item)
     try {
-      const response = await axios.patch("http://your-backend-url/cart", {
-        items: updatedCart,
-      });
-      console.log("Update Cart Response:", response.data);
-      alert("Cart updated successfully!");
-      setUpdatedCart([]);
+      const token = localStorage.getItem("authToken");
+      const response = await axios.post(
+        `${url}/buyer/deleatecartitem/${item._id}/1`, // Adjusted for decrementing by 1
+        {},
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      // Update cart based on backend response
+      setCart(response.data.cart);
     } catch (error) {
-      console.error("Error updating cart:", error);
+      console.error("Error decreasing quantity:", error);
+      alert("Failed to decrease quantity. Please try again.");
     }
   };
 
-  const handleBuyNow = async () => {
-    try {
-      // const response = await axios.post("http://your-backend-url/checkout", {
-      //   items: cart,
-      // });
-      // console.log("Buy Now Response:", response.data);
-      navigate("/buynow", { state: { price: totalPrice,discount:totalDiscount } });
-    } catch (error) {
-      console.error("Error placing order:", error);
-    }
-  };
+  const handleBuyNow = () => {
+    const totalPrice = cart.reduce(
+      (total, item) =>
+        total +
+        (item.product.discountedPrice
+          ? (item.product.price - item.product.price * (item.product.discountedPrice / 100)) * item.quantity
+          : item.product.price * item.quantity),
+      0
+    );
 
-  const calculateDiscountedPrice = (item) => {
-    return item.discount
-      ? (item.price - item.price * (item.discount / 100)) * item.quantity
-      : item.price * item.quantity;
-  };
+    const totalDiscount = cart.reduce(
+      (total, item) =>
+        total +
+        (item.product.discountedPrice ? item.product.discountedPrice * item.quantity : 0),
+      0
+    );
 
-  const totalPrice = cart.reduce(
-    (total, item) => total + calculateDiscountedPrice(item),
-    0
-  );
-  const totalDiscount = cart.reduce(
-    (total, item) => total + item.discountedPrice * item.quantity,
-    0
-  );
+    navigate("/buynow", {
+      state: {
+        price: totalPrice.toFixed(2),
+        discount: totalDiscount.toFixed(2),
+      },
+    });
+  };
 
   return (
     <div>
@@ -92,47 +113,39 @@ const Cart = () => {
             <p className="empty-cart-message">Your cart is empty.</p>
           ) : (
             cart.map((item) => (
-              <div key={item.id} className="cart">
+              <div key={item._id} className="cart">
                 <div className="fix-text">
-                  <h2>{item.name}</h2>
+                  <h2>{item.product.name}</h2>
                 </div>
                 <div
                   className="price-section"
                   style={{ alignItems: "start", gap: "10px" }}
                 >
-                  {item.discountedPrice ? (
-                    <>
-                      <div style={{ display: "flex", gap: "15px" }}>
-                        <span className="original-price">
-                          ₹{item.price * item.quantity}
-                        </span>
-                        <span className="discounted-price">
-                          ₹{item.discountedPrice * item.quantity}
-                        </span>
-                      </div>
-                    </>
+                  {item.product.discountedPrice ? (
+                    <div style={{ display: "flex", gap: "15px" }}>
+                      <span className="original-price">
+                        ₹{item.product.price * item.quantity}
+                      </span>
+                      <span className="discounted-price">
+                        ₹{item.product.discountedPrice * item.quantity}
+                      </span>
+                    </div>
                   ) : (
-                    <span className="price">₹{item.price * item.quantity}</span>
+                    <span className="price">₹{item.product.price * item.quantity}</span>
                   )}
                 </div>
 
                 <div className="quantity-controls">
                   <button
-                    onClick={() =>
-                      handleQuantityChange(item.id, item.quantity - 1)
-                    }
+                    onClick={() => handleDecreaseQuantity(item)}
                     style={{ fontSize: "18px" }}
                   >
                     -
                   </button>
                   <span style={{ fontSize: "18px" }}>{item.quantity}</span>
                   <button
-                    onClick={() => {
-                      if (item.quantity < item.available) {
-                        handleQuantityChange(item.id, item.quantity + 1);
-                      }
-                    }}
-                    disabled={item.quantity >= item.available}
+                    onClick={() => handleIncreaseQuantity(item)}
+                    disabled={item.quantity >= item.product.stock.available}
                     style={{ fontSize: "18px" }}
                   >
                     +
@@ -148,12 +161,33 @@ const Cart = () => {
             ))
           )}
         </div>
-        <div>{cart.length > 0 && <Price price={totalPrice.toFixed(2)} discount={totalDiscount.toFixed(2)}/>}</div>
+        {cart.length > 0 && (
+          <Price
+            price={cart
+              .reduce(
+                (total, item) =>
+                  total +
+                  (item.product.discountedPrice
+                    ? (item.product.price - item.product.price * (item.product.discountedPrice / 100)) *
+                      item.quantity
+                    : item.product.price * item.quantity),
+                0
+              )
+              .toFixed(2)}
+            discount={cart
+              .reduce(
+                (total, item) =>
+                  total +
+                  (item.product.discountedPrice
+                    ? item.product.discountedPrice * item.quantity
+                    : 0),
+                0
+              )
+              .toFixed(2)}
+          />
+        )}
       </div>
       <div className="cart-actions">
-        <button onClick={handleUpdateCart} className="update-button">
-          Update Cart
-        </button>
         <button onClick={handleBuyNow} className="buy-now-button">
           Buy Now
         </button>

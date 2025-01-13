@@ -23,14 +23,14 @@ const renderStars = (rating) => {
   return stars;
 };
 
-const Product = ({productadd}) => {
+const Product = ({ productadd }) => {
   const { id } = useParams();
   const [products, setProducts] = useState({});
   const [allProducts, setAllProducts] = useState([]);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const navigate = useNavigate();
-  const {addToCart}=useContext(CartContext);
+  const { addToCart } = useContext(CartContext);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -77,14 +77,26 @@ const Product = ({productadd}) => {
     //   quantity,
     //   // image: products.images[currentImageIndex],
     // };
-    const cartItem = { id: products._id, name: products.name, price: products.price, quantity: quantity ,available:products.stock.available,discountedPrice:products.discountedPrice,image:products.image[currentImageIndex] };
+    const cartItem = {
+      id: products._id,
+      name: products.name,
+      price: products.price,
+      quantity: quantity,
+      available: products.stock.available,
+      discountedPrice: products.discountedPrice,
+      image: products.image[currentImageIndex],
+    };
     addToCart(cartItem);
+    console.log(cartItem);
+    localStorage.setItem("cart", JSON.stringify(cartItem));
+    const token = localStorage.getItem("authToken");
     try {
-      const response = await axios.post(`${url}/buyer/addtocart/${products._id}/${products.quantity}`
-        // , { cartItem }
+      const response = await axios.post(
+        `${url}/buyer/addtocart/${products._id}/${quantity}`,{},
+        { headers: { Authorization: `Bearer ${token}` } }
       );
       console.log("Add to cart response:", response.data);
-      console.log("cartItem",cartItem);
+      console.log("cartItem", cartItem);
       alert("Cart submitted successfully!");
       navigate("/cart", { state: { cartItem } });
     } catch (error) {
@@ -101,7 +113,7 @@ const Product = ({productadd}) => {
 
   const handleBuyNow = () => {
     alert(`Proceeding to buy ${products.name} with quantity ${quantity}`);
-    navigate("/buynow", { state: { price:products.price*quantity } });
+    navigate("/buynow", { state: { price: products.price * quantity } });
   };
 
   const increaseQuantity = () => {
@@ -124,7 +136,9 @@ const Product = ({productadd}) => {
             <>
               <img
                 //   src={product.image[currentImageIndex]}
-                src={`${url}/images/products/${products.image[currentImageIndex] || img}`}
+                src={`${url}/images/products/${
+                  products.image[currentImageIndex] || img
+                }`}
                 alt={products.name}
                 className="product-imagee"
               />
@@ -144,7 +158,10 @@ const Product = ({productadd}) => {
               <p className="sold">{products.stock.sold} items sold</p>
             )}
           </div>
-          <div className="price-section" style={{alignItems:"start",gap:"10px"}}>
+          <div
+            className="price-section"
+            style={{ alignItems: "start", gap: "10px" }}
+          >
             {discountedPrice ? (
               <>
                 <div style={{ display: "flex", gap: "15px" }}>
@@ -159,7 +176,7 @@ const Product = ({productadd}) => {
               <span className="price">₹{price}</span>
             )}
           </div>
-          <div style={{ display: "flex", gap: "10px", margin: "15px 0px"}}>
+          <div style={{ display: "flex", gap: "10px", margin: "15px 0px" }}>
             {products.stock?.available > 10 && (
               <p className="stock in-stock">In Stock</p>
             )}

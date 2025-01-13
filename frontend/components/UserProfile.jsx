@@ -16,7 +16,7 @@ const UserProfile = () => {
       email: "",
       phone: "",
       addresses: [{ city: "", state: "", pincode: "" }],
-      images: [],
+      // images: [],
     },
   ]);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -32,6 +32,7 @@ const UserProfile = () => {
         const response = await axios.get(url + "/seller/userproducts", {
           headers: { authorization: `Bearer ${token}` },
         });
+        console.log(response.data)
         setProducts(
           response.data.products.length > 0
             ? response.data.products
@@ -42,7 +43,7 @@ const UserProfile = () => {
                   email: "",
                   phone: "",
                   addresses: [{ city: "", state: "", pincode: "" }],
-                  images: [],
+                  // images: [],
                 },
               ]
         );
@@ -120,11 +121,11 @@ const UserProfile = () => {
     const currentProduct = products[activeIndex];
 
     const formData = new FormData();
-    if (currentProduct.images.length > 0) {
-      currentProduct.images.forEach((image, index) => {
-        formData.append(`images`, image, image.name || `image_${index}`);
-      });
-    }
+    // if (currentProduct.images.length > 0) {
+    //   currentProduct.images.forEach((image, index) => {
+    //     formData.append(`images`, image, image.name || `image_${index}`);
+    //   });
+    // }
 
     formData.append("name", currentProduct.name);
     formData.append("email", currentProduct.email);
@@ -187,14 +188,14 @@ const UserProfile = () => {
             onChange={(event) => handleInputChange(activeIndex, event)}
             disabled={!isEditable}
           />
-          <InputField
+          {/* <InputField
             placeholder="Images"
             type="file"
             name="images"
             accept="image/*"
             onChange={(event) => handleInputChange(activeIndex, event)}
             disabled={!isEditable}
-          />
+          /> */}
           <div className="address-container">
             <h2>Addresses:</h2>
           </div>
