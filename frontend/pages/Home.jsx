@@ -20,14 +20,15 @@ const Home = () => {
   ];
 
   useEffect(() => {
-    // Fetch top category products
     const fetchTopCategoryProducts = async () => {
       try {
         const response = await axios.get(`${url}/home/bestsellers`);
         const products = response.data;
         console.log(products)
 
-        // Find the product with the max price in each category
+        const res=await axios.get(`${url}/admin/getanouncements`);
+        console.log(res.data)
+
         const maxPriceProducts = products.reduce((acc, product) => {
           if (
             !acc[product.category] ||
@@ -44,7 +45,6 @@ const Home = () => {
       }
     };
 
-    // Fetch discounted products
     const fetchDiscountedProducts = async () => {
       try {
         const response = await axios.get(`${url}/home/discountedproducts`);
