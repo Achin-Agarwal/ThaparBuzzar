@@ -43,7 +43,37 @@ console.log(quantity);
    
 });
 
-router.post("/deleatecartitem", async (req, res) => {
+router.post("/deleatecartitem/:id/:quantity", isLogin, async (req, res) => {
+    const { id, quantity } = req.params;
+    const buyerId = req.user._id;
+        // Find the buyer by ID
+        const buyer = await Buyer.findById(buyerId);
+
+        if (!buyer) {
+            return res.status(404).json({ error: "Buyer not found" });
+        }
+
+        // Check if the product exists in the cart
+        const cartItemIndex = buyer.cart.findIndex((item) => item.product.toString() === id);
+
+        if (cartItemIndex === -1) {
+            return res.status(404).json({ error: "Product not found in cart" });
+        }
+
+        const currentQuantity = buyer.cart[cartItemIndex].quantity;
+
+        if (currentQuantity <= parseInt(quantity)) {
+            // Remove the item from the cart if quantity is less than or equal to what's being removed
+            buyer.cart.splice(cartItemIndex, 1);
+        } else {
+            // Reduce the quantity of the item
+            buyer.cart[cartItemIndex].quantity -= parseInt(quantity);
+        }
+
+        await buyer.save();
+
+        res.status(200).json({ message: "Cart item updated successfully", cart: buyer.cart });
     
 });
+
 export default router;
