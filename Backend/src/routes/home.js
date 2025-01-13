@@ -14,8 +14,12 @@ router.get("/bestsellers", safeHandler(async (req, res) => {
     return res.json(bestsellers);
 }));
 router.get("/products", safeHandler(async (req, res) => {
-    const products = await Product.find().exec();
+    const products = Product.find({ discountedPrice: { $lte: 0 } }).exec();
    return res.json(products);
+}));
+router.get("/discountedproducts",safeHandler(async (req,res)=>{
+   const products= Product.find({ discountedPrice: { $gt: 0 } }).exec();
+    return res.json(products);
 }));
 
 

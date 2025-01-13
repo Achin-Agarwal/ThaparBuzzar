@@ -7,6 +7,7 @@ import { productSchema } from '../utils/zodSchemas.js';
 import { productImageUpload , multiImageUpload } from '../utils/multer.js';
 import { safeHandler } from '../middleware/safeHandler.js';
 import isLogin from '../middleware/isLogin.js';
+import { isValidObjectId } from 'mongoose';
 const router = express.Router();
 
 // Add an announcement
@@ -121,12 +122,17 @@ router.post('/addproduct', isLogin, productImageUpload, safeHandler(async (req, 
     res.status(201).json(savedProduct);
 
 }));
-router.patch('/addproduct', isLogin, productImageUpload, safeHandler(async (req, res) => {  
+router.patch('/addproduct/:id', isLogin, productImageUpload, safeHandler(async (req, res) => {  
 
     const {updates} = req.body;
-    const id = req.body.user._id;
-    if(!isValid(productSchema, update)){
-        return res.status(404).json({message: "user not found"});
+    console.log("body: ");
+    console.log(req.body);
+    const { id } = req.params;
+
+    const images = req.files.map((file) => file.filename);
+
+    if(isValidObjectId(id) === false){
+        return res.status(404).json({message: "Invalid product id"});
     }
     
     const filteredUpdates = Object.fromEntries(

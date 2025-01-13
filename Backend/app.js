@@ -11,6 +11,7 @@ import restpass from './src/routes/resetPassword.js';
 import auth from './src/routes/auth.js';
 import creteNewAccount from './src/routes/createNewAccount.js';
 import admin from './src/routes/admin.js';
+import buyer from './src/routes/buyer.js';
 const app = express();
 const __dirname = path.resolve();
 app.use(express.static(path.join(__dirname, 'public')));
@@ -88,6 +89,7 @@ app.use("/home", home);
 app.use("/resetpassword", restpass);
 app.use("/auth", auth);
 app.use("/admin", admin);
+app.use("/buyer", buyer);
 // /profile route to check the logged-in buyer's profile
 // import pkg from 'express-openid-connect';
 // const { requiresAuth } = pkg;
