@@ -8,7 +8,7 @@ import { safeHandler } from '../middleware/safeHandler.js';
 const router = express.Router();
 router.get("/getalldetails",isLogin,safeHandler( async (req, res) => {
     // const deals = await Buyer.findById(req.user._id).populate('cart.product').populate('orders').populate('wishlist');    use this in production
-    const deals = await Buyer.findById(req.user._id).populate('cart.product').;
+    const deals = await Buyer.findById(req.user._id).populate('cart.product');
     res.status(200).json({ deals });
 }));
 
