@@ -57,18 +57,19 @@ router.post("/google", async (req, res, next) => {
                 config.jwt.secret, {
                 expiresIn: config.jwt.timeout,
             });
-            res.status(200).json({
+            return res.status(200).json({
                 message: 'user created successfully',
                 token,
                 newuser,
             });
         }
+        //an error occured here 
         const { _id } = user;
         const token = jwt.sign({ _id, email, role },
             config.jwt.secret, {
             expiresIn: config.jwt.timeout,
         });
-        res.status(200).json({
+        return res.status(200).json({
             message: 'user created successfully',
             token,
             user,
@@ -91,7 +92,7 @@ router.post("/google", async (req, res, next) => {
                 config.jwt.secret, {
                 expiresIn: config.jwt.timeout,
             });
-            res.status(200).json({
+            return res.status(200).json({
                 message: 'user created successfully',
                 token,
                 newuser,
@@ -103,7 +104,7 @@ router.post("/google", async (req, res, next) => {
             config.jwt.secret, {
             expiresIn: config.jwt.timeout,
         });
-        res.status(200).json({
+        return res.status(200).json({
             message: 'user created successfully',
             token,
             user,
