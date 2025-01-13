@@ -42,3 +42,4 @@ router.post("/addtocart/:id/:quantity", isLogin, async (req, res) => {
 router.post("/deleatecartitem", async (req, res) => {
     
 });
+export default router;

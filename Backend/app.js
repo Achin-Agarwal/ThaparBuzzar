@@ -75,12 +75,6 @@ app.use(cors({
 app.get('/', (req, res) => {
   // console.log(req.oidc.isAuthenticated());
   console.log("***********************************************req.oidc****************************************************");
-  // console.log(req.oidc.buyer);
-  // console.log(req.oidc.idToken);
-  // console.log(req.oidc.accessToken);
-  // console.log(req.oidc.refreshToken);
-  // console.log(req.oidc.isAuthenticated());
-  // res.redirect("http://localhost:5173");
   res.send("Hello World");
 });
 app.use("/createnewaccount", creteNewAccount);
