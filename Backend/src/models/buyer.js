@@ -55,19 +55,23 @@ const buyerSchema = new mongoose.Schema({
     address: {
         roomNumber: {
             type: String,
-            required: false
+            required: false,
+            default: "Not Provided"
         },
        floor: {
             type: String,
-            required: false
+            required: false,
+            default: "Not Provided"
         },
         city: {
             type: String,
-            required: false
+            required: false,
+            default: "Not Provided"
         },
         hostel: {
             type: String,
-            required: false
+            required: false,
+            default: "Not Provided"
         },
 
     },
