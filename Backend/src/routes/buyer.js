@@ -6,10 +6,14 @@ import isLogin from "../middleware/isLogin.js";
 const router = express.Router();
 
 router.post("/addtocart/:id/:quantity", isLogin, async (req, res) => {
+    console.log("/addtocart");
     
         const { id, quantity } = req.params;
         const buyerId = req.user._id;
-
+console.log("id");
+console.log(id);
+console.log("quantity");
+console.log(quantity);
         // Find the buyer by ID
         const buyer = await Buyer.findById(buyerId);
 
