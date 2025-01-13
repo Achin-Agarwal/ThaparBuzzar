@@ -36,7 +36,7 @@ console.log(quantity);
                 quantity: parseInt(quantity)
             });
         }
-
+        await buyer.populate('cart.product').execPopulate();
         await buyer.save();
 
         res.status(200).json({ message: "Cart updated successfully", cart: buyer.cart });
@@ -74,11 +74,23 @@ router.post("/deleatecartitem/:id/:quantity", isLogin, async (req, res) => {
             // Reduce the quantity of the item
             buyer.cart[cartItemIndex].quantity -= parseInt(quantity);
         }
-
+        await buyer.populate('cart.product').execPopulate();
         await buyer.save();
 
         res.status(200).json({ message: "Cart item updated successfully", cart: buyer.cart });
     
+});
+router.get("/usercart", isLogin, async (req, res) => {
+    const buyerId = req.user._id;
+
+    // Find the buyer by ID and populate the cart
+    const buyer = await Buyer.findById(buyerId).populate('cart.product');
+
+    if (!buyer) {
+        return res.status(404).json({ error: "Buyer not found" });
+    }
+
+    res.status(200).json({ cart: buyer.cart });
 });
 
 export default router;

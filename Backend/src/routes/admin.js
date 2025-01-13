@@ -4,10 +4,11 @@ import islogin from "../middleware/isLogin.js";
 import Seller from "../models/seller.js";
 import Admin from "../models/admin.js";
 import Announcement from "../models/announcements.js";
+import { safeHandler } from "../middleware/safeHandler.js";
 
 const router = express.Router();
 
-router.get("/pendingAnnouncements",islogin,async (req, res) => {
+router.get("/pendingAnnouncements",islogin,safeHandler(async (req, res) => {
     if (req.user.role!== "admin") {    
         return res.status(403).json({ message: "Forbidden" });
     }
@@ -18,7 +19,7 @@ router.get("/pendingAnnouncements",islogin,async (req, res) => {
 router.get("/approvedAnnouncements", islogin, async (req, res) => {
     const announcements = await Announcement.find({ isApproved: true });
     res.status(200).json({ announcements });
-});
+}));
 
 router.get("/disapprovedAnnouncements", islogin, async (req, res) => {
     const announcements = await Announcement.find({ isDisapproved: true });
@@ -55,6 +56,6 @@ router.get("/dissapprove/:id", islogin, async (req, res) => {
     const announcement = await Announcement.findByIdAndUpdate(id, { isDisapproved: true,isApproved: false }, { new: true });
     res.status(200).json({ message: "Announcement dissapproved successfully", announcement });
 }
-
+router.get("/getanouncements",sa async (req, res) => {
 );
 export default router;
