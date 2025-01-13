@@ -70,13 +70,7 @@ const buyerSchema = new mongoose.Schema({
             required: false
         },
 
-    },  
-    wishlist: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Product'
-        }
-    ],
+    },
 });
 
 const Buyer = mongoose.model('buyer', buyerSchema);
