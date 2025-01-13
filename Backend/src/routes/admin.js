@@ -15,17 +15,17 @@ router.get("/pendingAnnouncements",islogin,safeHandler(async (req, res) => {
         const announcements = await Announcement.find({ isApproved: false,
             isDisapproved: false });
             res.status(200).json({ announcements });
-         });
-router.get("/approvedAnnouncements", islogin, async (req, res) => {
+         }));
+router.get("/approvedAnnouncements", islogin,safeHandler( async (req, res) => {
     const announcements = await Announcement.find({ isApproved: true });
     res.status(200).json({ announcements });
 }));
 
-router.get("/disapprovedAnnouncements", islogin, async (req, res) => {
+router.get("/disapprovedAnnouncements", islogin,safeHandler( async (req, res) => {
     const announcements = await Announcement.find({ isDisapproved: true });
     res.status(200).json({ announcements });
-});
-router.get("/approve/:id", islogin, async (req, res) => {
+}));
+router.get("/approve/:id", islogin ,safeHandler(async (req, res) => {
     const { id } = req.params;
 
    
@@ -49,13 +49,23 @@ router.get("/approve/:id", islogin, async (req, res) => {
             announcement,
         });
    
-});
+}));
 
-router.get("/dissapprove/:id", islogin, async (req, res) => {
+router.get("/dissapprove/:id", safeHandler(async (req, res) => {
     const { id } = req.params;
     const announcement = await Announcement.findByIdAndUpdate(id, { isDisapproved: true,isApproved: false }, { new: true });
     res.status(200).json({ message: "Announcement dissapproved successfully", announcement });
-}
-router.get("/getanouncements",sa async (req, res) => {
-);
+}));
+router.get("/getanouncements",safeHandler( async (req, res) => {
+const announcements = await Announcement.find({
+    isApproved: true,
+    expiresin: { $gt: new Date() }
+});
+
+const productImages = announcements.reduce((images, announcement) => {
+    return images.concat(announcement.images.productImages);
+}, []);
+
+res.status(200).json({ productImages });
+}));
 export default router;
