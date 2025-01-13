@@ -36,7 +36,7 @@ console.log(quantity);
                 quantity: parseInt(quantity)
             });
         }
-        await buyer.populate('cart.product').execPopulate();
+        await buyer.populate('cart.product');
         await buyer.save();
 
         res.status(200).json({ message: "Cart updated successfully", cart: buyer.cart });
@@ -74,7 +74,7 @@ router.post("/deleatecartitem/:id/:quantity", isLogin, async (req, res) => {
             // Reduce the quantity of the item
             buyer.cart[cartItemIndex].quantity -= parseInt(quantity);
         }
-        await buyer.populate('cart.product').execPopulate();
+        await buyer.populate('cart.product');
         await buyer.save();
 
         res.status(200).json({ message: "Cart item updated successfully", cart: buyer.cart });
