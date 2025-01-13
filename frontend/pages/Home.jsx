@@ -23,8 +23,9 @@ const Home = () => {
     // Fetch top category products
     const fetchTopCategoryProducts = async () => {
       try {
-        const response = await axios.get(`${url}/home/products`);
+        const response = await axios.get(`${url}/home/bestsellers`);
         const products = response.data;
+        console.log(products)
 
         // Find the product with the max price in each category
         const maxPriceProducts = products.reduce((acc, product) => {
@@ -46,7 +47,8 @@ const Home = () => {
     // Fetch discounted products
     const fetchDiscountedProducts = async () => {
       try {
-        const response = await axios.get(`${url}/home/discounted-products`);
+        const response = await axios.get(`${url}/home/discountedproducts`);
+        console.log(response.data)
         setDiscountedProducts(response.data);
       } catch (error) {
         console.error("Error fetching discounted products:", error);

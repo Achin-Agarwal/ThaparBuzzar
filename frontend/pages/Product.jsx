@@ -68,7 +68,7 @@ const Product = ({productadd}) => {
     );
   };
 
-  const handleAddToCart = () => async () => {
+  const handleAddToCart = async () => {
     alert(`${products.name} added to cart with quantity ${quantity}`);
     // const cartItem = {
     //   productId: products._id,
@@ -83,6 +83,7 @@ const Product = ({productadd}) => {
       const response = await axios.post(`${url}/buyer/addtocart/${products._id}/${products.quantity}`
         // , { cartItem }
       );
+      console.log("Add to cart response:", response.data);
       console.log("cartItem",cartItem);
       alert("Cart submitted successfully!");
       navigate("/cart", { state: { cartItem } });
