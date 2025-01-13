@@ -44,7 +44,12 @@ console.log(quantity);
 });
 
 router.post("/deleatecartitem/:id/:quantity", isLogin, async (req, res) => {
+    console.log("/deleatecartitem");
     const { id, quantity } = req.params;
+    console.log("id");
+    console.log(id);
+    console.log("quantity");
+    console.log(quantity);
     const buyerId = req.user._id;
         // Find the buyer by ID
         const buyer = await Buyer.findById(buyerId);
