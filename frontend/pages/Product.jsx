@@ -68,7 +68,7 @@ const Product = ({productadd}) => {
     );
   };
 
-  const handleAddToCart = () => {
+  const handleAddToCart = () => async () => {
     alert(`${products.name} added to cart with quantity ${quantity}`);
     // const cartItem = {
     //   productId: products._id,
@@ -80,7 +80,9 @@ const Product = ({productadd}) => {
     const cartItem = { id: products._id, name: products.name, price: products.price, quantity: quantity ,available:products.stock.available,discountedPrice:products.discountedPrice,image:products.image[currentImageIndex] };
     addToCart(cartItem);
     try {
-      //   const response = await axios.post("http://your-backend-url/cart", { cartItem });
+      const response = await axios.post(`${url}/buyer/addtocart/${products._id}/${products.quantity}`
+        // , { cartItem }
+      );
       console.log("cartItem",cartItem);
       alert("Cart submitted successfully!");
       navigate("/cart", { state: { cartItem } });
