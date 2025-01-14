@@ -31,13 +31,12 @@
   display: grid;
   place-items: center;
 }
-
 .product-image img {
-  width: 17vw;
-  height: 32vh;
+  width: 100%;
+  height: auto;
   object-fit: cover;
+  max-height: 200px;
 }
-
 .namePrice {
   width: 100%;
   display: flex;

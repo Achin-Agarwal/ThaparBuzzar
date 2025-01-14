@@ -37,6 +37,7 @@ const Product = ({ productadd }) => {
       try {
         const response = await axios.get(url + "/home/products");
         const products = response.data;
+        console.log(products);
         const product = products.find((product) => product._id === id);
         setProducts(product);
 
@@ -47,7 +48,6 @@ const Product = ({ productadd }) => {
           setAllProducts(categoryProducts);
         }
 
-        console.log(product);
         console.log(allProducts);
       } catch (error) {
         console.log(error);
@@ -135,7 +135,6 @@ const Product = ({ productadd }) => {
           {products.image && (
             <>
               <img
-                //   src={product.image[currentImageIndex]}
                 src={`${url}/images/products/${
                   products.image[currentImageIndex] || img
                 }`}
