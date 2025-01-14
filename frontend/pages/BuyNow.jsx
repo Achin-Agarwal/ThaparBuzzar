@@ -6,6 +6,8 @@ import Address from "../components/Address";
 import COD from "../components/COD";
 import Button from "../components/Button";
 import {jwtDecode} from "jwt-decode";
+import axios from "axios";
+import url from "../url";
 
 const BuyNow = () => {
   const [activeTab, setActiveTab] = useState("productDetails");

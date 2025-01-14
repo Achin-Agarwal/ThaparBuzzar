@@ -15,7 +15,7 @@ const UserProfile = () => {
       name: "",
       email: "",
       phone: "",
-      address: { roomNumber: "", floor: "", city: "" ,hostel:""},
+      address: { roomNumber: "", floor: "", city: "", hostel: "" },
       // images: [],
     },
   ]);
@@ -26,43 +26,33 @@ const UserProfile = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       const token = localStorage.getItem("authToken");
-  
+
       try {
         const response = await axios.get(url + "/buyer/getalldetails", {
           headers: { authorization: `Bearer ${token}` },
         });
-        console.log(response.data.deals)  
+        console.log(response.data.deals);
         setDeals(response.data.deals);
       } catch (error) {
         console.error("Error fetching deals:", error);
       }
     };
-  
+
     fetchProducts();
   }, []);
-  
 
-  const handleInputChange = (index, event) => {
-    const { name, value, files } = event.target;
-    setDeals((prevProducts) => {
-      const updatedProducts = [...prevProducts];
-      if (name === "images") {
-        updatedProducts[index].images = files ? Array.from(files) : [];
-      } else if (name.includes(".")) {
-        const [section, field] = name.split(".");
-        updatedProducts[index][section][field] = value;
-      } else {
-        updatedProducts[index][name] = value;
-      }
-      return updatedProducts;
-    });
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setDeals((prevDeals) => ({
+      ...prevDeals,
+      [name]: value,
+    }));
   };
-
   // const handleAddressChange = (event) => {
   //   console.log("event", event.target);
   //   const { name, value } = event.target;
   //   console.log(name, value);
-  
+
   //   // setDeals((prevDeals) => {
   //   //   const updatedDeals = [...prevDeals];
   //   //   updatedDeals[activeIndex].address = {
@@ -74,9 +64,10 @@ const UserProfile = () => {
   // };
 
   const handleAddressChange = (event) => {
+    console.log(event.target);
     const { name, value } = event.target;
     console.log(name, value);
-  
+
     setDeals((prevDeals) => ({
       ...prevDeals,
       address: {
@@ -85,17 +76,26 @@ const UserProfile = () => {
       },
     }));
   };
-  
 
   const handleSave = async () => {
     console.log("currentProduct", deals);
-
+    if (
+      deals.address.roomNumber === "" ||
+      deals.address.floor === "" ||
+      deals.address.city === "" ||
+      deals.address.hostel === "" ||
+      deals.name === "" ||
+      deals.phone === ""
+    ) {
+      alert("Please fill all the fields");
+      return;
+    }
+    const token = localStorage.getItem("authToken");
     try {
-      const response = await axios.patch(
-        `${url}/products/${currentProduct.id}`,
-        deals
-      );
-      alert(`Product ${activeIndex + 1} updated successfully`);
+      const response = await axios.patch(`${url}/buyer/updateprofile`, deals, {
+        headers: { authorization: `Bearer ${token}` },
+      });
+      alert(`Profile updated successfully`);
       console.log(response.data);
     } catch (error) {
       console.error("Failed to update product:", error);
@@ -189,12 +189,16 @@ const UserProfile = () => {
           </div>
           <div className="address-fields-container">
             {/* {deals.address.map((add, addressIndex) => ( */}
-              <div className="address-fields">
+            <div className="address-fields">
               <InputField
                 placeholder="Room Number"
                 type="text"
                 name="roomNumber"
-                value={deals.address?.roomNumber === "Not Provided" ? "" : deals.address?.roomNumber || ""}
+                value={
+                  deals.address?.roomNumber === "Not Provided"
+                    ? ""
+                    : deals.address?.roomNumber || ""
+                }
                 onChange={(event) => handleAddressChange(event)}
                 disabled={!isEditable}
                 width="80%"
@@ -203,16 +207,11 @@ const UserProfile = () => {
                 placeholder="Floor"
                 type="text"
                 name="floor"
-                value={deals.address?.floor === "Not Provided" ? "" : deals.address?.floor || ""}
-                onChange={(event) => handleAddressChange(event)}
-                disabled={!isEditable}
-                width="80%"
-              />
-              <InputField
-                placeholder="City"
-                type="text"
-                name="city"
-                value={deals.address?.city === "Not Provided" ? "" : deals.address?.city || ""}
+                value={
+                  deals.address?.floor === "Not Provided"
+                    ? ""
+                    : deals.address?.floor || ""
+                }
                 onChange={(event) => handleAddressChange(event)}
                 disabled={!isEditable}
                 width="80%"
@@ -221,12 +220,29 @@ const UserProfile = () => {
                 placeholder="Hostel"
                 type="text"
                 name="hostel"
-                value={deals.address?.hostel === "Not Provided" ? "" : deals.address?.hostel || ""}
+                value={
+                  deals.address?.hostel === "Not Provided"
+                    ? ""
+                    : deals.address?.hostel || ""
+                }
                 onChange={(event) => handleAddressChange(event)}
                 disabled={!isEditable}
                 width="80%"
               />
-            </div>            
+              <InputField
+                placeholder="City"
+                type="text"
+                name="city"
+                value={
+                  deals.address?.city === "Not Provided"
+                    ? ""
+                    : deals.address?.city || ""
+                }
+                onChange={(event) => handleAddressChange(event)}
+                disabled={!isEditable}
+                width="80%"
+              />
+            </div>
             {/* ))} */}
           </div>
         </form>

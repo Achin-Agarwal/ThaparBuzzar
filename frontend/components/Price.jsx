@@ -2,6 +2,7 @@ import React from "react";
 import "../styles/Price.css";
 
 const Price = ({ price, discount = 0, delivery = 0 }) => {
+  console.log(price, discount, delivery);
   return (
     <div className="prices">
       <p>Price Details :</p>

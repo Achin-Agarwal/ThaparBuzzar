@@ -36,25 +36,17 @@ const Category = () => {
 
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
+  const currentProducts = products.slice(
+    indexOfFirstProduct,
+    indexOfLastProduct
+  );
 
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
     <div>
-      <h1>
-      <SplitText
-          text={`Category: ${category}`}
-          className="section-title"
-          delay={150}
-          animationFrom={{ opacity: 0, transform: "translate3d(0,50px,0)" }}
-          animationTo={{ opacity: 1, transform: "translate3d(0,0,0)" }}
-          easing="easeOutCubic"
-          threshold={0.2}
-          rootMargin="-50px"
-        />
-        </h1>
+      <h1>Category: {category}</h1>
       <div className="bestsellersss">
         {currentProducts.map((product) => (
           <Card
@@ -70,15 +62,18 @@ const Category = () => {
         ))}
       </div>
       <div className="pagination">
-        {Array.from({ length: Math.ceil(products.length / productsPerPage) }, (_, index) => (
-          <button
-            key={index + 1}
-            onClick={() => paginate(index + 1)}
-            className={currentPage === index + 1 ? "active" : ""}
-          >
-            {index + 1}
-          </button>
-        ))}
+        {Array.from(
+          { length: Math.ceil(products.length / productsPerPage) },
+          (_, index) => (
+            <button
+              key={index + 1}
+              onClick={() => paginate(index + 1)}
+              className={currentPage === index + 1 ? "active" : ""}
+            >
+              {index + 1}
+            </button>
+          )
+        )}
       </div>
     </div>
   );

@@ -30,27 +30,18 @@ const Cart = () => {
     fetchCart();
   }, []);
 
-  const handleUpdateQuantity = (id, newQuantity) => {
-    setCart((prevCart) =>
-      prevCart.map((item) =>
-        item.id === id ? { ...item, quantity: newQuantity } : item
-      )
-    );
-  };
-
   const handleIncreaseQuantity = async (item) => {
     console.log(item)
     try {
       const token = localStorage.getItem("authToken");
       const response = await axios.post(
-        `${url}/buyer/addtocart/${item.product._id}/1`, // Adjusted for incrementing by 1
+        `${url}/buyer/addtocart/${item.product._id}/1`,
         {},
         {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
 
-      // Update cart based on backend response
       console.log(response.data.cart);
       setCart(response.data.cart);
     } catch (error) {
@@ -68,14 +59,13 @@ const Cart = () => {
     try {
       const token = localStorage.getItem("authToken");
       const response = await axios.post(
-        `${url}/buyer/deleatecartitem/${item.product._id}/1`, // Adjusted for decrementing by 1
+        `${url}/buyer/deleatecartitem/${item.product._id}/1`,
         {},
         {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
 
-      // Update cart based on backend response
       setCart(response.data.cart);
     } catch (error) {
       console.error("Error decreasing quantity:", error);
@@ -83,13 +73,37 @@ const Cart = () => {
     }
   };
 
+  const handleRemoveFromCart = async (item) => {
+    console.log(item)
+    try {
+      const token = localStorage.getItem("authToken");
+      if (!token) {
+        alert("Please login to manage your cart");
+        navigate("/login");
+        return;
+      }
+  
+      const response = await axios.post(
+        `${url}/buyer/deleatecartitem/${item.product._id}/${item.quantity}`,{},
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+  
+      console.log("Response from server:", response.data);
+      setCart(response.data.cart);
+    } catch (error) {
+      console.error("Error removing item from cart:", error);
+      alert("Failed to remove item from the cart. Please try again.");
+    }
+  };
+  
+
   const handleBuyNow = () => {
     const totalPrice = cart.reduce(
       (total, item) =>
         total +
-        (item.product.discountedPrice
-          ? (item.product.price - item.product.price * (item.product.discountedPrice / 100)) * item.quantity
-          : item.product.price * item.quantity),
+        (item.product.price * item.quantity),
       0
     );
 
@@ -156,7 +170,7 @@ const Cart = () => {
                   </button>
                 </div>
                 <button
-                  onClick={() => removeFromCart(item.id)}
+                  onClick={() =>handleRemoveFromCart(item)}
                   className="remove-button"
                 >
                   Remove
@@ -171,10 +185,7 @@ const Cart = () => {
               .reduce(
                 (total, item) =>
                   total +
-                  (item.product.discountedPrice
-                    ? (item.product.price - item.product.price * (item.product.discountedPrice / 100)) *
-                      item.quantity
-                    : item.product.price * item.quantity),
+                  (item.product.price * item.quantity),
                 0
               )
               .toFixed(2)}

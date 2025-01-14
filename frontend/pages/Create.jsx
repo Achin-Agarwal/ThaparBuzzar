@@ -16,7 +16,7 @@ const Create = () => {
     businessName: "",
     email: email,
     number: "",
-    upiid: "",	
+    upiid: "",
     // dateOfBirth: "",
     password: "",
     confirmPassword: "",
@@ -91,10 +91,12 @@ const Create = () => {
         ) {
           console.log("buyer");
           navigate("/buyer", { state: { response: response.data } });
-        }
-        else if (response.data.message === "Admin account created successfully") {
+        } else if (
+          response.data.message === "Admin account created successfully"
+        ) {
           console.log("admin");
-          navigate("/adminlogin");}
+          navigate("/adminlogin");
+        }
       } else {
         setErrors((prevErrors) => ({
           ...prevErrors,
@@ -158,14 +160,20 @@ const Create = () => {
           value={formData.number}
           onChange={handleChange}
         />
-        <InputField
-          text="UPI ID"
-          type="text"
-          name="upiid"
-          placeholder="Enter your UPI ID"
-          value={formData.upiid}
-          onChange={handleChange}
-        />
+        {role === "seller" ? (
+          <>
+            <InputField
+              text="UPI ID"
+              type="text"
+              name="upiid"
+              placeholder="Enter your UPI ID"
+              value={formData.upiid}
+              onChange={handleChange}
+            />
+          </>
+        ) : (
+          ""
+        )}
         {/* <InputField
           text="Date of Birth"
           type="date"

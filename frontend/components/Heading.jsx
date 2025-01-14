@@ -7,6 +7,7 @@ import { IoIosSearch } from "react-icons/io";
 import { BsHandbag } from "react-icons/bs";
 import { HiOutlineDotsVertical } from "react-icons/hi";
 import { useLocation, useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
 const Heading = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -17,10 +18,29 @@ const Heading = () => {
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+  const handleCart = () => {
+    console.log("Cart clicked");
+    navigate("/cart");
+  };
 
   const handleNavigation = (path) => {
     navigate(path);
     setIsMenuOpen(false); // Close menu after navigation
+  };
+  const handleLogin = async () => {
+    const token = localStorage.getItem("authToken");
+    if (token) {
+      const decode = jwtDecode(token);
+      console.log(decode);
+      if (decode.role === "seller") {
+        navigate("/dashboard");
+      } else if (decode.role === "buyer") {
+        navigate("/buyer");
+      }
+    } else {
+      navigate("/login");
+    }
+    setIsMenuOpen(false); 
   };
 
   const handleCardClick = (category) => {
@@ -40,7 +60,7 @@ const Heading = () => {
               color="white"
               size="40px"
               className="image3"
-              onClick={() => handleNavigation("/login")}
+              onClick={handleLogin}
             />
           </div>
           <div className="search-icon">
@@ -51,7 +71,7 @@ const Heading = () => {
               color="white"
               size="35px"
               className="image3"
-              onClick={() => handleNavigation("/cart")}
+              onClick={handleCart}
             />
           </div>
           <HiOutlineDotsVertical
