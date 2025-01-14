@@ -9,10 +9,10 @@ import Buyer from "../models/buyer.js";
 import Seller from "../models/seller.js";
 import Admin from "../models/admin.js";
 import bcrypt from "bcrypt";
+import { safeHandler } from "../middleware/safeHandler.js";
 
 
-
-router.post("/google", async (req, res, next) => {
+router.post("/google", safeHandler(async (req, res, next) => {
     console.log("google auth");
     const code = req.query.code;
     const role = req.query.role;
@@ -113,9 +113,9 @@ router.post("/google", async (req, res, next) => {
     }
 
 
-});
+}));
 
-router.post("/login", async (req, res, next) => {
+router.post("/login", safeHandler(async (req, res, next) => {
     console.log("login");
     const { email, role, password } = req.body;
     console.log("email: ");
@@ -123,7 +123,7 @@ router.post("/login", async (req, res, next) => {
     console.log("role: ");
     console.log(role);
     console.log("password: ");
-    console.log (password);
+    console.log(password);
     if (!email || !role) {
         return res.status(400).json({ message: "Email and role are required" });
     }
@@ -137,7 +137,7 @@ router.post("/login", async (req, res, next) => {
         user = await Buyer.findOne({ "email.address": email });
     } else if (role === "seller") {
         user = await Seller.findOne({ "email.address": email });
-    }else if (role === "admin") {
+    } else if (role === "admin") {
         user = await Admin.findOne({ email });
     }
 
@@ -157,5 +157,5 @@ router.post("/login", async (req, res, next) => {
         expiresIn: config.jwt.timeout,
     });
     res.status(200).json({ message: "Login successful", token, user });
-});
+}));
 export default router;

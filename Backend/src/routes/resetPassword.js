@@ -4,11 +4,12 @@ import otpModel from "../models/otp.js";
 import Buyer from "../models/buyer.js";
 import Seller from "../models/seller.js";
 import bcrypt from "bcrypt";
+import { safeHandler } from "../middleware/safeHandler.js";
 
 const router = express.Router();
 
 
-router.post("/", async (req, res) => {
+router.post("/", safeHandler(async (req, res) => {
     const { email, role } = req.body;
     await otpModel.deleteMany({ user: email, role: role });
 
@@ -54,7 +55,7 @@ router.post("/", async (req, res) => {
     const validTill = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes from now
 
     const newOtp = new otpModel({
-       user: email,
+        user: email,
         otp: otp,
         validTill: validTill,
         role: role,
@@ -65,8 +66,8 @@ router.post("/", async (req, res) => {
 
     res.status(200).json({ message: "OTP sent successfully" });
 
-});
-router.put("/verifyotp", async (req, res) => {
+}));
+router.put("/verifyotp", safeHandler(async (req, res) => {
     const { email, otp, role } = req.body;
 
     if (!email || !otp || !role) {
@@ -78,16 +79,16 @@ router.put("/verifyotp", async (req, res) => {
     if (!otpRecord) {
         return res.status(200).json({ message: "Invalid OTP" });
     }
-  
+
 
     if (otpRecord.validTill < new Date()) {
         return res.status(200).json({ message: "OTP has expired" });
     }
 
     res.status(200).json({ message: "OTP verified successfully" });
-});
+}));
 
-router.put("/updatepassword", async (req, res) => {
+router.put("/updatepassword", safeHandler(async (req, res) => {
     const { email, newPassword, role, otp } = req.body;
 
     const otpRecord = await otpModel.findOne({ user: email, role: role, otp: otp });
@@ -103,7 +104,7 @@ router.put("/updatepassword", async (req, res) => {
     if (otpRecord.validTill < new Date()) {
         return res.status(200).json({ message: "reset time-out" });
     }
-    
+
     let user;
     if (role === "buyer") {
         user = await Buyer.findOneAndUpdate({ "email.address": email }, { password: hashedPassword });
@@ -120,6 +121,6 @@ router.put("/updatepassword", async (req, res) => {
 
 
     res.status(200).json({ message: "Password updated successfully" });
-});
+}));
 
 export default router;

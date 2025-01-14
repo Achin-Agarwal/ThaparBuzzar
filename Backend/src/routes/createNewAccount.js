@@ -8,10 +8,11 @@ import isLogin from "../middleware/isLogin.js";
 import Admin from "../models/admin.js";
 import jwt from "jsonwebtoken";
 import config from "../config/config.js";
+import { safeHandler } from "../middleware/safeHandler.js";
 
 const router = express.Router();
 
-router.post("/", async (req, res) => {
+router.post("/", safeHandler(async (req, res) => {
     const { email, role, name, password, number, sellerName, businessName, upiid } = req.body;
     console.log(email, role, name, password, number, sellerName, businessName);
 
@@ -69,12 +70,9 @@ router.post("/", async (req, res) => {
         token,
         user,
     });
-});
+}));
 
-
-
-
-router.post("/verifyemail", async (req, res) => {
+router.post("/verifyemail", safeHandler(async (req, res) => {
     const { email, role } = req.body;
     await otpModel.deleteMany({ user: email, role: role });
 
@@ -131,8 +129,9 @@ router.post("/verifyemail", async (req, res) => {
 
     res.status(200).json({ message: "OTP sent successfully" });
 
-});
-router.put("/verifyotp", async (req, res) => {
+}));
+
+router.put("/verifyotp", safeHandler(async (req, res) => {
     const { email, otp, role } = req.body;
 
     if (!email || !otp || !role) {
@@ -151,5 +150,6 @@ router.put("/verifyotp", async (req, res) => {
     }
 
     res.status(200).json({ message: "OTP verified successfully" });
-});
+}));
+
 export default router;

@@ -4,15 +4,14 @@ import Buyer from "../models/buyer.js";
 import isLogin from "../middleware/isLogin.js";
 import { safeHandler } from '../middleware/safeHandler.js';
 
-
 const router = express.Router();
-router.get("/getalldetails",isLogin,safeHandler( async (req, res) => {
+router.get("/getalldetails", isLogin, safeHandler(async (req, res) => {
     // const deals = await Buyer.findById(req.user._id).populate('cart.product').populate('orders').populate('wishlist');    use this in production
     const deals = await Buyer.findById(req.user._id).populate('cart.product');
     res.status(200).json({ deals });
 }));
 
-router.post("/addtocart/:id/:quantity", isLogin,safeHandler( async (req, res) => {
+router.post("/addtocart/:id/:quantity", isLogin, safeHandler(async (req, res) => {
     console.log("/addtocart");
 
     const { id, quantity } = req.params;
@@ -50,7 +49,7 @@ router.post("/addtocart/:id/:quantity", isLogin,safeHandler( async (req, res) =>
 
 }));
 
-router.post("/deleatecartitem/:id/:quantity", isLogin,safeHandler( async (req, res) => {
+router.post("/deleatecartitem/:id/:quantity", isLogin, safeHandler(async (req, res) => {
     console.log("/deleatecartitem");
     const { id, quantity } = req.params;
     console.log("id");

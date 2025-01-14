@@ -4,7 +4,7 @@ import Service from '../models/services.js';
 import Seller from '../models/seller.js';
 import Announcement from '../models/announcements.js';
 import { productSchema } from '../utils/zodSchemas.js';
-import { productImageUpload , multiImageUpload } from '../utils/multer.js';
+import { productImageUpload, multiImageUpload } from '../utils/multer.js';
 import { safeHandler } from '../middleware/safeHandler.js';
 import isLogin from '../middleware/isLogin.js';
 import { isValidObjectId } from 'mongoose';
@@ -15,7 +15,7 @@ router.post('/addannouncement', isLogin, multiImageUpload, safeHandler(async (re
     if (req.user.role === "buyer") {
         return res.status(401).json({ message: "Unauthorized access" });
     }
-    const { rateBifercation,days,amount } = req.body;
+    const { rateBifercation, days, amount } = req.body;
     const sellerId = req.body.sellerId;
     console.log("Seller ID: "); console.log(sellerId);
     console.log("Rate bifercation: "); console.log(rateBifercation);
@@ -28,7 +28,7 @@ router.post('/addannouncement', isLogin, multiImageUpload, safeHandler(async (re
         return res.status(404).json({ message: 'Seller not found' });
     }
     console.log("**************************************************");
-console.log("Seller: "); console.log(seller);
+    console.log("Seller: "); console.log(seller);
     // Collect filenames from uploaded files
     const paymentConfirmationImages = req.files.paymentConfirmation.map((file) => file.filename);
     const productImages = req.files.productImages.map((file) => file.filename);
@@ -51,6 +51,7 @@ console.log("Seller: "); console.log(seller);
     console.log("New announcement: "); console.log(newAnnouncement);
     res.status(201).json({ message: 'Announcement added successfully' });
 }));
+
 router.get("/addannouncement", isLogin, safeHandler(async (req, res) => {
     // if (req.user.role === "buyer") {
     //     return res.status(401).json({ message: "Unauthorized access" });
@@ -59,6 +60,7 @@ router.get("/addannouncement", isLogin, safeHandler(async (req, res) => {
     const user = await Seller.findById(req.user._id).populate("announcement").exec();
     res.json(user);
 }));
+
 // get all anouncement of a seller
 
 // Add a new product
@@ -68,17 +70,17 @@ router.post('/addproduct', isLogin, productImageUpload, safeHandler(async (req, 
         return res.status(401).json({ message: "Unauthorized access" });
     }
     // Parse the incoming data
-      // Parse the incoming data
-      let parsedData;
-      
-          parsedData = {
-              ...req.body,
-              price: parseFloat(req.body.price),
-              discountedPrice: parseFloat(req.body.discountedPrice),
-              numberOfUses: parseFloat(req.body.numberOfUses),
-              stock: parseFloat(req.body.stock),
-          };
-    
+    // Parse the incoming data
+    let parsedData;
+
+    parsedData = {
+        ...req.body,
+        price: parseFloat(req.body.price),
+        discountedPrice: parseFloat(req.body.discountedPrice),
+        numberOfUses: parseFloat(req.body.numberOfUses),
+        stock: parseFloat(req.body.stock),
+    };
+
     console.log("body: ");
     console.log(req.body);
     console.log("parsed data: ");
@@ -87,7 +89,7 @@ router.post('/addproduct', isLogin, productImageUpload, safeHandler(async (req, 
     // console.log("validated data: ");
     // console.log(validatedData);
 
-    const { sellerId,name, description, price, category, stock, discountedPrice, numberOfUses } = parsedData;
+    const { sellerId, name, description, price, category, stock, discountedPrice, numberOfUses } = parsedData;
     // console.log("promocode: "); console.log(promoCode);
     // console.log("Seller ID: "); console.log(sellerId);
 
@@ -122,19 +124,20 @@ router.post('/addproduct', isLogin, productImageUpload, safeHandler(async (req, 
     res.status(201).json(savedProduct);
 
 }));
-router.patch('/addproduct/:id', isLogin, productImageUpload, safeHandler(async (req, res) => {  
 
-    const {updates} = req.body;
+router.patch('/addproduct/:id', isLogin, productImageUpload, safeHandler(async (req, res) => {
+
+    const { updates } = req.body;
     console.log("body: ");
     console.log(req.body);
     const { id } = req.params;
 
     const images = req.files.map((file) => file.filename);
 
-    if(isValidObjectId(id) === false){
-        return res.status(404).json({message: "Invalid product id"});
+    if (isValidObjectId(id) === false) {
+        return res.status(404).json({ message: "Invalid product id" });
     }
-    
+
     const filteredUpdates = Object.fromEntries(
         Object.entries(updates).filter(([_, value]) => value != null)
     );
@@ -143,13 +146,34 @@ router.patch('/addproduct/:id', isLogin, productImageUpload, safeHandler(async (
         filteredUpdates,
         {
             new: true,
-            runValidators: true 
+            runValidators: true
         }
     );
-    
-res.sucess(200,"Product updated successfully",product);
+
+    res.sucess(200, "Product updated successfully", product);
 }));
 
+// Delete a product
+router.delete('/delete/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const deletedProduct = await Product.findByIdAndDelete(id);
+        if (!deletedProduct) {
+            return res.status(404).json({ message: 'Product not found' });
+        }
+
+        const seller = await Seller.findById(deletedProduct.seller);
+        if (seller) {
+            seller.products.pull(deletedProduct._id);
+            await seller.save();
+        }
+
+        res.status(200).json({ message: 'Product deleted successfully' });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
 
 // Delete a product
 router.delete('/delete/:id', async (req, res) => {
@@ -173,28 +197,6 @@ router.delete('/delete/:id', async (req, res) => {
     }
 });
 
-
-// Delete a product
-router.delete('/delete/:id', async (req, res) => {
-    try {
-        const { id } = req.params;
-
-        const deletedProduct = await Product.findByIdAndDelete(id);
-        if (!deletedProduct) {
-            return res.status(404).json({ message: 'Product not found' });
-        }
-
-        const seller = await Seller.findById(deletedProduct.seller);
-        if (seller) {
-            seller.products.pull(deletedProduct._id);
-            await seller.save();
-        }
-
-        res.status(200).json({ message: 'Product deleted successfully' });
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-});
 router.get("/userproducts", isLogin, safeHandler(async (req, res) => {
     if (req.user.role === "buyer") {
         return res.status(401).json({ message: "Unauthorized access" });
@@ -203,8 +205,6 @@ router.get("/userproducts", isLogin, safeHandler(async (req, res) => {
     const user = await Seller.findById(req.user._id).populate("products").exec();
     res.json(user);
 }));
-
-
 
 router.post('/addservices', isLogin, productImageUpload, safeHandler(async (req, res) => {
     if (req.user.role === "buyer") {
@@ -221,8 +221,8 @@ router.post('/addservices', isLogin, productImageUpload, safeHandler(async (req,
     console.log(req.body);
     console.log("parsed data: ");
     console.log(parsedData);
-    
-    const {domain, name ,price ,description, mobileNumber , additionalInfo } = parsedData;
+
+    const { domain, name, price, description, mobileNumber, additionalInfo } = parsedData;
     const sellerId = req.body.sellerId;
 
     console.log("Seller ID: "); console.log(sellerId);
@@ -257,8 +257,6 @@ router.post('/addservices', isLogin, productImageUpload, safeHandler(async (req,
 
 }));
 
-
-
 // Delete a product
 router.delete('/deleteservice/:id', async (req, res) => {
     try {
@@ -280,6 +278,7 @@ router.delete('/deleteservice/:id', async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 });
+
 router.get("/userservices", isLogin, safeHandler(async (req, res) => {
     if (req.user.role === "buyer") {
         return res.status(401).json({ message: "Unauthorized access" });
