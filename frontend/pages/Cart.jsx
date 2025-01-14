@@ -14,6 +14,10 @@ const Cart = () => {
     const fetchCart = async () => {
       try {
         const token = localStorage.getItem("authToken");
+        if(!token){
+          alert("Please login to view your cart");
+          navigate("/login");
+        }
         const response = await axios.get(`${url}/buyer/usercart`, {
           headers: { Authorization: `Bearer ${token}` },
         });
