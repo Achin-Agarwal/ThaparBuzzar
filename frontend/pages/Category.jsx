@@ -11,7 +11,7 @@ const Category = () => {
   const { category } = useParams();
   const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [productsPerPage] = useState(8); // Number of products per page
+  const [productsPerPage] = useState(8);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -19,6 +19,7 @@ const Category = () => {
       try {
         const response = await axios.get(url + "/home/products");
         const products = response.data;
+        console.log(products);
         setProducts(
           products.filter((product) => product.category === category)
         );
@@ -33,7 +34,6 @@ const Category = () => {
     navigate(`/product/${id}`);
   };
 
-  // Get current products for the current page
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
   const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
@@ -69,7 +69,6 @@ const Category = () => {
           />
         ))}
       </div>
-      {/* Pagination */}
       <div className="pagination">
         {Array.from({ length: Math.ceil(products.length / productsPerPage) }, (_, index) => (
           <button

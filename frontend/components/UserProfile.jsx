@@ -9,13 +9,13 @@ import { useNavigate } from "react-router-dom";
 import { ImCross } from "react-icons/im";
 
 const UserProfile = () => {
-  const [products, setProducts] = useState([
+  const [deals, setDeals] = useState([
     {
       id: null,
       name: "",
       email: "",
       phone: "",
-      addresses: [{ city: "", state: "", pincode: "" }],
+      address: { roomNumber: "", floor: "", city: "" ,hostel:""},
       // images: [],
     },
   ]);
@@ -25,39 +25,26 @@ const UserProfile = () => {
 
   useEffect(() => {
     const fetchProducts = async () => {
-      //   const token = localStorage.getItem("authToken");
-      //   const decoded = jwtDecode(token);
-
+      const token = localStorage.getItem("authToken");
+  
       try {
-        const response = await axios.get(url + "/seller/userproducts", {
+        const response = await axios.get(url + "/buyer/getalldetails", {
           headers: { authorization: `Bearer ${token}` },
         });
-        console.log(response.data)
-        setProducts(
-          response.data.products.length > 0
-            ? response.data.products
-            : [
-                {
-                  id: null,
-                  name: "",
-                  email: "",
-                  phone: "",
-                  addresses: [{ city: "", state: "", pincode: "" }],
-                  // images: [],
-                },
-              ]
-        );
+        console.log(response.data.deals)  
+        setDeals(response.data.deals);
       } catch (error) {
-        console.error("Error fetching products:", error);
+        console.error("Error fetching deals:", error);
       }
     };
-
+  
     fetchProducts();
   }, []);
+  
 
   const handleInputChange = (index, event) => {
     const { name, value, files } = event.target;
-    setProducts((prevProducts) => {
+    setDeals((prevProducts) => {
       const updatedProducts = [...prevProducts];
       if (name === "images") {
         updatedProducts[index].images = files ? Array.from(files) : [];
@@ -71,42 +58,42 @@ const UserProfile = () => {
     });
   };
 
-  const handleAddressChange = (index, addressIndex, event) => {
+  // const handleAddressChange = (event) => {
+  //   console.log("event", event.target);
+  //   const { name, value } = event.target;
+  //   console.log(name, value);
+  
+  //   // setDeals((prevDeals) => {
+  //   //   const updatedDeals = [...prevDeals];
+  //   //   updatedDeals[activeIndex].address = {
+  //   //     ...updatedDeals[activeIndex].address,
+  //   //     [name]: value,
+  //   //   };
+  //   //   return updatedDeals;
+  //   // });
+  // };
+
+  const handleAddressChange = (event) => {
     const { name, value } = event.target;
-    setProducts((prevProducts) => {
-      const updatedProducts = [...prevProducts];
-      updatedProducts[index].addresses[addressIndex][name] = value;
-      return updatedProducts;
-    });
+    console.log(name, value);
+  
+    setDeals((prevDeals) => ({
+      ...prevDeals,
+      address: {
+        ...prevDeals.address,
+        [name]: value,
+      },
+    }));
   };
-
-  const addAddress = (index) => {
-    setProducts((prevProducts) => {
-      const updatedProducts = [...prevProducts];
-      updatedProducts[index].addresses.push({
-        city: "",
-        state: "",
-        pincode: "",
-      });
-      return updatedProducts;
-    });
-  };
-
-  const deleteAddress = (index, addressIndex) => {
-    setProducts((prevProducts) => {
-      const updatedProducts = [...prevProducts];
-      updatedProducts[index].addresses.splice(addressIndex, 1);
-      return updatedProducts;
-    });
-  };
+  
 
   const handleSave = async () => {
-    const currentProduct = products[activeIndex];
+    console.log("currentProduct", deals);
 
     try {
       const response = await axios.patch(
         `${url}/products/${currentProduct.id}`,
-        currentProduct
+        deals
       );
       alert(`Product ${activeIndex + 1} updated successfully`);
       console.log(response.data);
@@ -118,7 +105,7 @@ const UserProfile = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const currentProduct = products[activeIndex];
+    const currentProduct = deals[activeIndex];
 
     const formData = new FormData();
     // if (currentProduct.images.length > 0) {
@@ -130,7 +117,7 @@ const UserProfile = () => {
     formData.append("name", currentProduct.name);
     formData.append("email", currentProduct.email);
     formData.append("phone", currentProduct.phone);
-    formData.append("addresses", JSON.stringify(currentProduct.addresses));
+    formData.append("address", JSON.stringify(currentProduct.address));
 
     try {
       const token = localStorage.getItem("authToken");
@@ -140,7 +127,7 @@ const UserProfile = () => {
           authorization: `Bearer ${token}`,
         },
       });
-      setProducts((prevProducts) => {
+      setDeals((prevProducts) => {
         const updatedProducts = [...prevProducts];
         updatedProducts[activeIndex].id = response.data.id;
         return updatedProducts;
@@ -151,6 +138,7 @@ const UserProfile = () => {
       alert(`Failed to add Product ${activeIndex + 1}`);
     }
   };
+  console.log("this us ", deals);
 
   return (
     <div className="user-profile">
@@ -168,7 +156,7 @@ const UserProfile = () => {
             placeholder="Name"
             type="text"
             name="name"
-            value={products[activeIndex].name}
+            value={deals.name}
             onChange={(event) => handleInputChange(activeIndex, event)}
             disabled={!isEditable}
           />
@@ -176,15 +164,15 @@ const UserProfile = () => {
             placeholder="Email"
             type="email"
             name="email"
-            value={products[activeIndex].email}
+            value={deals.email?.address}
             onChange={(event) => handleInputChange(activeIndex, event)}
-            disabled={!isEditable}
+            disabled={true}
           />
           <InputField
             placeholder="Phone Number"
             type="text"
             name="phone"
-            value={products[activeIndex].phone}
+            value={deals.phone}
             onChange={(event) => handleInputChange(activeIndex, event)}
             disabled={!isEditable}
           />
@@ -200,43 +188,46 @@ const UserProfile = () => {
             <h2>Addresses:</h2>
           </div>
           <div className="address-fields-container">
-            {products[activeIndex].addresses.map((address, addressIndex) => (
-              <div key={addressIndex} className="address-fields">
-                <InputField
-                  placeholder="City"
-                  type="text"
-                  name="city"
-                  value={address.city}
-                  onChange={(event) =>
-                    handleAddressChange(activeIndex, addressIndex, event)
-                  }
-                  disabled={!isEditable}
-                  width="80%"
-                />
-                <InputField
-                  placeholder="State"
-                  type="text"
-                  name="state"
-                  value={address.state}
-                  onChange={(event) =>
-                    handleAddressChange(activeIndex, addressIndex, event)
-                  }
-                  disabled={!isEditable}
-                  width="80%"
-                />
-                <InputField
-                  placeholder="Pincode"
-                  type="text"
-                  name="pincode"
-                  value={address.pincode}
-                  onChange={(event) =>
-                    handleAddressChange(activeIndex, addressIndex, event)
-                  }
-                  disabled={!isEditable}
-                  width="80%"
-                />
-              </div>
-            ))}
+            {/* {deals.address.map((add, addressIndex) => ( */}
+              <div className="address-fields">
+              <InputField
+                placeholder="Room Number"
+                type="text"
+                name="roomNumber"
+                value={deals.address?.roomNumber === "Not Provided" ? "" : deals.address?.roomNumber || ""}
+                onChange={(event) => handleAddressChange(event)}
+                disabled={!isEditable}
+                width="80%"
+              />
+              <InputField
+                placeholder="Floor"
+                type="text"
+                name="floor"
+                value={deals.address?.floor === "Not Provided" ? "" : deals.address?.floor || ""}
+                onChange={(event) => handleAddressChange(event)}
+                disabled={!isEditable}
+                width="80%"
+              />
+              <InputField
+                placeholder="City"
+                type="text"
+                name="city"
+                value={deals.address?.city === "Not Provided" ? "" : deals.address?.city || ""}
+                onChange={(event) => handleAddressChange(event)}
+                disabled={!isEditable}
+                width="80%"
+              />
+              <InputField
+                placeholder="Hostel"
+                type="text"
+                name="hostel"
+                value={deals.address?.hostel === "Not Provided" ? "" : deals.address?.hostel || ""}
+                onChange={(event) => handleAddressChange(event)}
+                disabled={!isEditable}
+                width="80%"
+              />
+            </div>            
+            {/* ))} */}
           </div>
         </form>
       </div>

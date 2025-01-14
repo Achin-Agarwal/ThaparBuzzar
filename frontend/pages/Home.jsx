@@ -14,10 +14,7 @@ const Home = () => {
   const [discountedProducts, setDiscountedProducts] = useState([]);
   const navigate = useNavigate();
 
-  const images = [
-    `${url}/public/images/products/Screenshot 2024-06-28 001118.png-1735716034567.png`,
-    `${url}/public/images/products/Screenshot 2024-06-28 001118.png-1735716034567.png`,
-  ];
+  const [images, setImages] = useState([]);
 
   useEffect(() => {
     const fetchTopCategoryProducts = async () => {
@@ -27,15 +24,11 @@ const Home = () => {
         console.log(products)
 
         const res=await axios.get(`${url}/admin/getanouncements`);
-        console.log(res.data)
+        console.log(res.data.productImages)
+        setImages(res.data.productImages)
 
         const maxPriceProducts = products.reduce((acc, product) => {
-          if (
-            !acc[product.category] ||
-            acc[product.category].price < product.price
-          ) {
             acc[product.category] = product;
-          }
           return acc;
         }, {});
 
@@ -63,8 +56,8 @@ const Home = () => {
     navigate(`/category/${category}`);
   };
 
-  const handleSale = (sale) => {
-    navigate(`/sale/${sale}`);
+  const handleSale = (id) => {
+    navigate(`/product/${id}`);
   };
 
   return (
@@ -110,14 +103,14 @@ const Home = () => {
         </h1>
         <div className="product-grid">
           {discountedProducts.map((product) => (
-            <div key={product.id}>
+            <div key={product._id}>
               <Card
                 name={product.name}
                 image={`${url}/images/products/${product.image?.[0] || img}`}
                 price={product.price}
                 rating={product.rating}
                 description={product.description}
-                onClick={() => handleSale(product.category)}
+                onClick={() => handleSale(product._id)}
                 discountedPrice={product.discountedPrice}
               />
             </div>
