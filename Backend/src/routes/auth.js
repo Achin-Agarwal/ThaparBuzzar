@@ -16,10 +16,10 @@ router.post("/google", safeHandler(async (req, res, next) => {
     console.log("google auth");
     const code = req.query.code;
     const role = req.query.role;
-    console.log("code: ");
-    console.log(code);
-    console.log("role: ");
-    console.log(role);
+    // console.log("code: ");
+    // console.log(code);
+    // console.log("role: ");
+    // console.log(role);
 
     if (!role)
         res.status(400).json({ message: "Role is required" });
@@ -38,7 +38,7 @@ router.post("/google", safeHandler(async (req, res, next) => {
     // console.log(userRes);
     // console.log("*********************************************************************************************************************************");
 
-    let newuser;
+    // let newuser;
     // let _id;
     // le
     if (role === "buyer") {
@@ -47,20 +47,20 @@ router.post("/google", safeHandler(async (req, res, next) => {
         // console.log("user: ");
         // console.log(user);
         if (!user) {
-            newuser = await Buyer.create({
-                name,
-                email: { address: email, isVerified: true },
-                image: picture,
-            });
-            const { _id } = newuser;
-            const token = jwt.sign({ _id, email, role },
-                config.jwt.secret, {
-                expiresIn: config.jwt.timeout,
-            });
+            // newuser = await Buyer.create({
+            //     name,
+            //     email: { address: email, isVerified: true },
+            //     image: picture,
+            // });
+            // const { _id } = newuser;
+            // const token = jwt.sign({ _id, email, role },
+            //     config.jwt.secret, {
+            //     expiresIn: config.jwt.timeout,
+            // });
             return res.status(200).json({
-                message: 'user created successfully',
-                token,
-                newuser,
+                message: 'User does not exist',
+                // token,
+                // newuser,
             });
         }
         //an error occured here 
@@ -82,20 +82,20 @@ router.post("/google", safeHandler(async (req, res, next) => {
 
 
         if (!user) {
-            newuser = await Seller.create({
-                name,
-                email: { address: email, isVerified: true },
-                image: picture,
-            });
-            const { _id } = newuser;
-            const token = jwt.sign({ _id, email, role },
-                config.jwt.secret, {
-                expiresIn: config.jwt.timeout,
-            });
+            // newuser = await Seller.create({
+            //     name,
+            //     email: { address: email, isVerified: true },
+            //     image: picture,
+            // });
+            // const { _id } = newuser;
+            // const token = jwt.sign({ _id, email, role },
+            //     config.jwt.secret, {
+            //     expiresIn: config.jwt.timeout,
+            // });
             return res.status(200).json({
-                message: 'user created successfully',
-                token,
-                newuser,
+                message: 'User does not exist',
+                // token,
+                // newuser,
             });
 
         }

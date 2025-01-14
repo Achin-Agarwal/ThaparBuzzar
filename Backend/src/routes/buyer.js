@@ -11,6 +11,19 @@ router.get("/getalldetails", isLogin, safeHandler(async (req, res) => {
     res.status(200).json({ deals });
 }));
 
+router.patch("/updateprofile", isLogin, safeHandler(async (req, res) => {
+    console.log("/updateprofile");
+    console.log(req.body);
+    const { name, email, phoneNumber, address } = req.body;
+    const buyer = await Buyer.findByIdAndUpdate(req.user._id, {
+        name, email, phoneNumber, address
+    }, {
+        new: true,
+        runValidators: true
+    });
+    res.status(200).json({ message: "Profile updated successfully", buyer });
+}));
+
 router.post("/addtocart/:id/:quantity", isLogin, safeHandler(async (req, res) => {
     console.log("/addtocart");
 
@@ -86,6 +99,7 @@ router.post("/deleatecartitem/:id/:quantity", isLogin, safeHandler(async (req, r
     res.status(200).json({ message: "Cart item updated successfully", cart: buyer.cart });
 
 }));
+
 router.get("/usercart", isLogin, safeHandler(async (req, res) => {
     const buyerId = req.user._id;
 
