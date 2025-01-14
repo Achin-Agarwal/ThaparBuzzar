@@ -69,6 +69,12 @@ const Product = ({ productadd }) => {
   };
 
   const handleAddToCart = async () => {
+
+    const tokens = localStorage.getItem("authToken");
+    if(!tokens){
+      alert("Please login to add to cart");
+      navigate("/login");
+    }
     alert(`${products.name} added to cart with quantity ${quantity}`);
     // const cartItem = {
     //   productId: products._id,
