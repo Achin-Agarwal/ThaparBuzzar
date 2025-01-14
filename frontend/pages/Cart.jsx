@@ -39,7 +39,7 @@ const Cart = () => {
     try {
       const token = localStorage.getItem("authToken");
       const response = await axios.post(
-        `${url}/buyer/addtocart/${item._id}/1`, // Adjusted for incrementing by 1
+        `${url}/buyer/addtocart/${item.product._id}/1`, // Adjusted for incrementing by 1
         {},
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -64,7 +64,7 @@ const Cart = () => {
     try {
       const token = localStorage.getItem("authToken");
       const response = await axios.post(
-        `${url}/buyer/deleatecartitem/${item._id}/1`, // Adjusted for decrementing by 1
+        `${url}/buyer/deleatecartitem/${item.product._id}/1`, // Adjusted for decrementing by 1
         {},
         {
           headers: { Authorization: `Bearer ${token}` },
