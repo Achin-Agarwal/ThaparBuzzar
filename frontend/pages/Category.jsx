@@ -40,8 +40,6 @@ const Category = () => {
     indexOfFirstProduct,
     indexOfLastProduct
   );
-
-  // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (

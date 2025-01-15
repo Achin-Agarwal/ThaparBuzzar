@@ -8,13 +8,14 @@ import url from "../url";
 
 const Cart = () => {
   const { cart, setCart, removeFromCart } = useContext(CartContext);
+  const [isLoading, setIsLoading] = React.useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCart = async () => {
       try {
         const token = localStorage.getItem("authToken");
-        if(!token){
+        if (!token) {
           alert("Please login to view your cart");
           navigate("/login");
         }
@@ -22,16 +23,25 @@ const Cart = () => {
           headers: { Authorization: `Bearer ${token}` },
         });
         setCart(response.data.cart);
-        console.log(cart)
       } catch (error) {
         console.error("Error fetching cart:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchCart();
   }, []);
 
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
+  if (!cart || cart.length === 0) {
+    return <p>Your cart is empty.</p>;
+  }
+
   const handleIncreaseQuantity = async (item) => {
-    console.log(item)
+    console.log(item);
     try {
       const token = localStorage.getItem("authToken");
       const response = await axios.post(
@@ -55,7 +65,7 @@ const Cart = () => {
       alert("Quantity cannot be less than 1.");
       return;
     }
-    console.log(item)
+    console.log(item);
     try {
       const token = localStorage.getItem("authToken");
       const response = await axios.post(
@@ -74,7 +84,7 @@ const Cart = () => {
   };
 
   const handleRemoveFromCart = async (item) => {
-    console.log(item)
+    console.log(item);
     try {
       const token = localStorage.getItem("authToken");
       if (!token) {
@@ -82,14 +92,15 @@ const Cart = () => {
         navigate("/login");
         return;
       }
-  
+
       const response = await axios.post(
-        `${url}/buyer/deleatecartitem/${item.product._id}/${item.quantity}`,{},
+        `${url}/buyer/deleatecartitem/${item.product._id}/${item.quantity}`,
+        {},
         {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-  
+
       console.log("Response from server:", response.data);
       setCart(response.data.cart);
     } catch (error) {
@@ -97,27 +108,27 @@ const Cart = () => {
       alert("Failed to remove item from the cart. Please try again.");
     }
   };
-  
 
   const handleBuyNow = () => {
     const totalPrice = cart.reduce(
-      (total, item) =>
-        total +
-        (item.product.price * item.quantity),
+      (total, item) => total + item.product.price * item.quantity,
       0
     );
 
     const totalDiscount = cart.reduce(
       (total, item) =>
         total +
-        (item.product.discountedPrice ? item.product.discountedPrice * item.quantity : 0),
+        (item.product.discountedPrice
+          ? item.product.discountedPrice *
+            Math.min(item.product.numberOfUses, item.quantity)
+          : 0),
       0
     );
-
     navigate("/buynow", {
       state: {
         price: totalPrice.toFixed(2),
         discount: totalDiscount.toFixed(2),
+        text: "true",
       },
     });
   };
@@ -144,12 +155,22 @@ const Cart = () => {
                       <span className="original-price">
                         ₹{item.product.price * item.quantity}
                       </span>
-                      <span className="discounted-price">
-                        ₹{item.product.discountedPrice * item.quantity}
-                      </span>
+                      {item.product.numberOfUses < item.quantity ? (
+                        <span className="discounted-price">
+                          ₹
+                          {item.product.discountedPrice *
+                            item.product.numberOfUses}
+                        </span>
+                      ) : (
+                        <span className="discounted-price">
+                          ₹{item.product.discountedPrice * item.quantity}
+                        </span>
+                      )}
                     </div>
                   ) : (
-                    <span className="price">₹{item.product.price * item.quantity}</span>
+                    <span className="price">
+                      ₹{item.product.price * item.quantity}
+                    </span>
                   )}
                 </div>
 
@@ -170,7 +191,7 @@ const Cart = () => {
                   </button>
                 </div>
                 <button
-                  onClick={() =>handleRemoveFromCart(item)}
+                  onClick={() => handleRemoveFromCart(item)}
                   className="remove-button"
                 >
                   Remove
@@ -183,9 +204,7 @@ const Cart = () => {
           <Price
             price={cart
               .reduce(
-                (total, item) =>
-                  total +
-                  (item.product.price * item.quantity),
+                (total, item) => total + item.product.price * item.quantity,
                 0
               )
               .toFixed(2)}
@@ -194,7 +213,8 @@ const Cart = () => {
                 (total, item) =>
                   total +
                   (item.product.discountedPrice
-                    ? item.product.discountedPrice * item.quantity
+                    ? item.product.discountedPrice *
+                      Math.min(item.product.numberOfUses, item.quantity)
                     : 0),
                 0
               )

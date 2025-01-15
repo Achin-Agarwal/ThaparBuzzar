@@ -14,7 +14,7 @@ const UserProfile = () => {
       id: null,
       name: "",
       email: "",
-      phone: "",
+      phoneNumber: "",
       address: { roomNumber: "", floor: "", city: "", hostel: "" },
       // images: [],
     },
@@ -42,6 +42,7 @@ const UserProfile = () => {
   }, []);
 
   const handleInputChange = (event) => {
+    console.log("event", event);
     const { name, value } = event.target;
     setDeals((prevDeals) => ({
       ...prevDeals,
@@ -85,7 +86,7 @@ const UserProfile = () => {
       deals.address.city === "" ||
       deals.address.hostel === "" ||
       deals.name === "" ||
-      deals.phone === ""
+      deals.phoneNumber === ""
     ) {
       alert("Please fill all the fields");
       return;
@@ -116,7 +117,7 @@ const UserProfile = () => {
 
     formData.append("name", currentProduct.name);
     formData.append("email", currentProduct.email);
-    formData.append("phone", currentProduct.phone);
+    formData.append("phoneNumber", currentProduct.phoneNumber);
     formData.append("address", JSON.stringify(currentProduct.address));
 
     try {
@@ -157,7 +158,7 @@ const UserProfile = () => {
             type="text"
             name="name"
             value={deals.name}
-            onChange={(event) => handleInputChange(activeIndex, event)}
+            onChange={(event) => handleInputChange(event)}
             disabled={!isEditable}
           />
           <InputField
@@ -165,15 +166,19 @@ const UserProfile = () => {
             type="email"
             name="email"
             value={deals.email?.address}
-            onChange={(event) => handleInputChange(activeIndex, event)}
+            onChange={(event) => handleInputChange(event)}
             disabled={true}
           />
           <InputField
             placeholder="Phone Number"
             type="text"
-            name="phone"
-            value={deals.phone}
-            onChange={(event) => handleInputChange(activeIndex, event)}
+            name="phoneNumber"
+            value={
+              deals.phoneNumber === "Not Provided"
+                ? ""
+                : deals.phoneNumber || ""
+            }
+            onChange={(event) => handleInputChange(event)}
             disabled={!isEditable}
           />
           {/* <InputField

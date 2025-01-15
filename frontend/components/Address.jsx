@@ -13,6 +13,7 @@ const Address = () => {
   useEffect(() => {
     const fetchAddress = async () => {
       const token = localStorage.getItem("authToken");
+      console.log(token)
       try {
         const response = await axios.get(url + "/buyer/getalldetails", {
           headers: { authorization: `Bearer ${token}` },

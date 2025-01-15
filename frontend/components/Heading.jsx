@@ -29,7 +29,8 @@ const Heading = () => {
   };
   const handleLogin = async () => {
     const token = localStorage.getItem("authToken");
-    if (token) {
+    if (token!=="undefined" && token!==null) {
+      console.log(token);
       const decode = jwtDecode(token);
       console.log(decode);
       if (decode.role === "seller") {

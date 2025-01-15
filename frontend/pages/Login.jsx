@@ -83,6 +83,9 @@ const LoginSwitcher = () => {
       );
       console.log(response.data);
       const { token } = response.data;
+      if(response.data.message==="User does not exist"){
+        return setError("User does not exist. Please create an account.")
+      }
       localStorage.setItem("authToken", token);
       alert(
         `${

@@ -69,9 +69,8 @@ const Product = ({ productadd }) => {
   };
 
   const handleAddToCart = async () => {
-
     const tokens = localStorage.getItem("authToken");
-    if(!tokens){
+    if (!tokens) {
       alert("Please login to add to cart");
       navigate("/login");
     }
@@ -98,7 +97,8 @@ const Product = ({ productadd }) => {
     const token = localStorage.getItem("authToken");
     try {
       const response = await axios.post(
-        `${url}/buyer/addtocart/${products._id}/${quantity}`,{},
+        `${url}/buyer/addtocart/${products._id}/${quantity}`,
+        {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
       console.log("Add to cart response:", response.data);
@@ -119,7 +119,29 @@ const Product = ({ productadd }) => {
 
   const handleBuyNow = () => {
     alert(`Proceeding to buy ${products.name} with quantity ${quantity}`);
-    navigate("/buynow", { state: { price: products.price * quantity } });
+    if (products.numberOfUses < quantity) {
+      console.log("discounted1", discountedPrice);
+      navigate("/buynow", {
+        state: {
+          price: price * quantity,
+          discount: discountedPrice * products.numberOfUses,
+          quantity:quantity,
+          id:products._id,
+          text:"false",
+        },
+      });
+    } else {
+      console.log("discounted2", products.numberOfUses);
+      navigate("/buynow", {
+        state: {
+          price: price * quantity,
+          discount: discountedPrice * quantity,
+          quantity:quantity,
+          id:products._id,
+          text:"false",
+        },
+      });
+    }
   };
 
   const increaseQuantity = () => {
