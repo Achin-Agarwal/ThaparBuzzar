@@ -331,12 +331,13 @@ const AddProducts = () => {
               style={{ cursor: !isEditable ? "not-allowed" : "auto" }}
             >
               <option value="">Select Category</option>
-              <option value="Electronics">Electronics</option>
-              <option value="Fashion">Fashion</option>
-              <option value="Collectibles and Art">Collectibles and Art</option>
               <option value="Beauty">Beauty</option>
+              <option value="Food">Food</option>
+              <option value="Fashion">Fashion</option>
+              <option value="Decor">Decor</option>
+              <option value="Health">Health</option>
               <option value="Services">Services</option>
-              <option value="Other">Other</option>
+              <option value="Others">Others</option>
               disabled={!isEditable}
             </select>
           </div>

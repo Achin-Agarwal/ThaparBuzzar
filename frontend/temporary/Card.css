@@ -9,8 +9,8 @@
 .product-card-inner {
   position: relative;
   background-color: rgb(241, 241, 241);
-  width: 350px;
-  height: auto;
+  width: 20rem;
+  height: 25rem;
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
   display: flex;
   flex-direction: column;
