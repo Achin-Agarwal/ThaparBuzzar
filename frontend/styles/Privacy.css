@@ -1,0 +1,32 @@
+.privacy-policy {
+    padding: 20px;
+    line-height: 2.1;
+    font-family: "Poppins", sans-serif;
+    color: #000000;
+    padding: 1rem 5rem;
+  }
+  
+  .privacy-policy h1, .privacy-policy h2, .privacy-policy h3 {
+    color: #000000;
+    margin-top: 20px;
+  }
+  
+  .privacy-policy ul {
+    margin-left: 3rem;
+  }
+  
+  .privacy-policy a {
+    color: #00a6ff;
+    text-decoration: none;
+  }
+  
+  .privacy-policy a:hover {
+    text-decoration: underline;
+  }
+  
+  .line{
+    width: 100%;
+    height: 3px;
+    margin-top: 1rem;
+    background-color: rgba(128, 128, 128, 0.849);
+  }
