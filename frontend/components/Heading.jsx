@@ -29,7 +29,7 @@ const Heading = () => {
   };
   const handleLogin = async () => {
     const token = localStorage.getItem("authToken");
-    if (token!=="undefined" && token!==null) {
+    if (token !== "undefined" && token !== null) {
       console.log(token);
       const decode = jwtDecode(token);
       console.log(decode);
@@ -41,7 +41,7 @@ const Heading = () => {
     } else {
       navigate("/login");
     }
-    setIsMenuOpen(false); 
+    setIsMenuOpen(false);
   };
 
   const handleCardClick = (category) => {
@@ -90,12 +90,12 @@ const Heading = () => {
           <div className="menu-items">
             <p onClick={() => handleNavigation("/")}>All</p>
             <p onClick={() => handleCardClick("Beauty")}>Beauty</p>
-            <p onClick={() => handleCardClick("Electronics")}>Electronics</p>
+            <p onClick={() => handleCardClick("Food")}>Food</p>
             <p onClick={() => handleCardClick("Fashion")}>Fashion</p>
-            <p onClick={() => handleCardClick("Collectibles and art")}>
-              Collectibles and Art
-            </p>
+            <p onClick={() => handleCardClick("Decor")}>Decor</p>
+            <p onClick={() => handleCardClick("Health")}>Health</p>
             <p onClick={() => handleCardClick("Services")}>Services</p>
+            <p onClick={() => handleCardClick("Others")}>Others</p>
             <div
               className="menu-cart"
               onClick={() => handleNavigation("/cart")}
@@ -112,12 +112,12 @@ const Heading = () => {
         <div className="nav">
           <p onClick={() => handleNavigation("/")}>All</p>
           <p onClick={() => handleCardClick("Beauty")}>Beauty</p>
-          <p onClick={() => handleCardClick("Electronics")}>Electronics</p>
+          <p onClick={() => handleCardClick("Food")}>Food</p>
           <p onClick={() => handleCardClick("Fashion")}>Fashion</p>
-          <p onClick={() => handleCardClick("Collectibles and art")}>
-            Collectibles and Art
-          </p>
+          <p onClick={() => handleCardClick("Decor")}>Decor</p>
+          <p onClick={() => handleCardClick("Health")}>Health</p>
           <p onClick={() => handleCardClick("Services")}>Services</p>
+          <p onClick={() => handleCardClick("Others")}>Others</p>
         </div>
       )}
     </div>

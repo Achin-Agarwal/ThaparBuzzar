@@ -10,3 +10,10 @@ html,body {
   margin: 0;
   padding: 0;
 }
+
+@font-face {
+  font-family: 'TheSeasonsRegular';
+  src: url('../public/fonts/Demo_Fonts/Fontspring-DEMO-theseasons-reg.otf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}

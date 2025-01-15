@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import ImageSlider from "../components/Image";
 import Scroll from "../components/Scroll";
 import SplitText from "../temporary/SplitText";
+import Footer from "../components/Footer";
 
 const Home = () => {
   const [topCategoryProducts, setTopCategoryProducts] = useState([]);
@@ -68,7 +69,7 @@ const Home = () => {
       <section className="bestsellers-section">
         <h1 className="section-title">
           <SplitText
-            text="Explore Top Categories"
+            text="BESTSELLERS"
             className="section-title"
             delay={150}
             animationFrom={{ opacity: 0, transform: "translate3d(0,50px,0)" }}
@@ -94,7 +95,7 @@ const Home = () => {
       <section className="bestsellers-section">
         <h1 className="section-title">
           <SplitText
-            text="Explore On Sale"
+            text="ON SALE"
             className="section-title"
             delay={150}
             animationFrom={{ opacity: 0, transform: "translate3d(0,50px,0)" }}
@@ -118,6 +119,7 @@ const Home = () => {
         </div>
       </section>
       <Scroll />
+      <Footer />
     </div>
   );
 };
