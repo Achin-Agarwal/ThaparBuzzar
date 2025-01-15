@@ -12,6 +12,7 @@ import auth from './src/routes/auth.js';
 import creteNewAccount from './src/routes/createNewAccount.js';
 import admin from './src/routes/admin.js';
 import buyer from './src/routes/buyer.js';
+// import printConfig from './src/routes/search.js';
 const app = express();
 const __dirname = path.resolve();
 app.use(express.static(path.join(__dirname, 'public')));
@@ -26,7 +27,14 @@ connectMongo();
 //     console.log(req.url, req.method);
 //     next();
 // })
+// printConfig();
 
+// this is used to see which routes are being hit
+app.use((req, res, next) => {
+  // console.log(req.headers);
+  console.log(req.url, req.method);
+  next();
+})
 
 app.use(responseHandler);
 app.use(cors({

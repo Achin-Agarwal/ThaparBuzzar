@@ -13,8 +13,13 @@ router.get("/getalldetails", isLogin, safeHandler(async (req, res) => {
 
 router.patch("/updateprofile", isLogin, safeHandler(async (req, res) => {
     console.log("/updateprofile");
-    console.log(req.body);
+    // console.log(req.body);
     const { name, email, phoneNumber, address } = req.body;
+    console.log("phoneNumber"); 
+    console.log(phoneNumber);
+    console.log("address");
+    console.log(address);
+
     const buyer = await Buyer.findByIdAndUpdate(req.user._id, {
         name, email, phoneNumber, address
     }, {
