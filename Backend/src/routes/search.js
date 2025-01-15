@@ -4,6 +4,7 @@ import config from '../config/config.js'
 import { MongoClient } from 'mongodb'
 import { request } from 'urllib'
 import { safeHandler } from '../middleware/safeHandler.js'
+import Product from '../models/product.js'
 
 const ATLAS_API_BASE_URL = config.database.atlasBaseUrl
 console.log("ATLAS_API_BASE_URL: ", ATLAS_API_BASE_URL)
@@ -36,8 +37,8 @@ router.get('/', safeHandler(async (req, res) => {
         res.json([])
         return
     }
-    const db = mongoClient.db('buzzar');
-    const collection = db.collection('products');
+    // const db = mongoClient.db('buzzar');
+    // const collection = db.collection('products');
     const pipeline = [];
 
     pipeline.push({
@@ -65,7 +66,8 @@ router.get('/', safeHandler(async (req, res) => {
     });
 
 
-    const result = await collection.aggregate(pipeline).sort({ score: -1 }).limit(10);
+    // const result = await collection.aggregate(pipeline).sort({ score: -1 }).limit(10);
+    const result = await Product.aggregate(pipeline).sort({ score: -1 }).limit(10);
     const array = await result.toArray();
     res.json(array);
 }));
@@ -73,50 +75,51 @@ router.get('/', safeHandler(async (req, res) => {
 app.get('/autocomplete', safeHandler(async (req, res) => {
     const searchQuery = req.query.query;
 
-    const db = mongoClient.db('tutorial');
-    const collection = db.collection(MONGODB_COLLECTION);
+    // const db = mongoClient.db('tutorial');
+    // const collection = db.collection('products');
 
     const pipeline = [];
 
-    if (country) {
+
         pipeline.push({
             $search: {
-                index: USER_SEARCH_INDEX_NAME,
-                compound: {
-                    must: [
-                        { autocomplete: { query: searchQuery, path: 'fullName', fuzzy: {} } },
-                        { text: { query: country, path: 'country' } },
-                    ],
-                },
-            },
-        });
-    } else {
-        pipeline.push({
-            $search: {
-                index: USER_AUTOCOMPLETE_INDEX_NAME,
+                index: PRODUCT_AUTOCOMPLETE_INDEX_NAME,
                 autocomplete: {
                     query: searchQuery,
-                    path: 'fullName',
+                    path: 'name',
                     tokenOrder: 'sequential',
                 },
             },
         });
-    }
+    
 
-    pipeline.push({
-        $project: {
-            _id: 0,
-            score: { $meta: 'searchScore' },
-            userId: 1,
-            fullName: 1,
-            email: 1,
-            avatar: 1,
-            registeredAt: 1,
-            country: 1,
-        },
-    });
+        pipeline.push({
+            $project: {
+                _id: 0, // Exclude the `_id` field
+                score: { $meta: 'searchScore' }, // Include the search relevance score
+                name: 1, // Include the product name
+                description: 1, // Include the product description
+                price: 1, // Include the product price
+                category: 1, // Include the product category
+                image: 1, // Include product image(s)
+                stock: 1, // Include stock details
+            },
+        });
 
-    const result = await collection.aggregate(pipeline).sort({ score: -1 }).limit(10);
+    // pipeline.push({
+    //     $project: {
+    //         _id: 0,
+    //         score: { $meta: 'searchScore' },
+    //         userId: 1,
+    //         fullName: 1,
+    //         email: 1,
+    //         avatar: 1,
+    //         registeredAt: 1,
+    //         country: 1,
+    //     },
+    // });
+
+    const result = await Product.aggregate(pipeline).sort({ score: -1 }).limit(10);
     const array = await result.toArray();
     res.json(array);
 }));
@@ -183,3 +186,24 @@ async function upsertAutocompleteIndex() {
         });
     }
 }
+async function main() {
+    try {
+      await mongoClient.connect();
+  
+      await upsertSearchIndex();
+      await upsertAutocompleteIndex();
+  
+      app.listen(3001, () =>
+        console.log('Server running at http://localhost:3001/search?query=gilbert')
+      );
+    } catch (err) {
+      console.error(err);
+    }
+  
+    process.on('SIGTERM', async () => {
+      await mongoClient.close();
+      process.exit(0);
+    });
+  }
+  
+  main();
