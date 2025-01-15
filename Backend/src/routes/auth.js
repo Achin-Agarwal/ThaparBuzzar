@@ -70,7 +70,7 @@ router.post("/google", safeHandler(async (req, res, next) => {
             expiresIn: config.jwt.timeout,
         });
         return res.status(200).json({
-            message: 'user created successfully',
+            message: 'user loged in successfully',
             token,
             user,
         });
@@ -105,7 +105,7 @@ router.post("/google", safeHandler(async (req, res, next) => {
             expiresIn: config.jwt.timeout,
         });
         return res.status(200).json({
-            message: 'user created successfully',
+            message: 'user loged in successfully',
             token,
             user,
         });

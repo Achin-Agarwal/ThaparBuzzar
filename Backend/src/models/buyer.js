@@ -32,7 +32,8 @@ const buyerSchema = new mongoose.Schema({
     // },
     phoneNumber: {
         type: String,
-        required: false
+        required: false,
+        default : "Not Provided"
     },
     cart: [
         {
