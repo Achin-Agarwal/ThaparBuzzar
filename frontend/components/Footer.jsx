@@ -3,8 +3,10 @@ import img from "../src/assets/thapar.png";
 import "../styles/Footer.css";
 import { FaInstagram } from "react-icons/fa";
 import { CiLinkedin } from "react-icons/ci";
+import { useNavigate } from "react-router-dom";
 
 const Footer = () => {
+  const navigate = useNavigate();
   return (
     <div className="footer">
       <img src={img} alt="Sample" className="image" />
@@ -34,7 +36,12 @@ const Footer = () => {
               <p>Home page</p>
               <p>Shop</p>
               <p>Why Thapar Buzzar</p>
-              <p>Privacy policy</p>
+              <p
+                onClick={() => navigate("/privacy")}
+                style={{ cursor: "pointer" }}
+              >
+                Privacy policy
+              </p>
             </div>
           </div>
           <div className="column">

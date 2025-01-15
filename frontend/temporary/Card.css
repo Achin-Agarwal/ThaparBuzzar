@@ -3,20 +3,20 @@
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 40px;
+  font-family: "Poppins", sans-serif;
 }
 
 .product-card-inner {
   position: relative;
   background-color: rgb(241, 241, 241);
-  width: 20rem;
-  height: 25rem;
+  width: 19rem;
+  height: auto;
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 20px 20px 40px;
-  border-radius: 10px;
+  padding: 1.5rem 0px 1.2rem 0px;
+  border-radius: 18px;
   transition: 0.3s;
 }
 
@@ -41,7 +41,7 @@
   width: 100%;
   display: flex;
   justify-content: space-between;
-  margin-top: 10px;
+  padding: 0 1rem;
 }
 
 .namePrice h3 {
@@ -56,6 +56,7 @@
 }
 
 .description {
+  padding: 0 1rem;
   font-size: 16px;
   line-height: 1.5;
   display: -webkit-box;
@@ -63,20 +64,19 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  margin: 10px 0;
   color: #555;
 }
 
 .stars {
   font-size: 1.3em;
   color: #f8e825;
-  margin: 10px 0;
+  padding: 0 1rem;
 }
 
 .buy-button {
   position: relative;
-  margin-top: auto;
   text-align: right;
+  padding: 0 1rem;
 }
 
 .buy-button button {
@@ -121,7 +121,6 @@
 .price-section .discounted-price {
   font-size: 1.5em;
   color: red;
-  font-weight: bold;
 }
 
 .price-section .discount-percentage {
