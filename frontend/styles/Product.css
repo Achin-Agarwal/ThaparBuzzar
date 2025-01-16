@@ -1,4 +1,6 @@
 .product-details {
+  
+  font-family: 'TheSeasonsRegular', Arial, sans-serif;
     display: flex;
     gap: 2rem;
     margin: 2rem auto;
@@ -44,6 +46,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    font-family: "Poppins", sans-serif;
   }
   
   h1 {
@@ -102,11 +105,15 @@
   
   .add-to-cart {
     background: #28a745;
+    
+  font-family: 'TheSeasonsRegular', Arial, sans-serif;
     color: white;
   }
   
   .buy-now {
     background: #ffc107;
+    
+  font-family: 'TheSeasonsRegular', Arial, sans-serif;
     color: black;
   }
   .stock {

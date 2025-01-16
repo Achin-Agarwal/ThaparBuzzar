@@ -135,7 +135,7 @@ const Cart = () => {
 
   return (
     <div>
-      <h1>Your Cart</h1>
+      <h1 style={{fontFamily:'TheSeasonsRegular'}}>Your Cart</h1>
       <div className="cart-flex">
         <div className="carting">
           {cart.length === 0 ? (
@@ -193,6 +193,7 @@ const Cart = () => {
                 <button
                   onClick={() => handleRemoveFromCart(item)}
                   className="remove-button"
+                  style={{fontFamily:'TheSeasonsRegular'}}
                 >
                   Remove
                 </button>

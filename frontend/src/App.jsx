@@ -27,6 +27,8 @@ import Admin from "../pages/Admin";
 import RequestDetail from "../pages/RequestDetail";
 import Sale from "../pages/Sale";
 import Privacy from "../pages/Privacy";
+import About from "../pages/About";
+import Search from "../components/Search";
 
 const App = () => {
   const GoogleAuthWrapper = () => {
@@ -65,6 +67,8 @@ const App = () => {
           <Route path="/request/:id" element={<RequestDetail />} />
           <Route path="/sale/:sale" element={<Sale />} />
           <Route path="/privacy" element={<Privacy/>} />
+          <Route path="/about" element={<About/>}/>
+          <Route path="/search" element={<Search />} />
           <Route path="*" element={<h1>Not Found</h1>} />
         </Routes>
       </div>

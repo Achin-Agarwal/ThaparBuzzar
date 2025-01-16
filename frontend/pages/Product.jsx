@@ -196,7 +196,7 @@ const Product = ({ productadd }) => {
                   <span className="discounted-price">₹{discountedPrice}</span>
                 </div>
                 <span className="discount-percentage">
-                  ({discountPercentage}% OFF)
+                  ({discountPercentage} % OFF)
                 </span>
               </>
             ) : (
@@ -245,7 +245,7 @@ const Product = ({ productadd }) => {
         </div>
       </div>
       <div>
-        <h1>
+        <h1 style={{ fontFamily: "TheSeasonsRegular" }}>
           Products you may like <FaArrowRight />
         </h1>
         <div className="parent-container">

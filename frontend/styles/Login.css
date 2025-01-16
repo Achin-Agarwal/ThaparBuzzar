@@ -4,6 +4,7 @@
   align-items: center;
   justify-content: center;
   height: 100vh;
+  font-family: 'TheSeasonsRegular', Arial, sans-serif;
 }
 
 .login-container {
@@ -27,6 +28,7 @@
     margin-bottom: 20px;
   }
   .login-option {
+    font-family: 'TheSeasonsRegular', Arial, sans-serif;
     flex: 1;
     padding: 11px 28px;
     font-size: 16px;
@@ -55,16 +57,19 @@
   .login-form {
     width: 100%;
     display: flex;
+    font-family: "Poppins", sans-serif;
     flex-direction: column;
     justify-content: center;
     align-items: center;
   }
   
   .login-form input {
+    font-family: "Poppins", sans-serif;
     width: 90%;
     max-width: 300px;
     margin: 6px 0;
-    padding: 8px;
+    font-size: 1rem;
+    padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
   }
@@ -98,11 +103,9 @@
   .but{
     margin: 5px 18px;
     font-size: 18px;
-    font-weight: bold;
   }
   .dont-have-account{
     font-size: 18px;
-    font-weight: bold;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -141,7 +144,6 @@
       color: white;
       font-family: Arial, sans-serif;
       font-size: 16px;
-      font-weight: bold;
       border: none;
       border-radius: 4px;
       padding: 10px 15px;

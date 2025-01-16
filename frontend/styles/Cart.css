@@ -31,6 +31,7 @@
 }
 
 .fix-text {
+  font-family: 'TheSeasonsRegular', Arial, sans-serif;
   width: 18%;
 }
 
@@ -190,6 +191,7 @@ h1 {
 }
 
 .buy-now-button {
+  font-family: 'TheSeasonsRegular', Arial, sans-serif;
   background-color: #f44336;
   color: white;
 }

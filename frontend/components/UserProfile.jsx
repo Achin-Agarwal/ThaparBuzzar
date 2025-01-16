@@ -150,6 +150,7 @@ const UserProfile = () => {
             onClick={isEditable ? handleSave : () => setIsEditable(true)}
             bgColor={isEditable ? "black" : "blue"}
             color="white"
+            fontSize="18px"
           />
         </div>
         <form onSubmit={handleSubmit}>
@@ -190,7 +191,7 @@ const UserProfile = () => {
             disabled={!isEditable}
           /> */}
           <div className="address-container">
-            <h2>Addresses:</h2>
+            <h2>Address:</h2>
           </div>
           <div className="address-fields-container">
             {/* {deals.address.map((add, addressIndex) => ( */}

@@ -8,8 +8,12 @@ import { BsHandbag } from "react-icons/bs";
 import { HiOutlineDotsVertical } from "react-icons/hi";
 import { useLocation, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+import Autocomplete from "./Autocomplete";
+import url from "../url";
+import axios from "axios";
 
 const Heading = () => {
+  const [searchVisible, setSearchVisible] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
@@ -21,6 +25,29 @@ const Heading = () => {
   const handleCart = () => {
     console.log("Cart clicked");
     navigate("/cart");
+  };
+  const fetchSuggestions = async (query) => {
+    if (query.length < 3) {
+      console.log("Query is less than 3");
+      return [];
+    }
+    const response = await axios.get(
+      url + `/search/autocomplete?query=${query}`,
+      {
+        data: { role: 5 },
+      }
+    );
+    console.log("This is ", response.data);
+    // if (!response.ok) {
+    //   throw new Error("Network response was not ok");
+    // }
+    return response.data;
+  };
+  const handleSearchSelect = async(selectedItem) => {
+    console.log("Selected Item:", selectedItem);
+    // Navigate to the product page or display more details
+    const response=await axios.get(url+`/search/${selectedItem.id}`)
+    navigate(`/product/${selectedItem.id}`); // Adjust route as needed
   };
 
   const handleNavigation = (path) => {
@@ -65,8 +92,36 @@ const Heading = () => {
             />
           </div>
           <div className="search-icon">
-            <IoIosSearch color="white" size="40px" className="image3" />
+            <IoIosSearch
+              color="white"
+              size="40px"
+              className="image3"
+              onClick={() => setSearchVisible(!searchVisible)} // Toggle visibility
+            />
           </div>
+          {searchVisible && (
+            <div className="search-overlay">
+              <div className="search-modal">
+                <Autocomplete
+                  placeholder="Search for products..."
+                  fetchSuggestions={fetchSuggestions}
+                  dataKey="name"
+                  customLoading={<div>Loading...</div>}
+                  onSelect={(res) => handleSearchSelect(res)}
+                  customStyles={{
+                    width: "100%",
+                    padding: "15px",
+                  }}
+                />
+                <button
+                  className="close-button"
+                  onClick={() => setSearchVisible(false)}
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          )}
           <div className="cart-icon">
             <BsHandbag
               color="white"

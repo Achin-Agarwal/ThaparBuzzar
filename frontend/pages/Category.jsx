@@ -44,7 +44,7 @@ const Category = () => {
 
   return (
     <div>
-      <h1>Category: {category}</h1>
+      <h1 style={{fontFamily:'TheSeasonsRegular'}}>Category: {category}</h1>
       <div className="bestsellersss">
         {currentProducts.map((product) => (
           <Card
