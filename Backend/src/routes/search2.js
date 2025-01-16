@@ -85,14 +85,14 @@ router.get('/autocomplete', safeHandler(async (req, res) => {
         },
         {
             $project: {
-                _id: 1,
+                _id: 0,
                 score: { $meta: 'searchScore' },
-                name: 1,
-                description: 1,
-                price: 1,
-                category: 1,
-                image: 1,
-                stock: 1
+                name: 1
+                // description: 0,
+                // price: 0,
+                // category: 0,
+                // image: 0,
+                // stock: 0
             }
         }
     ];
