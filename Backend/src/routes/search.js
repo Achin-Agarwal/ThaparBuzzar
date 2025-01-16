@@ -1,5 +1,5 @@
 import express from 'express'
-// import {request} from 'urllib'
+import {request} from 'urllib'
 import config from '../config/config.js'
 import { MongoClient } from 'mongodb'
 import { request } from 'urllib'
@@ -7,16 +7,16 @@ import { safeHandler } from '../middleware/safeHandler.js'
 import Product from '../models/product.js'
 
 const ATLAS_API_BASE_URL = config.database.atlasBaseUrl
-console.log("ATLAS_API_BASE_URL: ", ATLAS_API_BASE_URL)
+// console.log("ATLAS_API_BASE_URL: ", ATLAS_API_BASE_URL)
 // console.log ("config.database ", config.database )
 const ATLAS_PROJECT_ID = config.database.atlasProjectId
-console.log("ATLAS_PROJECT_ID: ", ATLAS_PROJECT_ID)
+// console.log("ATLAS_PROJECT_ID: ", ATLAS_PROJECT_ID)
 const ATLAS_CLUSTER_NAME = config.database.atlasCluster
-console.log("ATLAS_CLUSTER_NAME: ", ATLAS_CLUSTER_NAME)
+// console.log("ATLAS_CLUSTER_NAME: ", ATLAS_CLUSTER_NAME)
 const ATLAS_API_PUBLIC_KEY = config.database.atlasApiPublicKey
-console.log("ATLAS_API_PUBLIC_KEY: ", ATLAS_API_PUBLIC_KEY)
+// console.log("ATLAS_API_PUBLIC_KEY: ", ATLAS_API_PUBLIC_KEY)
 const ATLAS_API_PRIVATE_KEY = config.database.atlasApiPrivateKey
-console.log("ATLAS_API_PRIVATE_KEY: ", ATLAS_API_PRIVATE_KEY)
+// console.log("ATLAS_API_PRIVATE_KEY: ", ATLAS_API_PRIVATE_KEY)
 
 
 // printConfig
@@ -124,9 +124,9 @@ app.get('/autocomplete', safeHandler(async (req, res) => {
     res.json(array);
 }));
 
-async function findIndexByName(indexName) {
+export async function findIndexByName(indexName) {
     const allIndexesResponse = await request(
-        `${ATLAS_SEARCH_INDEX_API_URL}/${MONGODB_DATABASE}/${MONGODB_COLLECTION}`,
+        `${ATLAS_SEARCH_INDEX_API_URL}/buzzar/products`,
         {
             dataType: 'json',
             contentType: 'application/json',
@@ -138,72 +138,71 @@ async function findIndexByName(indexName) {
     return allIndexesResponse.data.find((i) => i.name === indexName);
 }
 
-async function upsertSearchIndex() {
-    const userSearchIndex = await findIndexByName(USER_SEARCH_INDEX_NAME);
-    if (!userSearchIndex) {
-        await request(ATLAS_SEARCH_INDEX_API_URL, {
-            data: {
-                name: USER_SEARCH_INDEX_NAME,
-                database: MONGODB_DATABASE,
-                collectionName: MONGODB_COLLECTION,
-                mappings: { dynamic: true },
-            },
+export async function findIndexByName(indexName) {
+    const allIndexesResponse = await request(
+        `${ATLAS_SEARCH_INDEX_API_URL}/buzzar/products`,
+        {
             dataType: 'json',
             contentType: 'application/json',
-            method: 'POST',
+            method: 'GET',
             digestAuth: DIGEST_AUTH,
-        });
-    }
+        }
+    );
+
+    return allIndexesResponse.data.find((i) => i.name === indexName);
 }
 
-async function upsertAutocompleteIndex() {
-    const userAutocompleteIndex = await findIndexByName(USER_AUTOCOMPLETE_INDEX_NAME);
-    if (!userAutocompleteIndex) {
-        await request(ATLAS_SEARCH_INDEX_API_URL, {
-            data: {
-                name: USER_AUTOCOMPLETE_INDEX_NAME,
-                database: MONGODB_DATABASE,
-                collectionName: MONGODB_COLLECTION,
-                mappings: {
-                    dynamic: false,
-                    fields: {
-                        fullName: [
-                            {
-                                foldDiacritics: false,
-                                maxGrams: 7,
-                                minGrams: 3,
-                                tokenization: 'edgeGram',
-                                type: 'autocomplete',
-                            },
-                        ],
-                    },
-                },
-            },
-            dataType: 'json',
-            contentType: 'application/json',
-            method: 'POST',
-            digestAuth: DIGEST_AUTH,
-        });
+export async function upsertSearchIndex() {
+    const productSearchIndex = await findIndexByName(PRODUCT_SEARCH_INDEX_NAME)
+    if (!productSearchIndex) {
+      await request(ATLAS_SEARCH_INDEX_API_URL, {
+        data: {
+          name: PRODUCT_SEARCH_INDEX_NAME,
+          database: 'buzzar',
+          collectionName: 'products',
+          // https://www.mongodb.com/docs/atlas/atlas-search/index-definitions/#syntax
+          mappings: {
+            dynamic: true,
+          },
+        },
+        dataType: 'json',
+        contentType: 'application/json',
+        method: 'POST',
+        digestAuth: DIGEST_AUTH,
+      })
     }
-}
-async function main() {
-    try {
-      await mongoClient.connect();
-  
-      await upsertSearchIndex();
-      await upsertAutocompleteIndex();
-  
-      app.listen(3001, () =>
-        console.log('Server running at http://localhost:3001/search?query=gilbert')
-      );
-    } catch (err) {
-      console.error(err);
-    }
-  
-    process.on('SIGTERM', async () => {
-      await mongoClient.close();
-      process.exit(0);
-    });
   }
   
-  main();
+  export async function upsertAutocompleteIndex() {
+    const productAutocompleteIndex = await findIndexByName(PRODUCT_AUTOCOMPLETE_INDEX_NAME)
+    if (!productAutocompleteIndex) {
+      await request(ATLAS_SEARCH_INDEX_API_URL, {
+        data: {
+          name: PRODUCT_AUTOCOMPLETE_INDEX_NAME,
+          database: 'buzzar',
+          collectionName: 'products',
+          // https://www.mongodb.com/docs/atlas/atlas-search/autocomplete/#index-definition
+          mappings: {
+            dynamic: false,
+            fields: {
+              fullName: [
+                {
+                  foldDiacritics: false,
+                  maxGrams: 7,
+                  minGrams: 3,
+                  tokenization: 'edgeGram',
+                  type: 'autocomplete',
+                },
+              ],
+            },
+          },
+        },
+        dataType: 'json',
+        contentType: 'application/json',
+        method: 'POST',
+        digestAuth: DIGEST_AUTH,
+      })
+    }
+  }
+
+

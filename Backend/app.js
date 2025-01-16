@@ -12,6 +12,8 @@ import auth from './src/routes/auth.js';
 import creteNewAccount from './src/routes/createNewAccount.js';
 import admin from './src/routes/admin.js';
 import buyer from './src/routes/buyer.js';
+import search from './src/routes/search2.js';
+import { findIndexByName, upsertAutocompleteIndex, upsertSearchIndex } from './src/routes/search2.js';
 // import printConfig from './src/routes/search.js';
 const app = express();
 const __dirname = path.resolve();
@@ -20,6 +22,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 
 connectMongo();
+console.log("index setup");
+await upsertSearchIndex()
+await upsertAutocompleteIndex()
+console.log("index setup done");
 //checkout populate or whatevr
 
 // app.use((req, res, next) => {
@@ -41,8 +47,8 @@ app.use(cors({
   origin: (origin, callback) => {
     callback(null, origin || '*'); // Allow all origins
   },
-    credentials: true
-  }));
+  credentials: true
+}));
 
 // Auth0 configuration
 // const Auth0Config = {
@@ -92,6 +98,7 @@ app.use("/resetpassword", restpass);
 app.use("/auth", auth);
 app.use("/admin", admin);
 app.use("/buyer", buyer);
+app.use("/search", search);
 // /profile route to check the logged-in buyer's profile
 // import pkg from 'express-openid-connect';
 // const { requiresAuth } = pkg;
@@ -110,15 +117,15 @@ app.use((error, req, res, next) => {
   // }
 
   if (error.isOperational) {
-      const statusCode = error.statusCode || 500;
-      const message = error.message || 'Internal Server Error';
-      return res.error(statusCode, message, error.errorCode, error.data);
+    const statusCode = error.statusCode || 500;
+    const message = error.message || 'Internal Server Error';
+    return res.error(statusCode, message, error.errorCode, error.data);
   } else {
-      //send email
-      //log in a special way maybe
-      console.error("ALERT ALERT ALERT");
-      console.error('Unhandled error:', error);
-      return res.error(500, 'Internal Server Error', 'UNHANDLED_ERROR');
+    //send email
+    //log in a special way maybe
+    console.error("ALERT ALERT ALERT");
+    console.error('Unhandled error:', error);
+    return res.error(500, 'Internal Server Error', 'UNHANDLED_ERROR');
   }
 });
 
