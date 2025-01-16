@@ -13,7 +13,7 @@ import creteNewAccount from './src/routes/createNewAccount.js';
 import admin from './src/routes/admin.js';
 import buyer from './src/routes/buyer.js';
 import search from './src/routes/search2.js';
-import { findIndexByName, upsertAutocompleteIndex, upsertSearchIndex } from './src/routes/search2.js';
+import { upsertAutocompleteIndex, upsertSearchIndex } from './src/routes/search2.js';
 // import printConfig from './src/routes/search.js';
 const app = express();
 const __dirname = path.resolve();
@@ -26,14 +26,7 @@ console.log("index setup");
 await upsertSearchIndex()
 await upsertAutocompleteIndex()
 console.log("index setup done");
-//checkout populate or whatevr
 
-// app.use((req, res, next) => {
-//     console.log(req.headers);
-//     console.log(req.url, req.method);
-//     next();
-// })
-// printConfig();
 
 // this is used to see which routes are being hit
 app.use((req, res, next) => {
@@ -50,47 +43,11 @@ app.use(cors({
   credentials: true
 }));
 
-// Auth0 configuration
-// const Auth0Config = {
-//   authRequired: false,
-//   auth0Logout: true,
-//   secret: config.Auth0.secret,
-//   baseURL: config.Auth0.baseURL,
-//   clientID: config.Auth0.clientID,
-//   issuerBaseURL: config.Auth0.issuerBaseURL,
-//   routes: {
-//     callback: '/callback',
-//     postLoginRedirect: 'http://http://localhost:5173'
-//   }
-// };
-
-// Auth0 middleware
-// app.use(auth(Auth0Config));
-
-// Logging middleware
-// app.use((req, res, next) => {
-//   console.log(`Incoming request: ${req.method} ${req.url}`);
-//   next();
-// });
-
-// Custom /callback route
-// app.get('/callback', (req, res) => {
-//   console.log("Callback route reached"); // Debugging log to ensure this route is triggered
-//   res.redirect("http://localhost:5173");
-// });
-
-// /login route to initiate Auth0 login
-// app.get('/login', (req, res) => {
-//   console.log('Login route triggered, redirecting to Auth0...');
-//   res.oidc.login({ returnTo: 'http://localhost:5173' });
-// });
-
-// / route to test authentication and log buyer info
 app.get('/', (req, res) => {
-  // console.log(req.oidc.isAuthenticated());
-  console.log("***********************************************req.oidc****************************************************");
   res.send("Hello World");
 });
+
+// routes
 app.use("/createnewaccount", creteNewAccount);
 app.use("/seller", seller);
 app.use("/home", home);
@@ -99,15 +56,6 @@ app.use("/auth", auth);
 app.use("/admin", admin);
 app.use("/buyer", buyer);
 app.use("/search", search);
-// /profile route to check the logged-in buyer's profile
-// import pkg from 'express-openid-connect';
-// const { requiresAuth } = pkg;
-// app.get('/profile', requiresAuth(), (req, res) => {
-//   res.send(JSON.stringify(req.oidc.buyer, null, 2));
-// });
-
-
-
 
 //TEST OUT THIS ERROR JARGON FIRST
 app.use((error, req, res, next) => {
