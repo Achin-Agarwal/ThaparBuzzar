@@ -38,7 +38,7 @@ console.log("index setup done");
 // this is used to see which routes are being hit
 app.use((req, res, next) => {
   // console.log(req.headers);
-  console.log(req.url, req.method);
+  console.log(req.url, req.method, req.body);
   next();
 })
 
