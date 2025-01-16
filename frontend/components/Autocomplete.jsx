@@ -1,17 +1,14 @@
-/* eslint-disable react/prop-types */
 import {useCallback, useEffect} from "react";
 import {useState} from "react";
 import "./styles.css";
 import SuggestionsList from "./SuggestionsList";
 import debounce from "lodash/debounce";
-// import useCache from "../hooks/use-cache";
 
 const Autocomplete = ({
   staticData,
   fetchSuggestions,
   placeholder = "",
   customloading = "Loading...",
-  // caching = true,
   onSelect = () => {},
   onBlur = () => {},
   onFocus = () => {},
@@ -75,7 +72,7 @@ const Autocomplete = ({
     onSelect(suggestion);
     setSuggestions([]);
   };
-  console.log(suggestions);
+  console.log("suggestions",suggestions);
 
   return (
     <div className="container">

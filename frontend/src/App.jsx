@@ -29,6 +29,7 @@ import Sale from "../pages/Sale";
 import Privacy from "../pages/Privacy";
 import About from "../pages/About";
 import Search from "../components/Search";
+import Fetched from "../pages/Fetched";
 
 const App = () => {
   const GoogleAuthWrapper = () => {
@@ -69,6 +70,7 @@ const App = () => {
           <Route path="/privacy" element={<Privacy/>} />
           <Route path="/about" element={<About/>}/>
           <Route path="/search" element={<Search />} />
+          <Route path="/searched/" element={<Fetched />} />
           <Route path="*" element={<h1>Not Found</h1>} />
         </Routes>
       </div>

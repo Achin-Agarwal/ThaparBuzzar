@@ -14,6 +14,7 @@ import axios from "axios";
 
 const Heading = () => {
   const [searchVisible, setSearchVisible] = useState(false);
+  const [que, setQue] = useState("");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
@@ -31,6 +32,7 @@ const Heading = () => {
       console.log("Query is less than 3");
       return [];
     }
+    setQue(query);
     const response = await axios.get(
       url + `/search/autocomplete?query=${query}`,
       {
@@ -43,11 +45,11 @@ const Heading = () => {
     // }
     return response.data;
   };
+
   const handleSearchSelect = async(selectedItem) => {
     console.log("Selected Item:", selectedItem);
-    // Navigate to the product page or display more details
-    const response=await axios.get(url+`/search/${selectedItem.id}`)
-    navigate(`/product/${selectedItem.id}`); // Adjust route as needed
+    setSearchVisible(false);
+    navigate(`/searched`,{state:{queue:que}});
   };
 
   const handleNavigation = (path) => {
