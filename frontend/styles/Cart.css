@@ -19,6 +19,12 @@
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+.carting {
+  max-height: 58vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
 .cart:hover {
   transform: translateY(-5px);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);

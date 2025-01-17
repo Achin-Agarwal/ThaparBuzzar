@@ -13,7 +13,7 @@ html,body {
 
 @font-face {
   font-family: 'TheSeasonsRegular';
-  src: url('../public/fonts/Demo_Fonts/Fontspring-DEMO-theseasons-reg.otf') format('truetype');
+  src: url('../fonts/Demo_Fonts/Fontspring-DEMO-theseasons-reg.otf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }

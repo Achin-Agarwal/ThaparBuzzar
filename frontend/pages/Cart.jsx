@@ -119,7 +119,7 @@ const Cart = () => {
       (total, item) =>
         total +
         (item.product.discountedPrice
-          ? item.product.discountedPrice *
+          ? (item.product.price-item.product.discountedPrice)*
             Math.min(item.product.numberOfUses, item.quantity)
           : 0),
       0
@@ -214,7 +214,7 @@ const Cart = () => {
                 (total, item) =>
                   total +
                   (item.product.discountedPrice
-                    ? item.product.discountedPrice *
+                    ? (item.product.price-item.product.discountedPrice) *
                       Math.min(item.product.numberOfUses, item.quantity)
                     : 0),
                 0
