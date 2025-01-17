@@ -1,16 +1,15 @@
-.container {
+.containersa {
     position: relative;
-    width: 300px;
+    width: 40vw;
     font-family: Arial, sans-serif;
   }
   
-  .container > input {
+  .containersa > input {
     width: 100%;
-    padding: 10px;
     box-sizing: border-box;
     border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 16px;
+    border-radius: 8px 0px 0px 8px;
+    font-size: 1.2rem;
   }
   
   .loading,

@@ -11,6 +11,7 @@ import url from "../url";
 
 const BuyNow = () => {
   const [activeTab, setActiveTab] = useState("productDetails");
+  const [loading, setLoading] = useState(true);
   const [address, setAddress] = useState({
     roomNumber: "",
     floor: "",
@@ -28,6 +29,7 @@ const BuyNow = () => {
 
   useEffect(() => {
     const fetchUserDetails = async () => {
+      setLoading(true);
       try {
         const token = localStorage.getItem("authToken");
         if (!token) {
@@ -49,6 +51,9 @@ const BuyNow = () => {
       } catch (error) {
         console.error("Error fetching user details:", error);
       }
+      finally{
+        setLoading(false);
+      }
     };
 
     fetchUserDetails();
@@ -57,6 +62,13 @@ const BuyNow = () => {
   const handleEdit = () => {
     navigate("/buyer");
   };
+  if (loading) {
+    return (
+      <div className="loading-overlay">
+        <div className="spinner"></div>
+      </div>
+    );
+  }
 
   const handleCOD = () => {
     if (

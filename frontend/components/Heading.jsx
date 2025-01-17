@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "../styles/Heading.css";
 import clglogo from "../src/assets/images.jpg";
 import buzzarlogo from "../src/assets/buzzar logo.png";
@@ -11,14 +11,44 @@ import { jwtDecode } from "jwt-decode";
 import Autocomplete from "./Autocomplete";
 import url from "../url";
 import axios from "axios";
+import Button from "./Button";
 
 const Heading = () => {
   const [searchVisible, setSearchVisible] = useState(false);
   const [que, setQue] = useState("");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const searchRef = useRef(null);
   const navigate = useNavigate();
   const location = useLocation();
   const excludedPaths = ["/dashboard"];
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (searchRef.current && !searchRef.current.contains(event.target)) {
+        setSearchVisible(false);
+      }
+    };
+
+    const handleEscapeKey = (event) => {
+      if (event.key === "Escape") {
+        setSearchVisible(false);
+      }
+    };
+    if (searchVisible) {
+      document.body.style.overflow = "hidden"; // Disable scrolling
+    } else {
+      document.body.style.overflow = "auto"; // Enable scrolling
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleEscapeKey);
+
+    return () => {
+      document.body.style.overflow = "auto";
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleEscapeKey);
+    };
+  }, [searchVisible]);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -40,16 +70,13 @@ const Heading = () => {
       }
     );
     console.log("This is ", response.data);
-    // if (!response.ok) {
-    //   throw new Error("Network response was not ok");
-    // }
     return response.data;
   };
 
-  const handleSearchSelect = async(selectedItem) => {
+  const handleSearchSelect = async (selectedItem) => {
     console.log("Selected Item:", selectedItem);
     setSearchVisible(false);
-    navigate(`/searched`,{state:{queue:que}});
+    navigate(`/searched`, { state: { queue: que } });
   };
 
   const handleNavigation = (path) => {
@@ -80,7 +107,6 @@ const Heading = () => {
 
   return (
     <div>
-      {/* Header Section */}
       <div className="head">
         <img src={clglogo} alt="College Logo" className="image1" />
         <img src={buzzarlogo} alt="Buzzar Logo" className="image2" />
@@ -98,12 +124,12 @@ const Heading = () => {
               color="white"
               size="40px"
               className="image3"
-              onClick={() => setSearchVisible(!searchVisible)} // Toggle visibility
+              onClick={() => setSearchVisible(true)}
             />
           </div>
           {searchVisible && (
             <div className="search-overlay">
-              <div className="search-modal">
+              <div className="search-modal" ref={searchRef}>
                 <Autocomplete
                   placeholder="Search for products..."
                   fetchSuggestions={fetchSuggestions}
@@ -111,19 +137,19 @@ const Heading = () => {
                   customLoading={<div>Loading...</div>}
                   onSelect={(res) => handleSearchSelect(res)}
                   customStyles={{
-                    width: "100%",
-                    padding: "15px",
+                    borderRadius: "8px 0 0 8px",
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      handleSearchSelect(que);
+                    }
                   }}
                 />
-                <button
-                  className="close-button"
-                  onClick={() => setSearchVisible(false)}
-                >
-                  Close
-                </button>
+                <Button onClick={() => handleSearchSelect(que)} bgColor="rgba(36, 34, 34, 0.47)" fontSize="1.2rem" borderRadius="0px 8px 8px 0px">Search</Button>
               </div>
             </div>
           )}
+
           <div className="cart-icon">
             <BsHandbag
               color="white"
@@ -140,8 +166,6 @@ const Heading = () => {
           />
         </div>
       </div>
-
-      {/* Mobile Menu */}
       {isMenuOpen && (
         <div className="mobile-menu">
           <div className="menu-items">
@@ -163,8 +187,6 @@ const Heading = () => {
           </div>
         </div>
       )}
-
-      {/* Desktop Nav */}
       {!excludedPaths.includes(location.pathname) && (
         <div className="nav">
           <p onClick={() => handleNavigation("/")}>All</p>

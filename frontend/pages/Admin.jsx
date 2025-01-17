@@ -34,7 +34,11 @@ const Admin = () => {
     fetch();
   }, []);
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="loading-overlay">
+        <div className="spinner"></div>
+      </div>
+    );
   }
 
   const handleTabChange = (tab) => {

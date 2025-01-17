@@ -9,40 +9,45 @@ import ImageSlider from "../components/Image";
 import Scroll from "../components/Scroll";
 import SplitText from "../temporary/SplitText";
 import Footer from "../components/Footer";
+import "../styles/LoadingSpinner.css";
 
 const Home = () => {
   const [topCategoryProducts, setTopCategoryProducts] = useState([]);
   const [discountedProducts, setDiscountedProducts] = useState([]);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const [images, setImages] = useState([]);
 
   useEffect(() => {
     const fetchTopCategoryProducts = async () => {
+      setLoading(true);
       try {
         const response = await axios.get(`${url}/home/bestsellers`);
         const products = response.data;
-        console.log(products)
+        console.log(products);
 
-        const res=await axios.get(`${url}/admin/getanouncements`);
-        console.log(res.data.productImages)
-        setImages(res.data.productImages)
+        const res = await axios.get(`${url}/admin/getanouncements`);
+        console.log(res.data.productImages);
+        setImages(res.data.productImages);
 
         const maxPriceProducts = products.reduce((acc, product) => {
-            acc[product.category] = product;
+          acc[product.category] = product;
           return acc;
         }, {});
 
         setTopCategoryProducts(Object.values(maxPriceProducts));
       } catch (error) {
         console.error("Error fetching top category products:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
     const fetchDiscountedProducts = async () => {
       try {
         const response = await axios.get(`${url}/home/discountedproducts`);
-        console.log(response.data)
+        console.log(response.data);
         setDiscountedProducts(response.data);
       } catch (error) {
         console.error("Error fetching discounted products:", error);
@@ -52,6 +57,14 @@ const Home = () => {
     fetchTopCategoryProducts();
     fetchDiscountedProducts();
   }, []);
+
+  if (loading) {
+    return (
+      <div className="loading-overlay">
+        <div className="spinner"></div>
+      </div>
+    );
+  }
 
   const handleCardClick = (category) => {
     navigate(`/category/${category}`);

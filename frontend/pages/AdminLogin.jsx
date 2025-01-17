@@ -64,6 +64,14 @@ const AdminLogin = () => {
     }
   };
 
+  if (loading) {
+    return (
+      <div className="loading-overlay">
+        <div className="spinner"></div>
+      </div>
+    );
+  }
+
   const addUser = () => {
     navigate("/verify", { state: { role: "admin" } });
   };
