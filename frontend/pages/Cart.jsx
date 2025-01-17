@@ -33,7 +33,11 @@ const Cart = () => {
   }, []);
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return (
+      <div className="loading-overlay">
+        <div className="spinner"></div>
+      </div>
+    );
   }
 
   if (!cart || cart.length === 0) {

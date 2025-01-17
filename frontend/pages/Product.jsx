@@ -31,9 +31,11 @@ const Product = ({ productadd }) => {
   const [quantity, setQuantity] = useState(1);
   const navigate = useNavigate();
   const { addToCart } = useContext(CartContext);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchProduct = async () => {
+      setLoading(true);
       try {
         const response = await axios.get(url + "/home/products");
         const products = response.data;
@@ -52,9 +54,19 @@ const Product = ({ productadd }) => {
       } catch (error) {
         console.log(error);
       }
+      finally{
+        setLoading(false);
+      }
     };
     fetchProduct();
   }, [id]);
+  if (loading) {
+    return (
+      <div className="loading-overlay">
+        <div className="spinner"></div>
+      </div>
+    );
+  }
 
   const handlePrevImage = () => {
     setCurrentImageIndex((prevIndex) =>

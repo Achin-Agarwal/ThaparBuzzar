@@ -12,10 +12,12 @@ const Category = () => {
   const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [productsPerPage] = useState(8);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCategory = async () => {
+      setLoading(true);
       try {
         const response = await axios.get(url + "/home/products");
         const products = response.data;
@@ -26,9 +28,20 @@ const Category = () => {
       } catch (error) {
         console.log(error);
       }
+      finally{
+        setLoading(false);
+      }
     };
     fetchCategory();
   }, [category]);
+
+  if (loading) {
+    return (
+      <div className="loading-overlay">
+        <div className="spinner"></div>
+      </div>
+    );
+  }
 
   const handleCardClick = (id) => {
     navigate(`/product/${id}`);
@@ -44,7 +57,7 @@ const Category = () => {
 
   return (
     <div>
-      <h1 style={{fontFamily:'TheSeasonsRegular'}}>Category: {category}</h1>
+      <h1 style={{ fontFamily: "TheSeasonsRegular" }}>Category: {category}</h1>
       <div className="bestsellersss">
         {currentProducts.map((product) => (
           <Card
