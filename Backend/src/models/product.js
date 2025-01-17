@@ -24,12 +24,13 @@ const productSchema = new mongoose.Schema({
     category: {
         type: String,
         enum: [
-            'Electronics',
-            'Fashion',
-            'Collectibles and Art',
-            'Beauty',
-            'Services',
-            'Other'
+            "Beauty",
+            "Food",
+            "Fashion",
+            "Decor",
+            "Health",
+            "Services",
+            "Others"
         ]
     },
     stock: {

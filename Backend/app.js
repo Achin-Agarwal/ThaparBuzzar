@@ -13,6 +13,7 @@ import creteNewAccount from './src/routes/createNewAccount.js';
 import admin from './src/routes/admin.js';
 import buyer from './src/routes/buyer.js';
 import search from './src/routes/search2.js';
+import buynow from './src/routes/buynow.js';
 import { upsertAutocompleteIndex, upsertSearchIndex } from './src/routes/search2.js';
 // import printConfig from './src/routes/search.js';
 const app = express();
@@ -56,6 +57,7 @@ app.use("/auth", auth);
 app.use("/admin", admin);
 app.use("/buyer", buyer);
 app.use("/search", search);
+app.use("/buynow", buynow);
 
 //TEST OUT THIS ERROR JARGON FIRST
 app.use((error, req, res, next) => {
