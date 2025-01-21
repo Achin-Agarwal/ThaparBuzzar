@@ -58,7 +58,7 @@ router.get("/addannouncement", isLogin, safeHandler(async (req, res) => {
     // }
     console.log(req.user);
     const user = await Seller.findById(req.user._id).populate("announcement").exec();
-    res.json(user);
+    // res.json(user);
 }));
 
 // get all anouncement of a seller
@@ -78,7 +78,7 @@ router.post('/addproduct', isLogin, productImageUpload, safeHandler(async (req, 
         price: parseFloat(req.body.price),
         discountedPrice: parseFloat(req.body.discountedPrice),
         numberOfUses: parseFloat(req.body.numberOfUses),
-        stock: parseFloat(req.body.stock),
+        stock: JSON.parse(req.body.stock),
     };
 
     console.log("body: ");
@@ -99,7 +99,7 @@ router.post('/addproduct', isLogin, productImageUpload, safeHandler(async (req, 
     }
     const seller = await Seller.findById(sellerId);
 
-    console.log("Seller: "); console.log(seller);
+    // console.log("Seller: "); console.log(seller);
     // Collect filenames from uploaded files
     const images = req.files.map((file) => file.filename);
 
@@ -110,7 +110,7 @@ router.post('/addproduct', isLogin, productImageUpload, safeHandler(async (req, 
         seller: sellerId,
         image: images,
         category,
-        stock: { available: stock },
+        stock,
         numberOfUses,
         discountedPrice
     });
