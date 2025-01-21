@@ -19,15 +19,19 @@ router.post("/", isLogin, safeHandler(async (req, res) => {
         return res.status(401).json({ message: "Unauthorized access" });
     }
 
-    // Handle order from the cart
+                                                                                                          // Handle order from the cart
     if (cart && Array.isArray(cart) && cart.length > 0) {
         let totalPrice = 0;
         const orderProducts = [];
-        if(cart){
+
+        if (cart) {
             cart = buyer.cart
         }
 
         for (const item of cart) {
+            console.log("This is the cut=rrent that is being worked upon");                               //  to be removed in production
+            console.log(item);                                                                           //  to be removed in production
+            console.log("*************************************************************");               //  to be removed in production
             const product = await Product.findById(item.product);
 
             if (!product) {
@@ -82,7 +86,7 @@ router.post("/", isLogin, safeHandler(async (req, res) => {
         return res.status(201).json({ message: "Order placed successfully from cart", order });
     }
 
-    // Handle order from product page
+                                                                                                          //Handel oreder from single product or product 
     if (quantity && productId) {
         let totalPrice = 0;
         const product = await Product.findById(productId);
@@ -91,50 +95,115 @@ router.post("/", isLogin, safeHandler(async (req, res) => {
             return res.status(404).json({ message: "Product not found" });
         }
 
+
         if (product.stock.available < quantity) {
             return res.status(400).json({ message: "Product out of stock" });
         }
 
-        // Calculate price based on discount availability
+        // check if discount is even applicable on prodect
         if (product.discount > 0 && product.numberOfUses > 0) {
-            const discountedQuantity = Math.min(quantity, product.numberOfUses);
-            const remainingQuantity = quantity - discountedQuantity;
+            // if discount is applied on partial quantity
+            if (product.numberOfUses < quantity) {
+                let discountedQuantity = product.numberOfUses;
+                let remainingQuantity = quantity - discountedQuantity;
+                totalPrice = product.discountedPrice * discountedQuantity + product.price * remainingQuantity;
+                product.stock.available -= quantity;
+                product.numberOfUses = 0;
+                product.stock.sold += quantity;
+                product.stock.soldAt.push(new Date());
+                const order = new Order({
+                    buyer: req.user.id,
+                    products: [
+                        {
+                            product: productId,
+                            quantity: quantity
+                        }
+                    ],
+                    status: 'placed'
+                });
 
-            totalPrice +=
-                product.discountedPrice * discountedQuantity +
-                product.price * remainingQuantity;
+                await order.save();
 
-            product.numberOfUses = Math.max(0, product.numberOfUses - discountedQuantity);
-        } else {
-            totalPrice = product.price * quantity;
+                product.orders.push(order._id);
+                product.boughtBy.push(req.user.id);
+
+                await product.save();
+
+                res.status(201).json({ message: "Order placed successfully", order });
+
+            }
+            //if discount is applied on all of quantity
+            if (product.numberOfUses > quantity) {
+                totalPrice = product.price * quantity
+                product.numberOfUses -= quantity;
+                product.stock.available -= quantity;
+                product.stock.available -= quantity;
+                product.numberOfUses = 0;
+                product.stock.sold += quantity;
+                product.stock.soldAt.push(new Date());
+                const order = new Order({
+                    buyer: req.user.id,
+                    products: [
+                        {
+                            product: productId,
+                            quantity: quantity
+                        }
+                    ],
+                    status: 'placed'
+                });
+
+                await order.save();
+
+                product.orders.push(order._id);
+                product.boughtBy.push(req.user.id);
+
+                await product.save();
+
+                res.status(201).json({ message: "Order placed successfully", order });
+
+            }
         }
-
-        // Update product stock and sales
+        //----------------add order model---------------------
+        totalPrice = product.price * quantity;
         product.stock.available -= quantity;
+        product.numberOfUses -= quantity;
         product.stock.sold += quantity;
         product.stock.soldAt.push(new Date());
-
-        await product.save();
-
+        console.log(totalPrice);
+        console.log(product);
+        product.save();
         const order = new Order({
             buyer: req.user.id,
             products: [
                 {
                     product: productId,
-                    quantity,
-                },
+                    quantity: quantity
+                }
             ],
-            status: 'placed',
-            totalPrice,
+            status: 'placed'
         });
 
         await order.save();
 
-        return res.status(201).json({ message: "Order placed successfully from product page", order });
+        product.orders.push(order._id);
+        product.boughtBy.push(req.user.id);
+
+        await product.save();
+
+        res.status(201).json({ message: "Order placed successfully", order });
     }
-
-    return res.status(400).json({ message: "Invalid request" });
-}));
-
-
+}
+));
 export default router;
+
+
+
+// flow of the code to buy product
+
+// order is placed 
+// check if product is in stock
+// check if discount is applicable
+// check if discount is applicable on all quantity
+// check if discount is applicable on partial quantity
+// calculate total price
+// update product stock
