@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../styles/NewPassword.css";
+import "../styles/Newpassword.css";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 import url from "../url";
