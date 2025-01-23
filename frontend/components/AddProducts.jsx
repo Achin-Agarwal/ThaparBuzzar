@@ -18,7 +18,7 @@ const AddProducts = () => {
       price: "",
       description: "",
       images: [],
-      stock: "",
+      stock: {available: ""},
       discountedPrice: "",
       numberOfUses: "",
     },
@@ -46,7 +46,10 @@ const AddProducts = () => {
           console.log(response.data);
           setProducts(
             response.data.products.length > 0
-              ? response.data.products
+              ? response.data.products.map(product => ({
+                  ...product,
+                  stock: { available: product.stock?.available || 0 }, // Ensure stock is initialized
+                }))
               : [
                   {
                     id: null,
@@ -55,12 +58,12 @@ const AddProducts = () => {
                     price: "",
                     description: "",
                     images: [],
-                    stock: "",
+                    stock: { available: "" },
                     discountedPrice: "",
                     numberOfUses: "",
                   },
                 ]
-          );
+          );          
         } catch (error) {
           console.error("Error fetching products:", error);
         }
@@ -79,7 +82,7 @@ const AddProducts = () => {
         price: "",
         description: "",
         images: [],
-        stock: "",
+        stock: {available: ""},
         discountedPrice: "",
         numberOfUses: "",
       },
@@ -94,16 +97,15 @@ const AddProducts = () => {
       const updatedProducts = [...prevProducts];
       if (name === "images") {
         updatedProducts[index].images = files ? Array.from(files) : [];
-      } else if (name.includes(".")) {
-        const [section, field] = name.split(".");
-        updatedProducts[index][section][field] =
-          field === "stock" || field === "numberOfUses" ? Number(value) : value;
+      } else if (name === "stock") {
+        updatedProducts[index].stock.available = Number(value);
       } else {
         updatedProducts[index][name] = name === "price" ? Number(value) : value;
       }
       return updatedProducts;
     });
   };
+  
 
   // const formatCategory = (category) => {
   //   return category.charAt(0).toUpperCase() + category.slice(1).toLowerCase();
@@ -139,27 +141,28 @@ const AddProducts = () => {
 
   const handleSave = async () => {
     const currentProduct = products[activeIndex];
-    console.log("current id " + currentProduct.image);
     if (
       !currentProduct.name ||
       !currentProduct.category ||
       !currentProduct.price ||
       !currentProduct.description ||
-      currentProduct.stock <= 0
+      currentProduct.stock.available <= 0
     ) {
       alert(`Please fill out all fields for Product ${activeIndex + 1}`);
       return;
     }
-
+  
+    const backendProduct = {
+      ...currentProduct,
+      stock: { available: currentProduct.stock.available }, // Ensure stock is properly formatted
+    };
+  
     if (currentProduct._id) {
-      // Update existing product
       const token = localStorage.getItem("authToken");
       try {
         const response = await axios.patch(
           `${url}/seller/addproduct/${currentProduct._id}`,
-          {
-            currentProduct,
-          },
+          backendProduct,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -176,7 +179,7 @@ const AddProducts = () => {
         alert(`Failed to update Product ${activeIndex + 1}`);
       }
     }
-  };
+  };  
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -216,7 +219,7 @@ const AddProducts = () => {
     formData.append("description", currentProduct.description);
     formData.append("category", currentProduct.category);
     formData.append("sellerId", decoded._id);
-    formData.append("stock", currentProduct.stock);
+    formData.append("stock", JSON.stringify({ available: currentProduct.stock.available }));
     if (currentProduct.discountedPrice > currentProduct.price) {
       alert("Discounted price should be less than or equal to actual price");
       return;
@@ -362,7 +365,7 @@ const AddProducts = () => {
             placeholder="Stock"
             type="number"
             name="stock"
-            value={products[activeIndex].stock}
+            value={products[activeIndex].stock?.available}
             onChange={(event) => handleInputChange(activeIndex, event)}
             disabled={!isEditable}
           />
@@ -390,7 +393,7 @@ const AddProducts = () => {
               value={`${url}/images/products/${products[activeIndex].image}`}
               onChange={(event) => handleInputChange(activeIndex, event)}
               disabled={!isEditable}
-              multiple 
+              multiple
             />
             <div style={{ display: "flex", gap: "10px", marginTop: "10px" }}>
               {products[activeIndex]?.image?.map((image, index) => (

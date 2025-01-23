@@ -1,4 +1,3 @@
-/* Slider Container */
 .slider {
   position: relative;
   width: 100%;
@@ -11,13 +10,13 @@
 
 @media screen and (max-width: 768px) {
   .slider {
-    height: 25rem;
+    height: 20rem;
   }
 }
 
 @media screen and (max-width: 480px) {
   .slider {
-    height: 15rem;
+    height: 12rem;
   }
 }
 
@@ -70,19 +69,15 @@
 /* Adjust image size for smaller screens */
 @media screen and (max-width: 768px) {
   .slider-image {
-    width: 15rem;
-    height: 20rem;
+    height: 50vh;
   }
 }
 
 @media screen and (max-width: 480px) {
   .slider-image {
-    width: 10rem;
-    height: 13rem;
+    height: 30vh;
   }
 }
-
-/* Buttons */
 .slider-button {
   position: absolute;
   top: 50%;

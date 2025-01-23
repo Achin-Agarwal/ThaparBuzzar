@@ -50,8 +50,7 @@ const BuyNow = () => {
         }
       } catch (error) {
         console.error("Error fetching user details:", error);
-      }
-      finally{
+      } finally {
         setLoading(false);
       }
     };
@@ -86,39 +85,39 @@ const BuyNow = () => {
 
   const Confirm = async () => {
     const token = localStorage.getItem("authToken");
-    console.log("id", id, "quantity", quantity, "text", text);
-  
+    console.log("id", id, "quantity", quantity, "cart", text);
+
     try {
       let response;
       if (text === "false") {
         response = await axios.post(
-          `${url}/buyer/addtocart`,
+          `${url}/buynow`,
           {
-            id: id,
+            productId: id,
             quantity: quantity,
-            text: text,
+            cart: text,
           },
           { headers: { Authorization: `Bearer ${token}` } }
+          
         );
       } else if (text === "true") {
         response = await axios.post(
-          `${url}/buyer/addtocart`,
+          `${url}/buynow`,
           {
-            id: id,
+            productId: id,
             quantity: quantity,
-            text: text,
+            cart: text,
           },
           { headers: { Authorization: `Bearer ${token}` } }
         );
       }
       console.log("Add to cart response:", response.data);
       alert("Product purchased successfully!");
-      navigate("/cart");
+      navigate("/");
     } catch (error) {
       console.error("Error purchasing product:", error);
     }
   };
-  
 
   return (
     <div className="buyNowContainer">

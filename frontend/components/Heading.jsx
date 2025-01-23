@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import "../styles/Heading.css";
 import clglogo from "../src/assets/images.jpg";
-import buzzarlogo from "../src/assets/buzzar logo.png";
+import buzzarlogo from "../src/assets/buzzar logo.jpg";
 import { CgProfile } from "react-icons/cg";
 import { IoIosSearch } from "react-icons/io";
 import { BsHandbag } from "react-icons/bs";
@@ -161,7 +161,7 @@ const Heading = () => {
           <HiOutlineDotsVertical
             color="white"
             size="35px"
-            className="menu-icon"
+            className="menu-icon image3"
             onClick={toggleMenu}
           />
         </div>

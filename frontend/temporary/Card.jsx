@@ -59,10 +59,10 @@ const Card = ({
           </div>
         </div>
         <p className="description">{description}</p>
-        <div className="stars">{renderStars(rating || 0)}</div>
-        <div className="buy-button">
+        {/* <div className="stars">{renderStars(rating || 0)}</div> */}
+        {/* <div className="buy-button">
           <button>Buy Now</button>
-        </div>
+        </div> */}
       </div>
     </div>
   );

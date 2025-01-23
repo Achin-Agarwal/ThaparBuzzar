@@ -14,7 +14,7 @@
   height: 10vh;
 }
 .image2 {
-  width: 30vh;
+  width: 40vh;
   height: 12vh;
   aspect-ratio: 3/2;
   object-fit: contain;
@@ -262,12 +262,12 @@ button:hover {
 @media (max-width: 768px) {
 
   .image1 {
-    width: 23vh;
-    height: auto;
+    width: 20vh;
+    height: 8vh;
   }
   .image2 {
-    width: 16vh;
-    height: auto;
+    width: 25vh;
+    height: 9vh;
   }
   .image3 {
     height: 6vh;
@@ -308,12 +308,12 @@ button:hover {
 @media (max-width: 430px) {
 
   .image1 {
-    width: 14vh;
-    height: 6vh;
+    width: 13vh;
+    height: 5vh;
   }
   .image2 {
-    width: 11vh;
-    height: 8vh;
+    width: 15vh;
+    height: 6vh;
   }
   .image3 {
     height: 3vh;
@@ -336,14 +336,14 @@ button:hover {
 
 @media (max-width: 360px) {
   .image1 {
-    width: 15vh;
+    width: 12vh;
     height: 6vh;
   }
   .image2 {
-    width: 10vh;
+    width: 14vh;
     height: 8vh;
   }
   .image3 {
-    height: 4vh;
+    height: 3vh;
   }
 }

@@ -36,6 +36,7 @@
     cursor: pointer;
     border: 1px solid #ccc;
     background: #f9f9f9;
+    color: black;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
   .login-option.active {
