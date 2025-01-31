@@ -22,6 +22,7 @@ const Cart = () => {
         const response = await axios.get(`${url}/buyer/usercart`, {
           headers: { Authorization: `Bearer ${token}` },
         });
+        console.log("Cart fetched:", response.data.cart);
         setCart(response.data.cart);
       } catch (error) {
         console.error("Error fetching cart:", error);
