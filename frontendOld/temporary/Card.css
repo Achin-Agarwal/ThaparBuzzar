@@ -1,0 +1,182 @@
+.product-card-outer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-items: stretch;
+  font-family: "Poppins", sans-serif;
+}
+
+.product-card-inner {
+  position: relative;
+  background-color: rgb(241, 241, 241);
+  border: 2px solid black;
+  width: 19rem;
+  height: auto;
+  min-height: 23rem;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1.5rem 0px 1.2rem 0px;
+  border-radius: 18px;
+  transition: 0.3s;
+  flex-grow: 1;
+}
+
+
+.product-card-inner:hover {
+  transform: translateY(-15px);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.product-image {
+  border-top: 2px solid black;
+  border-bottom: 2px solid black;
+  width: 100%;
+  height: 200px;
+  display: grid;
+  place-items: center;
+}
+.product-image img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  max-height: 200px;
+}
+.namePrice {
+  width: 100%;
+  display: flex;
+  padding: 0 1rem;
+}
+
+.namePrice h3 {
+  font-size: 1.3em;
+  text-transform: capitalize;
+  color: black;
+}
+
+.namePrice span {
+  font-size: 1.5em;
+  color: red;
+}
+
+.description {
+  padding: 0 1rem;
+  font-size: 16px;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #555;
+}
+
+.stars {
+  font-size: 1.3em;
+  color: #f8e825;
+  padding: 0 1rem;
+}
+
+.buy-button {
+  position: relative;
+  text-align: right;
+  padding: 0 1rem;
+}
+
+.buy-button button {
+  padding: 10px 20px;
+  border-radius: 7px;
+  border: none;
+  background-color: #3f3f3f;
+  color: rgb(255, 255, 255);
+  font-size: 18px;
+  text-transform: capitalize;
+  cursor: pointer;
+  transition: 0.5s;
+}
+
+.buy-button button:hover {
+  transform: scale(1.1);
+  background-color: pink;
+  color: #f8e825;
+}
+
+.namePrice {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  margin-top: 10px;
+}
+
+.price-section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 5px;
+  /* min-height: 60px; */
+}
+
+
+.price-section .original-price {
+  font-size: 1.2em;
+  color: gray;
+  text-decoration: line-through;
+}
+
+.price-section .discounted-price {
+  font-size: 1.5em;
+  color: red;
+}
+
+.price-section .discount-percentage {
+  font-size: 1em;
+  color: green;
+}
+
+.product-card-outer {
+  width: 100%;
+  display: flex;
+  justify-content: center; /* Centers cards horizontally */
+  flex-wrap: wrap; /* Ensures cards wrap to the next row if there's no space */
+  align-items: stretch; /* Makes all cards the same height */
+  gap: 20px; /* Adds space between cards */
+  font-family: "Poppins", sans-serif;
+  padding: 10px; /* Adds padding around the container */
+}
+
+.product-card-inner {
+  background-color: rgb(241, 241, 241);
+  border: 2px solid black;
+  width: 300px; /* Fixed width for cards */
+  height: auto; /* Auto height for content to flow naturally */
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1.5rem 0rem; /* Adjusted padding */
+  border-radius: 18px;
+  transition: 0.3s;
+  flex-grow: 0; /* Ensures cards do not stretch */
+}
+
+.product-card-inner:hover {
+  transform: translateY(-15px);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* .product-image {
+  border-top: 2px solid black;
+  border-bottom: 2px solid black;
+  width: 100%;
+  height: 200px;
+  display: grid;
+  place-items: center;
+} */
+
+
+@media (max-width: 768px) {
+  
+}

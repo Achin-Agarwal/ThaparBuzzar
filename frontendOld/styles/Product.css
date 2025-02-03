@@ -1,0 +1,142 @@
+.product-details {
+  
+  font-family: 'TheSeasonsRegular', Arial, sans-serif;
+    display: flex;
+    gap: 2rem;
+    margin: 2rem auto;
+    max-width: 1200px;
+    padding: 1rem;
+  }
+  
+  .product-images {
+    position: relative;
+    width: 50%;
+  }
+  
+  .product-imagee {
+    width: 100%;
+    height: 50vh;
+    border-radius: 8px;
+    object-fit: contain;
+  }
+  
+  .image-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 2;
+  }
+  
+  .image-arrow.left {
+    left: 10px;
+  }
+  
+  .image-arrow.right {
+    right: 10px;
+  }
+  
+  .product-info {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-family: "Poppins", sans-serif;
+  }
+  
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .description {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    color: #666;
+  }
+  
+  .price,
+  .rating {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .quantity-control {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .quantity-btn {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    font-size: 1.2rem;
+    border-radius: 4px;
+  }
+  
+  .quantity-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+  }
+  
+  .action-buttonss {
+    display: flex;
+    justify-content: center;
+    padding: 0.5rem 0rem;
+    gap: 1rem;
+  }
+  
+  .btn {
+    padding: 0.7rem 2rem;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 1rem;
+  }
+  
+  .add-to-cart {
+    background: #28a745;
+    
+  font-family: 'TheSeasonsRegular', Arial, sans-serif;
+    color: white;
+  }
+  
+  .buy-now {
+    background: #ffc107;
+    
+  font-family: 'TheSeasonsRegular', Arial, sans-serif;
+    color: black;
+  }
+  .stock {
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  .in-stock {
+    color: green;
+  }
+  
+  .few-stock {
+    color: orange;
+  }
+  
+  .out-of-stock {
+    color: red;
+  }
+  .parent-container {
+    display: flex;
+    gap: 2rem;
+    overflow-x: scroll;
+    white-space: wrap;
+  }
+
+  

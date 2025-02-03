@@ -1,0 +1,349 @@
+/* General Header Styles */
+.head {
+  height: auto;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: black;
+  padding: 10px 10px;
+}
+
+.image1 {
+  width: 27vh;
+  height: 10vh;
+}
+.image2 {
+  width: 40vh;
+  height: 12vh;
+  aspect-ratio: 3/2;
+  object-fit: contain;
+}
+
+.image3, .menu-icon {
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.image3:hover, .menu-icon:hover {
+  transform: scale(1.1);
+}
+
+.heads {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+}
+
+/* Desktop Nav */
+.nav {
+  display: flex;
+  font-family: 'TheSeasonsRegular', Arial, sans-serif;
+  justify-content: center;
+  gap: 2rem;
+  padding: 1.5rem 1.2rem;
+  background-color: black;
+  color: white;
+}
+
+.nav p {
+  cursor: pointer;
+  font-size: 1.5rem;
+  position: relative;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.nav p:hover {
+  transform: scale(1.1);
+  color: #007bff;
+}
+
+/* Mobile Menu */
+.menu-icon {
+  display: none;
+}
+
+.mobile-menu {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 70%;
+  height: 100%;
+  background-color: black;
+  color: white;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 2rem;
+  z-index: 1000;
+}
+
+.menu-items p {
+  margin: 10px 0;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.menu-cart {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 2rem;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.search-modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80%;
+  max-width: 600px;
+  margin: auto;
+}
+
+.search-modal input {
+  flex: 1;
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-right: none;
+  border-radius: 8px 0 0 8px;
+  font-size: 1rem;
+  outline: none;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.search-modal input:focus {
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  border-color: #007bff;
+}
+
+.search-modal button {
+  padding: 12px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 0 8px 8px 0;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.search-modal button:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+
+.search-modal button:active {
+  transform: scale(1);
+}
+
+.search-overlay {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+.search-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+  background: rgba(255, 255, 255, 0.95); /* Slight whitish background */
+  z-index: 1000; /* Ensures it appears above all other elements */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.search-modal {
+  display: flex;
+  align-items: center;
+  width: 80%; /* Adjust width as needed */
+  max-width: 800px; /* Maximum width */
+}
+
+.search-modal input {
+  flex: 1;
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px 0 0 8px;
+  font-size: 1rem;
+  outline: none;
+}
+
+.search-modal input:focus {
+  border-color: #007bff;
+}
+.search-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);/* Slight whitish background */
+  z-index: 1000; /* Ensures it appears above all other elements */
+  overflow: hidden; /* Prevents scrolling */
+}
+
+.search-modal {
+  position: fixed;
+  top: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  max-width: 800px;
+  display: flex;
+  align-items: center;
+  /* background: white; */
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1100; /* Slightly higher to ensure it's above other elements */
+}
+
+.search-modal input {
+  flex: 1;
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px 0 0 8px;
+  font-size: 1rem;
+  outline: none;
+}
+
+.search-modal input:focus {
+  border-color: #007bff;
+}
+
+button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 0 8px 8px 0;
+  background-color: black;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #007bff;
+}
+
+/* Close Button */
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  font-size: 1.2rem;
+  color: #555;
+  cursor: pointer;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.close-button:hover {
+  transform: scale(1.1);
+  color: #007bff;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+
+  .image1 {
+    width: 20vh;
+    height: 8vh;
+  }
+  .image2 {
+    width: 25vh;
+    height: 9vh;
+  }
+  .image3 {
+    height: 6vh;
+  }
+  .nav {
+    gap: 2rem;
+    padding: 1.3rem 1.2rem;
+  }
+  
+  .nav p {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 600px) {
+
+  .image1 {
+    width: 20vh;
+    height: auto;
+  }
+  .image2 {
+    width: 15vh;
+    height: auto;
+  }
+  .image3 {
+    height: 5vh;
+  }
+  .nav {
+    gap: 1rem;
+    padding: 1rem 1rem;
+  }
+  
+  .nav p {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 430px) {
+
+  .image1 {
+    width: 13vh;
+    height: 5vh;
+  }
+  .image2 {
+    width: 15vh;
+    height: 6vh;
+  }
+  .image3 {
+    height: 3vh;
+  }
+  .heads {
+    gap: 0.4rem;
+  }
+
+  .cart-icon {
+    display: none;
+  }
+  .nav {
+    display: none;
+  }
+  .menu-icon {
+    display: block;
+  }
+}
+
+
+@media (max-width: 360px) {
+  .image1 {
+    width: 12vh;
+    height: 6vh;
+  }
+  .image2 {
+    width: 14vh;
+    height: 8vh;
+  }
+  .image3 {
+    height: 3vh;
+  }
+}

@@ -1,0 +1,45 @@
+.cod-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin: 20px 0rem;
+  }
+  
+  .cod-label {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .cod-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .cod-radio-label {
+    font-size: 18px;
+    color: #555;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .cod-radio-label input {
+    accent-color: #000000;
+    cursor: pointer;
+  }
+  
+  .cod-selection {
+    font-size: 18px;
+    color: #0056b3;
+    margin-top: 10px;
+  }
+  

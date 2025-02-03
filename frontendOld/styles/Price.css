@@ -1,0 +1,64 @@
+.prices {
+  background: black;
+  padding: 20px;
+  margin: 18px;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: white;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.prices:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.prices > p {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  margin: 10px 0;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
+}
+
+.pdd {
+  width: 100%;
+  text-align: left;
+  margin: 15px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  padding-top: 10px;
+}
+
+.pdd > p {
+  margin: 8px 0;
+  font-size: 18px;
+  color: #e0e0e0;
+}
+
+.pdd > p span {
+  font-weight: bold;
+  color: #ffffff;
+}
+
+.total {
+  width: 100%;
+  text-align: left;
+  margin: 15px 0;
+  border-top: 2px solid rgba(255, 255, 255, 0.5);
+  padding-top: 10px;
+}
+
+.total > span {
+  font-size: 22px;
+  font-weight: bold;
+  color: #ffffff;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
+}
+
+.prices:active {
+  transform: scale(0.98);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}

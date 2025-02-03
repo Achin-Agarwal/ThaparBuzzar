@@ -1,0 +1,32 @@
+/* ScrollingText.css */
+.scroll-container {
+    margin: 10px 0;
+    width: 100vw;
+    overflow: hidden; /* Hide the overflowing text */
+    background: radial-gradient(circle, #ff0000, #ff6600, #ff9900); /* Background color of the container */
+    color: #fff; /* Text color */
+    display: flex;
+    align-items: center;
+    height: 40px; /* Height of the scrolling area */
+    position: relative;
+  }
+  
+  .scroll-text {
+    display: inline-block;
+    white-space: nowrap; /* Prevent text from wrapping */
+    animation: scroll 40s linear infinite; /* Apply the scrolling animation */
+    font-size: 1.2rem; /* Font size */
+    font-weight: bold; /* Make the text bold */
+    padding: 0 10px;
+  }
+  
+  /* Animation for horizontal scrolling */
+  @keyframes scroll {
+    0% {
+      transform: translateX(35%); /* Start from outside the right */
+    }
+    100% {
+      transform: translateX(-100%); /* End outside the left */
+    }
+  }
+  
