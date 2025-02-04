@@ -40,15 +40,19 @@ router.get("/discountedproducts",safeHandler(async (req,res)=>{
 //     return res.json(randomProducts);
 //  }));   
 
- router.get("/displayproducts", safeHandler(async (req, res) => {
-    const categories = await Product.distinct("category");
-    const randomProducts = await Promise.all(categories.map(async (category) => {
-        return await Product.aggregate([
-            { $match: { category } },
-            { $sample: { size: 4 } },
-            { $project: { name: 1, category: 1, _id: 1, image: 1 } } // Keep only name & category, remove _id and other fields
-        ]);
-    }));
-    return res.json(randomProducts.flat());
+router.get("/displayproducts", safeHandler(async (req, res) => {
+    const randomProducts = await Product.aggregate([
+        { $sample: { size: 100 } }, 
+        { $group: { _id: "$category", products: { $push: { _id: "$_id", name: "$name", image: "$image" } } } },
+        { $project: { category: "$_id", products: { $slice: ["$products", 4] }, _id: 0 } }
+    ]);
+
+    const formattedResponse = randomProducts.reduce((acc, item) => {
+        acc[item.category] = item.products;
+        return acc;
+    }, {});
+
+    return res.json(formattedResponse);
 }));
+
 export default router;
