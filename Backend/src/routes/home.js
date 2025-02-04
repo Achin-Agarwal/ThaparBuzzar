@@ -46,12 +46,14 @@ router.get("/displayproducts", safeHandler(async (req, res) => {
         { $group: { _id: "$category", products: { $push: { _id: "$_id", name: "$name", image: "$image" } } } },
         { $project: { category: "$_id", products: { $slice: ["$products", 4] }, _id: 0 } }
     ]);
-
     const formattedResponse = randomProducts.reduce((acc, item) => {
         acc[item.category] = item.products;
         return acc;
     }, {});
-
+console.log("formattedResponse");
+console.log(formattedResponse);
+console.log("randomProducts")
+console.log(randomProducts)
     return res.json(formattedResponse);
 }));
 
