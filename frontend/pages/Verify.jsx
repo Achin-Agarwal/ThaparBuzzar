@@ -32,6 +32,8 @@ const Verify = () => {
         setError(""); // Clear any previous errors
         alert(response.data.message);
         navigate("/otp", { state: { email, role } });
+      } else {
+        alert(response.data.message);
       }
     } catch (err) {
       setError(

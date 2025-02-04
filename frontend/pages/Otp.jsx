@@ -62,10 +62,10 @@ const Otp = () => {
       });
       console.log(response);
       setMessage(response.data.message);
-      if (response.status == 200) {
+      if (response.data.message == 'OTP verified successfully') {
         navigate("/create", { state: { role,email } });
       } else {
-        setError(response);
+        setError(response.data.message);
       }
     } catch (err) {
       setError("The error is " + err);

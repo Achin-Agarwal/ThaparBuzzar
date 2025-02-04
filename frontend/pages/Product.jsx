@@ -83,10 +83,10 @@ const Product = ({ productadd }) => {
   const handleAddToCart = async () => {
     const tokens = localStorage.getItem("authToken");
     if (!tokens) {
-      alert("Please login to add to cart");
+      alert("Please login to add to wistlist");
       navigate("/login");
     }
-    alert(`${products.name} added to cart with quantity ${quantity}`);
+    alert(`${products.name} added to wistlist`);
     // const cartItem = {
     //   productId: products._id,
     //   name: products.name,
@@ -113,12 +113,12 @@ const Product = ({ productadd }) => {
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      console.log("Add to cart response:", response.data);
+      console.log("Add to wistlist response:", response.data);
       console.log("cartItem", cartItem);
-      alert("Cart submitted successfully!");
+      alert("Wistlist submitted successfully!");
       navigate("/cart", { state: { cartItem } });
     } catch (error) {
-      console.error("Error submitting cart:", error);
+      console.error("Error submitting wistlist:", error);
     }
   };
 

@@ -55,7 +55,7 @@ const Heading = () => {
     setIsMenuOpen(!isMenuOpen);
   };
   const handleCart = () => {
-    console.log("Cart clicked");
+    console.log("Wistlist clicked");
     navigate("/cart");
   };
   const fetchSuggestions = async (query) => {
@@ -183,7 +183,7 @@ const Heading = () => {
               onClick={() => handleNavigation("/cart")}
             >
               <BsHandbag color="white" size="35px" />
-              <span>Go to cart</span>
+              <span>Go to Wistlist</span>
             </div>
           </div>
         </div>
