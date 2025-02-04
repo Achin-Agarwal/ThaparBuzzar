@@ -16,7 +16,7 @@ const Create = () => {
     businessName: "",
     email: email,
     number: "",
-    upiid: "",
+    // upiid: "",
     // dateOfBirth: "",
     password: "",
     confirmPassword: "",
@@ -160,7 +160,7 @@ const Create = () => {
           value={formData.number}
           onChange={handleChange}
         />
-        {role === "seller" ? (
+        {/* {role === "seller" ? (
           <>
             <InputField
               text="UPI ID"
@@ -173,7 +173,7 @@ const Create = () => {
           </>
         ) : (
           ""
-        )}
+        )} */}
         {/* <InputField
           text="Date of Birth"
           type="date"

@@ -18,9 +18,9 @@ const AddProducts = () => {
       price: "",
       description: "",
       images: [],
-      stock: {available: ""},
+      // stock: {available: ""},
       discountedPrice: "",
-      numberOfUses: "",
+      // numberOfUses: "",
     },
   ]);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -48,7 +48,7 @@ const AddProducts = () => {
             response.data.products.length > 0
               ? response.data.products.map(product => ({
                   ...product,
-                  stock: { available: product.stock?.available || 0 }, // Ensure stock is initialized
+                  // stock: { available: product.stock?.available || 0 }, // Ensure stock is initialized
                 }))
               : [
                   {
@@ -58,9 +58,9 @@ const AddProducts = () => {
                     price: "",
                     description: "",
                     images: [],
-                    stock: { available: "" },
+                    // stock: { available: "" },
                     discountedPrice: "",
-                    numberOfUses: "",
+                    // numberOfUses: "",
                   },
                 ]
           );          
@@ -82,9 +82,9 @@ const AddProducts = () => {
         price: "",
         description: "",
         images: [],
-        stock: {available: ""},
+        // stock: {available: ""},
         discountedPrice: "",
-        numberOfUses: "",
+        // numberOfUses: "",
       },
     ]);
     setActiveIndex(products.length);
@@ -97,9 +97,11 @@ const AddProducts = () => {
       const updatedProducts = [...prevProducts];
       if (name === "images") {
         updatedProducts[index].images = files ? Array.from(files) : [];
-      } else if (name === "stock") {
-        updatedProducts[index].stock.available = Number(value);
-      } else {
+      } 
+      // else if (name === "stock") {
+      //   updatedProducts[index].stock.available = Number(value);
+      // } 
+      else {
         updatedProducts[index][name] = name === "price" ? Number(value) : value;
       }
       return updatedProducts;
@@ -145,24 +147,24 @@ const AddProducts = () => {
       !currentProduct.name ||
       !currentProduct.category ||
       !currentProduct.price ||
-      !currentProduct.description ||
-      currentProduct.stock.available <= 0
+      !currentProduct.description
+      // currentProduct.stock.available <= 0
     ) {
       alert(`Please fill out all fields for Product ${activeIndex + 1}`);
       return;
     }
   
-    const backendProduct = {
-      ...currentProduct,
-      stock: { available: currentProduct.stock.available }, // Ensure stock is properly formatted
-    };
+    // const backendProduct = {
+    //   currentProduct,
+    //   stock: { available: currentProduct.stock.available },
+    // };
   
     if (currentProduct._id) {
       const token = localStorage.getItem("authToken");
       try {
         const response = await axios.patch(
           `${url}/seller/addproduct/${currentProduct._id}`,
-          backendProduct,
+          currentProduct,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -189,8 +191,8 @@ const AddProducts = () => {
       !currentProduct.category ||
       !currentProduct.price ||
       !currentProduct.description ||
-      !currentProduct.images.length ||
-      currentProduct.stock <= 0
+      !currentProduct.images.length
+      // currentProduct.stock <= 0
     ) {
       alert(`Please fill out all fields for Product ${activeIndex + 1}`);
       return;
@@ -219,23 +221,24 @@ const AddProducts = () => {
     formData.append("description", currentProduct.description);
     formData.append("category", currentProduct.category);
     formData.append("sellerId", decoded._id);
-    formData.append("stock", JSON.stringify({ available: currentProduct.stock.available }));
+    // formData.append("stock", JSON.stringify({ available: currentProduct.stock.available }));
     if (currentProduct.discountedPrice > currentProduct.price) {
       alert("Discounted price should be less than or equal to actual price");
       return;
     }
 
     formData.append("discountedPrice", currentProduct.discountedPrice || "0");
-    if (currentProduct.stock < currentProduct.numberOfUses) {
-      alert("Number of uses should be less than or equal to stock available");
-      return;
-    }
-    formData.append("numberOfUses", currentProduct.numberOfUses || "0");
+    // if (currentProduct.stock < currentProduct.numberOfUses) {
+    //   alert("Number of uses should be less than or equal to stock available");
+    //   return;
+    // }
+    // formData.append("numberOfUses", currentProduct.numberOfUses || "0");
 
     for (let [key, value] of formData.entries()) {
       console.log(key, value);
     }
 
+    console.log("Form Data:", formData);
     try {
       const response = await axios.post(url + "/seller/addproduct", formData, {
         headers: {
@@ -361,14 +364,14 @@ const AddProducts = () => {
             onChange={(event) => handleInputChange(activeIndex, event)}
             disabled={!isEditable}
           />
-          <InputField
+          {/* <InputField
             placeholder="Stock"
             type="number"
             name="stock"
             value={products[activeIndex].stock?.available}
             onChange={(event) => handleInputChange(activeIndex, event)}
             disabled={!isEditable}
-          />
+          /> */}
           {/* <InputField
             placeholder="Estimated delivery"
             type="text"
@@ -419,14 +422,14 @@ const AddProducts = () => {
             onChange={(event) => handleInputChange(activeIndex, event)}
             disabled={!isEditable}
           />
-          <InputField
+          {/* <InputField
             placeholder="Number of uses for Discounted Price"
             type="number"
             name="numberOfUses"
             value={products[activeIndex].numberOfUses}
             onChange={(event) => handleInputChange(activeIndex, event)}
             disabled={!isEditable}
-          />
+          /> */}
         </form>
         {products[activeIndex].id === null && (
           <div className="action-buttons">

@@ -211,3 +211,129 @@ h1 {
 .buy-now-button:active {
   transform: scale(0.95);
 }
+
+/* Wishlist Title */
+.wishlist-title {
+  font-size: 28px;
+  text-align: center;
+  margin-top: 20px;
+  color: #333;
+}
+
+/* Cart Container */
+.cart-containers {
+  display: flex;
+  flex-direction: column;
+  margin: 20px auto;
+  width: 90%;
+}
+
+/* Individual Cart Item */
+.cart-items {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  background: #fff;
+  padding: 20px;
+  margin: 15px 0;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.cart-items:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+
+/* Product Image */
+.product-imagess {
+  flex: 1;
+  max-width: 20vw;
+  height: auto;
+  margin-right: 20px;
+}
+
+.product-imagess img {
+  width: 100%;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+/* Product Details */
+.product-detailss {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+}
+
+.product-detailss h2 {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+/* Quantity Controls */
+.quantity-controlss {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.quantity-controlss button {
+  padding: 5px 12px;
+  font-size: 16px;
+  background-color: #e0e0e0;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.quantity-controlss button:hover {
+  background-color: #d6d6d6;
+}
+
+.quantity-controlss span {
+  font-size: 16px;
+  margin: 0 15px;
+}
+
+/* Remove Button */
+.remove-buttons {
+  background-color: #f44336;
+  color: white;
+  font-size: 16px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: all 0.3s ease;
+}
+
+.remove-buttons:hover {
+  background-color: #e53935;
+  transform: scale(1.05);
+}
+
+.remove-buttons:active {
+  background-color: #d32f2f;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .cart-items {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .product-images {
+    max-width: 120px;
+    margin-bottom: 10px;
+  }
+
+  .quantity-controlss {
+    justify-content: center;
+  }
+}

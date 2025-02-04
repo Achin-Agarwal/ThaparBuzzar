@@ -111,7 +111,7 @@ const BuyNow = () => {
           { headers: { Authorization: `Bearer ${token}` } }
         );
       }
-      console.log("Add to cart response:", response.data);
+      console.log("Add to wistlist response:", response.data);
       alert("Product purchased successfully!");
       navigate("/");
     } catch (error) {
