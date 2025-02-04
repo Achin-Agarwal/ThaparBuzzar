@@ -228,7 +228,7 @@ const Product = ({ productadd }) => {
             )}
           </div>
           <p className="rating">Rating: {renderStars(products.rating || 0)}</p>
-          <div className="quantity-control">
+          {/* <div className="quantity-control">
             <button onClick={decreaseQuantity} className="quantity-btn">
               -
             </button>
@@ -236,16 +236,16 @@ const Product = ({ productadd }) => {
             <button onClick={increaseQuantity} className="quantity-btn">
               +
             </button>
-          </div>
+          </div> */}
           <div className="action-buttonss">
             {products.stock?.available > 0 ? (
               <>
                 <button className="btn add-to-cart" onClick={handleAddToCart}>
-                  Add to Cart
+                  Add to Wistlist
                 </button>
-                <button className="btn buy-now" onClick={handleBuyNow}>
+                {/* <button className="btn buy-now" onClick={handleBuyNow}>
                   Buy Now
-                </button>
+                </button> */}
               </>
             ) : (
               <p className="out-of-stock-message">

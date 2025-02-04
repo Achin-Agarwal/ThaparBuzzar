@@ -82,7 +82,7 @@ const Home = () => {
       <section className="bestsellers-section">
         <h1 className="section-title">
           <SplitText
-            text="BESTSELLERS"
+            text="CATEGORY"
             className="section-title"
             delay={150}
             animationFrom={{ opacity: 0, transform: "translate3d(0,50px,0)" }}
@@ -90,7 +90,7 @@ const Home = () => {
           />
         </h1>
         <div className="product-grid">
-          {topCategoryProducts.map((product) => (
+          {/* {topCategoryProducts.map((product) => (
             <div key={product.category}>
               <Card
                 name={product.name}
@@ -101,6 +101,25 @@ const Home = () => {
                 onClick={() => handleCardClick(product.category)}
                 discountedPrice={product.discountedPrice}
               />
+            </div>
+          ))} */}
+          {topCategoryProducts.map((category) => (
+            <div key={category.category} className="category-box" onClick={() => handleCardClick(category.category)}>
+              <h2 className="category-title">{category.category}</h2>
+              <div className="category-products">
+                {/* {category.products.slice(0, 4).map((product) => ( */}
+                {topCategoryProducts.map((category) => (
+                  <div key={category._id} className="product-item">
+                    <img
+                      src={`${url}/images/products/${
+                        category.image?.[0] || img
+                      }`}
+                      alt={category.name}
+                    />
+                    <p>{category.name}</p>
+                  </div>
+              ))}
+              </div>
             </div>
           ))}
         </div>
@@ -131,7 +150,7 @@ const Home = () => {
           ))}
         </div>
       </section>
-      <Scroll />
+      {/* <Scroll /> */}
       <Footer />
     </div>
   );

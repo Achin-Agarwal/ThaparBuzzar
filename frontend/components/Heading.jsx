@@ -5,6 +5,7 @@ import buzzarlogo from "../src/assets/buzzar logo.jpg";
 import { CgProfile } from "react-icons/cg";
 import { IoIosSearch } from "react-icons/io";
 import { BsHandbag } from "react-icons/bs";
+import { FaRegHeart } from "react-icons/fa";
 import { HiOutlineDotsVertical } from "react-icons/hi";
 import { useLocation, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
@@ -151,7 +152,7 @@ const Heading = () => {
           )}
 
           <div className="cart-icon">
-            <BsHandbag
+            <FaRegHeart
               color="white"
               size="35px"
               className="image3"

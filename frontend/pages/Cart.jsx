@@ -16,7 +16,7 @@ const Cart = () => {
       try {
         const token = localStorage.getItem("authToken");
         if (!token) {
-          alert("Please login to view your cart");
+          alert("Please login to view your wistlist");
           navigate("/login");
         }
         const response = await axios.get(`${url}/buyer/usercart`, {
