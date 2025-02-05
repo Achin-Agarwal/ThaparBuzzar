@@ -26,6 +26,7 @@ const renderStars = (rating) => {
 const Product = ({ productadd }) => {
   const { id } = useParams();
   const [products, setProducts] = useState({});
+  const [seller,setSeller]=useState({});
   const [allProducts, setAllProducts] = useState([]);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
@@ -42,6 +43,8 @@ const Product = ({ productadd }) => {
         console.log(products);
         const product = products.find((product) => product._id === id);
         setProducts(product);
+        setSeller(product.seller);
+        console.log(seller)
 
         if (product) {
           const categoryProducts = products
@@ -192,11 +195,11 @@ const Product = ({ productadd }) => {
         </div>
         <div className="product-info">
           <h1>{products.name}</h1>
-          <div>
+          {/* <div>
             {products.stock?.sold > 1 && (
               <p className="sold">{products.stock.sold} items sold</p>
             )}
-          </div>
+          </div> */}
           <div
             className="price-section"
             style={{ alignItems: "start", gap: "10px" }}
@@ -215,7 +218,7 @@ const Product = ({ productadd }) => {
               <span className="price">₹{price}</span>
             )}
           </div>
-          <div style={{ display: "flex", gap: "10px", margin: "15px 0px" }}>
+          {/* <div style={{ display: "flex", gap: "10px", margin: "15px 0px" }}>
             {products.stock?.available > 10 && (
               <p className="stock in-stock">In Stock</p>
             )}
@@ -226,7 +229,7 @@ const Product = ({ productadd }) => {
             {products.stock?.available === 0 && (
               <p className="stock out-of-stock">Out of Stock</p>
             )}
-          </div>
+          </div> */}
           <p className="rating">Rating: {renderStars(products.rating || 0)}</p>
           {/* <div className="quantity-control">
             <button onClick={decreaseQuantity} className="quantity-btn">
@@ -238,7 +241,7 @@ const Product = ({ productadd }) => {
             </button>
           </div> */}
           <div className="action-buttonss">
-            {products.stock?.available > 0 ? (
+            {/* {products.stock?.available > 0 ? ( */}
               <>
                 <button className="btn add-to-cart" onClick={handleAddToCart}>
                   Add to Wistlist
@@ -247,13 +250,17 @@ const Product = ({ productadd }) => {
                   Buy Now
                 </button> */}
               </>
-            ) : (
+            {/* ) : (
               <p className="out-of-stock-message">
                 This product is currently out of stock.
               </p>
-            )}
+            )} */}
           </div>
           <p className="description">{products.description}</p>
+          <h2>Vendor Details :</h2>
+          <p>Business Name: {seller.businessName}</p>
+          <p>Phone Number: {seller.contactDetails.phoneNumber}</p>
+          <p>Email: {seller.contactDetails.email}</p>
         </div>
       </div>
       <div>
