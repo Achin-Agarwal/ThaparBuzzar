@@ -74,16 +74,15 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  background-color: rgba(0, 0, 0, 0.8);
+  /* background-color: rgba(0, 0, 0, 0.8); */
   color: white;
-  padding: 0.3rem 3rem;
   font-size: 1rem;
   font-family: "Poppins", sans-serif;
 }
 .bottom-text {
   position: relative; /* Instead of absolute */
   width: 100%;
-  background-color: rgba(0, 0, 0, 0.8);
+  /* background-color: rgba(0, 0, 0, 0.8); */
   color: white;
   padding: 0.3rem 3rem;
   font-size: 1rem;
@@ -133,7 +132,7 @@
 
 .column {
   flex: 1;
-  min-width: 200px;
+
   margin: 0 1rem;
   text-align: center;
 }
@@ -141,7 +140,7 @@
 .bottom-text {
   position: relative; /* Instead of absolute */
   width: 100%;
-  background-color: rgba(0, 0, 0, 0.8);
+  /* background-color: rgba(0, 0, 0, 0.8); */
   color: white;
   padding: 0.5rem 2rem;
   font-size: 1rem;

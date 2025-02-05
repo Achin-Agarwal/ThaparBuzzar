@@ -4,6 +4,7 @@ import "../styles/Footer.css";
 import { FaInstagram } from "react-icons/fa";
 import { CiLinkedin } from "react-icons/ci";
 import { useNavigate } from "react-router-dom";
+import Scroll from "./Scroll";
 
 const Footer = () => {
   const navigate = useNavigate();
@@ -75,7 +76,7 @@ const Footer = () => {
           </div>
         </div>
         <div className="bottom-text">
-          <p>
+          {/* <p>
             LM Thapar School of Management and Thapar Institute of Engineering
             and Technology are not for profit educational institution. Both
             these institutions are not involved in selling of products offered
@@ -84,7 +85,8 @@ const Footer = () => {
             and sellers. Institute is not a party in these transactions and
             cannot be held accountable for any transaction happening on this
             platform.
-          </p>
+          </p> */}
+          <Scroll />
         </div>
       </div>
     </div>
