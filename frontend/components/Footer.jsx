@@ -8,14 +8,15 @@ import Scroll from "./Scroll";
 
 const Footer = () => {
   const navigate = useNavigate();
+  const handleOpenPDF = () => {
+    navigate("/about");
+  };
   return (
     <div className="footer">
       <img src={img} alt="Sample" className="image" />
       <div className="text-overlay">
         <div className="columns">
-          <div className="column" onClick={()=>{
-            navigate("/about")
-          }} style={{cursor:"pointer"}}>
+          <div className="column" onClick={handleOpenPDF} style={{cursor:"pointer"}}>
             <div className="header">
               <p>ABOUT US</p>
             </div>

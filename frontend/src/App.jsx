@@ -71,6 +71,7 @@ const App = () => {
           <Route path="/about" element={<About/>}/>
           <Route path="/search" element={<Search />} />
           <Route path="/searched/" element={<Fetched />} />
+          <Route path="/about" element={<About/>}/>
           <Route path="*" element={<h1>Not Found</h1>} />
         </Routes>
       </div>

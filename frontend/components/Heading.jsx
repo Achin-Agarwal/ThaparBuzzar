@@ -109,8 +109,20 @@ const Heading = () => {
   return (
     <div>
       <div className="head">
-        <img src={clglogo} alt="College Logo" className="image1" onClick={() => window.open("https://lmtsm.thapar.edu/", "_blank")} style={{cursor:"pointer"}}/>
-        <img src={buzzarlogo} alt="Buzzar Logo" className="image2" onClick={() => handleNavigation("/")} style={{cursor:"pointer"}}/>
+        <img
+          src={clglogo}
+          alt="College Logo"
+          className="image1"
+          onClick={() => window.open("https://lmtsm.thapar.edu/", "_blank")}
+          style={{ cursor: "pointer" }}
+        />
+        <img
+          src={buzzarlogo}
+          alt="Buzzar Logo"
+          className="image2"
+          onClick={() => handleNavigation("/")}
+          style={{ cursor: "pointer" }}
+        />
         <div className="heads">
           <div className="profile-icon">
             <CgProfile
@@ -146,7 +158,14 @@ const Heading = () => {
                     }
                   }}
                 />
-                <Button onClick={() => handleSearchSelect(que)} bgColor="rgba(36, 34, 34, 0.47)" fontSize="1.2rem" borderRadius="0px 8px 8px 0px">Search</Button>
+                <Button
+                  onClick={() => handleSearchSelect(que)}
+                  bgColor="rgba(36, 34, 34, 0.47)"
+                  fontSize="1.2rem"
+                  borderRadius="0px 8px 8px 0px"
+                >
+                  Search
+                </Button>
               </div>
             </div>
           )}
@@ -182,7 +201,12 @@ const Heading = () => {
               className="menu-cart"
               onClick={() => handleNavigation("/cart")}
             >
-              <BsHandbag color="white" size="35px" />
+                <FaRegHeart
+                  color="white"
+                  size="35px"
+                  className="image3"
+                  onClick={handleCart}
+                />
               <span>Go to Wistlist</span>
             </div>
           </div>
