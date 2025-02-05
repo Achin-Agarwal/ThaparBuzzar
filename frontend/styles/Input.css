@@ -1,29 +1,65 @@
 .input-field {
-    margin-bottom: 15px;
-  }
-  
-  .input-field label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 5px;
-  }
-  
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+.input-field label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  font-size: 16px;
+}
+
+.input-field input {
+  width: 50vw;
+  padding: 12px;
+  border: 2px solid #686767;
+  border-radius: 5px;
+  box-sizing: border-box;
+  font-size: 18px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.input-field input:focus {
+  outline: none;
+  border-color: #4CAF50;
+  box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+}
+
+.input-field input::placeholder {
+  font-size: 18px;
+  color: black;
+}
+
+/* --------- Responsive Design --------- */
+@media screen and (max-width: 1024px) {
   .input-field input {
-    width: 50vw;
-    padding: 12px;
-    border: 2px solid #686767;
-    border-radius: 5px;
-    box-sizing: border-box;
-    font-size: 18px;
+      width: 70vw;
+      font-size: 16px;
+      padding: 10px;
   }
-  
-  .input-field input:focus {
-    outline: none;
-    border-color: #4CAF50;
-    box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+}
+
+@media screen and (max-width: 768px) {
+  .input-field input {
+      width: 80vw;
+      font-size: 15px;
+      padding: 9px;
   }
-  
-  .input-field input::placeholder {
-    font-size: 18px;
-    color: black;
+
+  .input-field label {
+      font-size: 15px;
   }
+}
+
+@media screen and (max-width: 480px) {
+  .input-field input {
+      width: 90vw;
+      font-size: 14px;
+      padding: 8px;
+  }
+
+  .input-field label {
+      font-size: 14px;
+  }
+}

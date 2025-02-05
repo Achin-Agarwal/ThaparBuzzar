@@ -1,66 +1,77 @@
 .user-profile {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 20px;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px;
+  width: 100%;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 90%;
+  max-width: 600px;
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+.address-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  font-family: 'TheSeasonsRegular', Arial, sans-serif;
+}
+
+button {
+  cursor: pointer;
+  border-radius: 4px;
+  padding: 10px;
+  font-size: 16px;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
   .form-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 80%;
-  }
-  
-  .action-buttons {
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 12px;
-  }
-  
-  /* .address-fields-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    justify-content: space-between;
-    width: 100%;
-    margin-top: 10px;
-  }
-  
-  .address-fields {
-    display: flex;
-    flex-direction: column;
-    padding: 10px;
-    border-radius: 8px;
-    box-sizing: border-box;
-    background-color: #f9f9f9;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-  }
-  
-  .address-fields:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-  } */
-  
-  .cross-button {
-    text-align: right;
-  }
-  
-  .address-container {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    width: 100%;
-    font-family: 'TheSeasonsRegular', Arial, sans-serif;
+      width: 100%;
+      padding: 10px;
   }
 
-  button {
-    cursor: pointer;
-    border-radius: 4px;
+  .address-fields {
+      width: 100%;
   }
-  
-  button:hover {
-    opacity: 0.9;
+
+  .address-fields-container {
+      flex-direction: column;
+      gap: 8px;
   }
-  
+}
+
+@media (max-width: 480px) {
+  .user-profile {
+      margin: 10px;
+  }
+
+  .form-container {
+      width: 95%;
+      padding: 5px;
+  }
+
+  .action-buttons {
+      justify-content: center;
+  }
+
+  /* button {
+      width: 50%;
+  } */
+}
