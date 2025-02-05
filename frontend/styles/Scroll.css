@@ -1,6 +1,5 @@
 /* ScrollingText.css */
 .scroll-container {
-    margin: 10px 0;
     width: 100vw;
     overflow: hidden; /* Hide the overflowing text */
     background: radial-gradient(circle, #ff0000, #ff6600, #ff9900); /* Background color of the container */
