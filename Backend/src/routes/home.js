@@ -2,6 +2,7 @@ import express from "express";
 import { safeHandler } from "../middleware/safeHandler.js";
 import Product from "../models/product.js";
 import Seller from "../models/seller.js";
+import Service from "../models/services.js";
 
 
 const router = express.Router();
@@ -46,7 +47,7 @@ router.get("/displayproducts", safeHandler(async (req, res) => {
         { $group: { _id: "$category", products: { $push: { _id: "$_id", name: "$name", image: "$image" } } } },
         { $project: { category: "$_id", products: { $slice: ["$products", 4] }, _id: 0 } }
     ]);
-    
+
     const formattedResponse = randomProducts.reduce((acc, item) => {
         acc[item.category] = item.products;
         return acc;
@@ -57,5 +58,9 @@ console.log("randomProducts")
 console.log(randomProducts)
     return res.json(formattedResponse);
 }));
-
+router.get("/services", safeHandler(async (req, res) => {
+    console.log("services");
+    const services = await Service.find().exec();
+    return res.json(services);
+}));
 export default router;
