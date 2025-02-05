@@ -9,21 +9,7 @@ import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
 import Card from "../temporary/Card";
 import { CartContext } from "../CartContext";
 
-const renderStars = (rating) => {
-  const stars = [];
-  for (let i = 1; i <= 5; i++) {
-    if (i <= rating) {
-      stars.push(<FaStar key={i} color="gold" />);
-    } else if (i - rating < 1) {
-      stars.push(<FaStarHalfAlt key={i} color="gold" />);
-    } else {
-      stars.push(<FaRegStar key={i} color="gold" />);
-    }
-  }
-  return stars;
-};
-
-const Product = ({ productadd }) => {
+const Product = () => {
   const { id } = useParams();
   const [products, setProducts] = useState({});
   const [seller,setSeller]=useState({});
@@ -39,30 +25,26 @@ const Product = ({ productadd }) => {
       setLoading(true);
       try {
         const response = await axios.get(url + "/home/products");
-        const products = response.data;
-        console.log(products);
-        const product = products.find((product) => product._id === id);
-        setProducts(product);
-        setSeller(product.seller);
-        console.log(seller)
-
+        const productsData = response.data;
+  
+        const product = productsData.find((p) => p._id === id);
         if (product) {
-          const categoryProducts = products
-            .filter((p) => p.category === product.category)
-            .filter((p) => p._id !== product._id);
+          setProducts(product);
+          setSeller(product.seller || {}); // Ensure seller is set correctly
+          const categoryProducts = productsData
+            .filter((p) => p.category === product.category && p._id !== product._id);
           setAllProducts(categoryProducts);
         }
-
-        console.log(allProducts);
       } catch (error) {
         console.log(error);
-      }
-      finally{
+      } finally {
         setLoading(false);
       }
     };
+  
     fetchProduct();
-  }, [id]);
+  }, [id]); // Include `id` only, other states are updated automatically
+  
   if (loading) {
     return (
       <div className="loading-overlay">
@@ -70,6 +52,19 @@ const Product = ({ productadd }) => {
       </div>
     );
   }
+  const renderStars = (rating) => {
+    const stars = [];
+    for (let i = 1; i <= 5; i++) {
+      if (i <= rating) {
+        stars.push(<FaStar key={i} color="gold" />);
+      } else if (i - rating < 1) {
+        stars.push(<FaStarHalfAlt key={i} color="gold" />);
+      } else {
+        stars.push(<FaRegStar key={i} color="gold" />);
+      }
+    }
+    return stars;
+  };
 
   const handlePrevImage = () => {
     setCurrentImageIndex((prevIndex) =>
@@ -254,13 +249,14 @@ const Product = ({ productadd }) => {
               <p className="out-of-stock-message">
                 This product is currently out of stock.
               </p>
-            )} */}
-          </div>
-          <p className="description">{products.description}</p>
-          <h2>Vendor Details :</h2>
+              <h2>Vendor Details :</h2>
           <p>Business Name: {seller.businessName}</p>
           <p>Phone Number: {seller.contactDetails.phoneNumber}</p>
           <p>Email: {seller.contactDetails.email}</p>
+            )} */}
+          </div>
+          <p className="description">{products.description}</p>
+          
         </div>
       </div>
       <div>
