@@ -74,6 +74,11 @@ router.post("/", safeHandler(async (req, res) => {
 
 router.post("/verifyemail", safeHandler(async (req, res) => {
     const { email, role } = req.body;
+
+    const sellerm = await Seller.findOne({ email:{address: email} });
+    if (sellerm) {
+        return res.status(200).json({ message: "user already exist" });
+    }
     await otpModel.deleteMany({ user: email, role: role });
 
     console.log(role);

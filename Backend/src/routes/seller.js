@@ -65,7 +65,8 @@ router.get("/addannouncement", isLogin, safeHandler(async (req, res) => {
 
 // Add a new product
 router.post('/addproduct', isLogin, productImageUpload, safeHandler(async (req, res) => {
-    console.log("/addproduct");
+    console.log("body: ");
+    console.log(req.body);
     if (req.user.role === "buyer") {
         return res.status(401).json({ message: "Unauthorized access" });
     }
@@ -77,12 +78,11 @@ router.post('/addproduct', isLogin, productImageUpload, safeHandler(async (req, 
         ...req.body,
         price: parseFloat(req.body.price),
         discountedPrice: parseFloat(req.body.discountedPrice),
-        numberOfUses: parseFloat(req.body.numberOfUses),
-        stock: JSON.parse(req.body.stock),
+        // numberOfUses: parseFloat(req.body.numberOfUses),
+        // stock: JSON.parse(req.body.stock),
     };
 
-    console.log("body: ");
-    console.log(req.body);
+   
     console.log("parsed data: ");
     console.log(parsedData);
     // const validatedData = productSchema.parse(parsedData);

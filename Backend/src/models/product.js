@@ -36,7 +36,7 @@ const productSchema = new mongoose.Schema({
     stock: {
         available: {
             type: Number,
-            required: true
+            required: false
         },
         sold: {
             type: Number,
