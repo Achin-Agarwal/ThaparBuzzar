@@ -31,8 +31,8 @@ const BuyerDashboard = () => {
     switch (activeTab) {
       case "productDetails":
         return <UserProfile />;
-      case "overview":
-        return <Orders />;
+      // case "overview":
+      //   return <Orders />;
       default:
         return <h2>Select an option</h2>;
     }
@@ -51,11 +51,11 @@ const BuyerDashboard = () => {
           label="My Profile"
           fontSize="18px"
         ></Button>
-        <Button
+        {/* <Button
           onClick={() => setActiveTab("overview")}
           label="My Orders"
           fontSize="18px"
-        ></Button>
+        ></Button> */}
         <Button
           onClick={handleSignOut}
           label="Sign Out"

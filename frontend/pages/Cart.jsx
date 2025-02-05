@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { CartContext } from "../CartContext";
 import "../styles/Cart.css";
 import axios from "axios";
@@ -7,6 +7,7 @@ import url from "../url";
 
 const Cart = () => {
   const { cart, setCart, removeFromCart } = useContext(CartContext);
+  const [product, setProduct] = useState({});
   const [isLoading, setIsLoading] = React.useState(true);
   const navigate = useNavigate();
 
@@ -17,18 +18,40 @@ const Cart = () => {
         if (!token) {
           alert("Please login to view your wishlist");
           navigate("/login");
+          return;
         }
-        const response = await axios.get(`${url}/buyer/usercart`, {
+
+        // Fetch user's cart
+        const cartResponse = await axios.get(`${url}/buyer/usercart`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        setCart(response.data.cart);
-        console.log(cart)
+        setCart(cartResponse.data.cart);
+
+        // Fetch all products
+        const productsResponse = await axios.get(`${url}/home/products`);
+        const allProducts = productsResponse.data;
+
+        // Find and store matching product details for items in the cart
+        const updatedCart = cartResponse.data.cart.map((item) => {
+          const matchingProduct = allProducts.find(
+            (product) => product._id === item.product._id
+          );
+
+          return {
+            ...item,
+            product: matchingProduct || item.product,
+          };
+        });
+
+        setCart(updatedCart);
+        console.log("Updated Cart:", updatedCart);
       } catch (error) {
         console.error("Error fetching cart:", error);
       } finally {
         setIsLoading(false);
       }
     };
+
     fetchCart();
   }, []);
 
@@ -105,41 +128,48 @@ const Cart = () => {
         {cart.map((item) => (
           <div key={item._id} className="cart-items">
             <div className="product-imagess">
-              <img alt={item.product.name} src={`${url}/images/products/${item.product.image?.[0]}`}/>
+              <img
+                alt={item.product.name}
+                src={`${url}/images/products/${item.product.image?.[0]}`}
+              />
             </div>
             <div className="product-detailss">
               <h2>{item.product.name}</h2>
               <div
-                  className="price-section"
-                  style={{ alignItems: "start", gap: "10px" }}
-                >
-                  {item.product.discountedPrice ? (
-                    <div style={{ display: "flex", gap: "15px" }}>
-                      <span className="original-price">
-                        ₹{item.product.price * item.quantity}
-                      </span>
-                      {item.product.numberOfUses < item.quantity ? (
-                        <span className="discounted-price">
-                          ₹
-                          {item.product.discountedPrice *
-                            item.product.numberOfUses}
-                        </span>
-                      ) : (
-                        <span className="discounted-price">
-                          ₹{item.product.discountedPrice * item.quantity}
-                        </span>
-                      )}
-                    </div>
-                  ) : (
-                    <span className="price">
+                className="price-section"
+                style={{ alignItems: "start", gap: "10px" }}
+              >
+                {item.product.discountedPrice ? (
+                  <div style={{ display: "flex", gap: "15px" }}>
+                    <span className="original-price">
                       ₹{item.product.price * item.quantity}
                     </span>
-                  )}
-                </div>
-
-
+                    {item.product.numberOfUses < item.quantity ? (
+                      <span className="discounted-price">
+                        ₹
+                        {item.product.discountedPrice *
+                          item.product.numberOfUses}
+                      </span>
+                    ) : (
+                      <span className="discounted-price">
+                        ₹{item.product.discountedPrice * item.quantity}
+                      </span>
+                    )}
+                  </div>
+                ) : (
+                  <span className="price">
+                    ₹{item.product.price * item.quantity}
+                  </span>
+                )}
+              </div>
+              <h2>Vendor Details :</h2>
+              <p>Business Name: {item.product.seller.businessName}</p>
+              <p>
+                Phone Number: {item.product.seller.contactDetails.phoneNumber}
+              </p>
+              <p>Email: {item.product.seller.contactDetails.email}</p>
               {/* <div className="quantity-controlss"> */}
-                {/* <button onClick={() => handleDecreaseQuantity(item)}>-</button>
+              {/* <button onClick={() => handleDecreaseQuantity(item)}>-</button>
                 <span>{item.quantity}</span>
                 <button
                   onClick={() => handleIncreaseQuantity(item)}

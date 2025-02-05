@@ -30,12 +30,12 @@ const Dashboard = () => {
     switch (activeTab) {
       case "productDetails":
         return <AddProducts />;
-      case "overview":
-        return <Overview />;
+      // case "overview":
+      //   return <Overview />;
       case "service":
         return <Service />;
-      case "announcement":
-        return <Announcements />;
+      // case "announcement":
+      //   return <Announcements />;
       default:
         return <h2>Select an option</h2>;
     }
@@ -57,24 +57,24 @@ const Dashboard = () => {
           fontSize="18px"
           borderRadius="16px"
         ></Button>
-        <Button
+        {/* <Button
           onClick={() => setActiveTab("overview")}
           label="Overview"
           fontSize="18px"
           borderRadius="16px"
-        ></Button>
+        ></Button> */}
         <Button
           onClick={() => setActiveTab("service")}
           label="Service Details"
           fontSize="18px"
           borderRadius="16px"
         ></Button>
-        <Button
+        {/* <Button
           onClick={() => setActiveTab("announcement")}
           label="Announcement"
           fontSize="18px"
           borderRadius="16px"
-        ></Button>
+        ></Button> */}
         <Button
           onClick={handleSignOut}
           label="Sign Out"
