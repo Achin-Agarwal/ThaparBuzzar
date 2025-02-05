@@ -75,13 +75,22 @@ router.post("/", safeHandler(async (req, res) => {
 router.post("/verifyemail", safeHandler(async (req, res) => {
     const { email, role } = req.body;
 
-    const sellerm = await Seller.findOne({ email:{address: email} });
-    if (sellerm) {
-        return res.status(200).json({ message: "user already exist" });
+    let user;
+    if (role === "buyer") {
+        user = await Buyer.findOne({ "email.address": email });
+    } else if (role === "seller") {
+        user = await Seller.findOne({ "email.address": email });
+    } else if (role === "admin") {
+        user = await Admin.findOne({ email });
+    } else {
+        return res.status(400).json({ message: "Invalid role" });
+    }
+
+    if (user) {
+        return res.status(404).json({ message: `Email already registered as ${role}` });
     }
     await otpModel.deleteMany({ user: email, role: role });
 
-    console.log(role);
     // let buyer;
     // if (role === "buyer") {
     //     buyer = await Buyer.findOne({ email });

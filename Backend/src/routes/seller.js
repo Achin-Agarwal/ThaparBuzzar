@@ -70,8 +70,8 @@ router.post('/addproduct', isLogin, productImageUpload, safeHandler(async (req, 
     if (req.user.role === "buyer") {
         return res.status(401).json({ message: "Unauthorized access" });
     }
-    // Parse the incoming data
-    // Parse the incoming data
+  
+    
     let parsedData;
 
     parsedData = {

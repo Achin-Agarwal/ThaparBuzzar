@@ -21,7 +21,7 @@ router.get("/bestsellers", safeHandler(async (req, res) => {
 // }));
 
 router.get("/products", safeHandler(async (req, res) => {
-    const products = await Product.find().exec();
+    const products = await Product.find().populate('seller').exec();
    return res.json(products);
 }));
 
@@ -46,6 +46,7 @@ router.get("/displayproducts", safeHandler(async (req, res) => {
         { $group: { _id: "$category", products: { $push: { _id: "$_id", name: "$name", image: "$image" } } } },
         { $project: { category: "$_id", products: { $slice: ["$products", 4] }, _id: 0 } }
     ]);
+    
     const formattedResponse = randomProducts.reduce((acc, item) => {
         acc[item.category] = item.products;
         return acc;
