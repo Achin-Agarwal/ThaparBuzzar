@@ -26,12 +26,10 @@ const Cart = () => {
           headers: { Authorization: `Bearer ${token}` },
         });
         setCart(cartResponse.data.cart);
-
+        console.log("Cart:", cartResponse.data.cart);
         // Fetch all products
         const productsResponse = await axios.get(`${url}/home/products`);
         const allProducts = productsResponse.data;
-
-        // Find and store matching product details for items in the cart
         const updatedCart = cartResponse.data.cart.map((item) => {
           const matchingProduct = allProducts.find(
             (product) => product._id === item.product._id
@@ -126,7 +124,7 @@ const Cart = () => {
       <h1 className="wishlist-title">Your Wishlist</h1>
       <div className="cart-containers">
         {cart.map((item) => (
-          <div key={item._id} className="cart-items">
+          <div key={item.id} className="cart-items">
             <div className="product-imagess">
               <img
                 alt={item.product.name}
@@ -180,9 +178,9 @@ const Cart = () => {
               </div>
 
               {/* Remove Button */}
-              {/* <button onClick={() => handleRemoveFromCart(item)} className="remove-buttons">
+              <button onClick={() => handleRemoveFromCart(item)} className="remove-buttons">
                 Remove
-              </button> */}
+              </button>
             </div>
           </div>
         ))}

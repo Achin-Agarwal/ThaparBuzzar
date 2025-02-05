@@ -143,6 +143,8 @@ const AddProducts = () => {
 
   const handleSave = async () => {
     const currentProduct = products[activeIndex];
+    console.log("currentProduct", currentProduct);
+    console.log("currentProduct id", currentProduct._id);
     if (
       !currentProduct.name ||
       !currentProduct.category ||

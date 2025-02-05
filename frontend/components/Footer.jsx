@@ -63,11 +63,11 @@ const Footer = () => {
               className="contents"
               style={{ display: "flex", flexDirection: "column", gap: "10px" }}
             >
-              <div style={{ display: "flex", gap: "10px" }}>
+              <div style={{ display: "flex", gap: "10px",cursor:"pointer" }}  onClick={() => window.open("https://www.instagram.com/thapar_school_of_management?igsh=MXhsYmMyOWN4MzNnag==", "_blank")}>
                 <FaInstagram size="1.7rem" color="white" />
                 <p>Instagram</p>
               </div>
-              <div style={{ display: "flex", gap: "10px" }}>
+              <div style={{ display: "flex", gap: "10px",cursor:"pointer" }} onClick={() => window.open("https://www.linkedin.com/in/tsm-tu?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app", "_blank")}>
                 <CiLinkedin size="2rem" color="white" />
                 <p>LinkedIn</p>
               </div>

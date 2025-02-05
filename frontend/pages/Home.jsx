@@ -26,13 +26,13 @@ const Home = () => {
         const response = await axios.get(`${url}/home/displayproducts`);
         const productsData = response.data;
         console.log("Raw API Response:", productsData);
-  
+
         // Convert object into an array of { category: "Category Name", products: [...] }
-        const formattedProducts = Object.keys(productsData).map(category => ({
+        const formattedProducts = Object.keys(productsData).map((category) => ({
           category,
-          products: productsData[category],  // Array of products under this category
+          products: productsData[category], // Array of products under this category
         }));
-  
+
         setTopCategoryProducts(formattedProducts);
         console.log("Formatted Categories:", formattedProducts);
       } catch (error) {
@@ -88,7 +88,7 @@ const Home = () => {
           />
         </h1>
         {/* <div className="product-grid"> */}
-          {/* {topCategoryProducts.map((product) => (
+        {/* {topCategoryProducts.map((product) => (
             <div key={product.category}>
               <Card
                 name={product.name}
@@ -101,25 +101,34 @@ const Home = () => {
               />
             </div>
           ))} */}
-          <div className="product-grid">
-  {topCategoryProducts.map((categoryObj) => (
-    <div key={categoryObj.category} className="category-box" onClick={() => handleCardClick(categoryObj.category)}>
-      <h2 className="category-title">{categoryObj.category}</h2>
-      <div className="category-products">
-        {categoryObj.products.slice(0, 4).map((product) => (  // Take first 4 products
-          <div key={product._id} className="product-item">
-            <img
-              src={`${url}/images/products/${product.image?.[0] || img}`}
-              alt={product.name}
-            />
-            <p>{product.name}</p>
-          </div>
-        ))}
-      </div>
-    </div>
-  ))}
-</div>
-
+        <div className="product-grid">
+          {topCategoryProducts.map((categoryObj) => (
+            <div
+              key={categoryObj.category}
+              className="category-box"
+              onClick={() => handleCardClick(categoryObj.category)}
+            >
+              <h2 className="category-title">{categoryObj.category}</h2>
+              <div className="category-products">
+                {categoryObj.products.slice(0, 4).map(
+                  (
+                    product // Take first 4 products
+                  ) => (
+                    <div key={product._id} className="product-item">
+                      <img
+                        src={`${url}/images/products/${
+                          product.image?.[0] || img
+                        }`}
+                        alt={product.name}
+                      />
+                      <p>{product.name}</p>
+                    </div>
+                  )
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
       </section>
       <section className="bestsellers-section">
         <h1 className="section-title">

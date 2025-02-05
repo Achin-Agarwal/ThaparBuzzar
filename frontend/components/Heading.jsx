@@ -109,8 +109,8 @@ const Heading = () => {
   return (
     <div>
       <div className="head">
-        <img src={clglogo} alt="College Logo" className="image1" />
-        <img src={buzzarlogo} alt="Buzzar Logo" className="image2" />
+        <img src={clglogo} alt="College Logo" className="image1" onClick={() => window.open("https://lmtsm.thapar.edu/", "_blank")} style={{cursor:"pointer"}}/>
+        <img src={buzzarlogo} alt="Buzzar Logo" className="image2" onClick={() => handleNavigation("/")} style={{cursor:"pointer"}}/>
         <div className="heads">
           <div className="profile-icon">
             <CgProfile
