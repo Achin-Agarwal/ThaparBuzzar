@@ -301,6 +301,7 @@ h1 {
 /* Remove Button */
 .remove-buttons {
   background-color: #f44336;
+  width: 10%;
   color: white;
   font-size: 16px;
   padding: 8px 16px;
@@ -309,6 +310,7 @@ h1 {
   cursor: pointer;
   margin-top: 10px;
   transition: all 0.3s ease;
+  font-weight: bold;
 }
 
 .remove-buttons:hover {

@@ -255,7 +255,7 @@ const Product = () => {
           <p>Email: {seller.contactDetails.email}</p>
             )} */}
           </div>
-          <p className="description">{products.description}</p>
+          <p className="descriptions">{products.description}</p>
           
         </div>
       </div>
