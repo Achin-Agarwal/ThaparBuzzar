@@ -14,9 +14,9 @@ import "../styles/LoadingSpinner.css";
 const Home = () => {
   const [topCategoryProducts, setTopCategoryProducts] = useState([]);
   const [discountedProducts, setDiscountedProducts] = useState([]);
+  const [service, setService] = useState([]);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-
   const [images, setImages] = useState([]);
 
   useEffect(() => {
@@ -42,6 +42,28 @@ const Home = () => {
       }
     };
 
+    const fetchServices = async () => {
+      setLoading(true);
+      try {
+        const response = await axios.get(`${url}/home/services`);
+        const productsData = response.data;
+        console.log("Service:", productsData);
+
+        // Convert object into an array of { category: "Category Name", products: [...] }
+        const formattedProducts = Object.keys(productsData).map((category) => ({
+          category,
+          products: productsData[category], // Array of products under this category
+        }));
+
+        setService(productsData);
+        console.log("Formatted Categories:", formattedProducts);
+      } catch (error) {
+        console.error("Error fetching top category products:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     const fetchDiscountedProducts = async () => {
       try {
         const response = await axios.get(`${url}/home/discountedproducts`);
@@ -54,6 +76,7 @@ const Home = () => {
 
     fetchTopCategoryProducts();
     fetchDiscountedProducts();
+    fetchServices();
   }, []);
 
   if (loading) {
@@ -128,6 +151,24 @@ const Home = () => {
               </div>
             </div>
           ))}
+          {service.length > 0 && (
+            <div className="category-box">
+              <h2 className="category-title">Services</h2>
+              <div className="category-products">
+                {service.slice(0, 4).map((serviceItem) => (
+                  <div key={serviceItem._id} className="product-item">
+                    <img
+                      src={`${url}/images/products/${
+                        serviceItem.image?.[0] || img
+                      }`}
+                      alt={serviceItem.name}
+                    />
+                    <p>{serviceItem.name}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </section>
       <section className="bestsellers-section">

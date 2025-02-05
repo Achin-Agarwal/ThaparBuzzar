@@ -344,7 +344,7 @@ const AddProducts = () => {
               <option value="Fashion">Fashion</option>
               <option value="Decor">Decor</option>
               <option value="Health">Health</option>
-              <option value="Services">Services</option>
+              {/* <option value="Services">Services</option> */}
               <option value="Others">Others</option>
               disabled={!isEditable}
             </select>
