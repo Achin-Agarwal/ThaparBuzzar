@@ -256,6 +256,10 @@ const Product = () => {
             )} */}
           </div>
           <p className="descriptions">{products.description}</p>
+          <h2>Vendor Details :</h2>
+          <p>Business Name: {seller.businessName}</p>
+          <p>Phone Number: {seller.contactDetails?.phoneNumber}</p>
+          <p>Email: {seller.contactDetails?.email}</p>
           
         </div>
       </div>
